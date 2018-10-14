@@ -2,18 +2,8 @@ package one.realme.crypto.secp256k1
 
 import com.google.common.base.Stopwatch
 import one.realme.crypto.BCSecp256k1
-import one.realme.crypto.encoding.Hex
-import org.bouncycastle.asn1.sec.SECNamedCurves
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair
-import org.bouncycastle.crypto.generators.ECKeyPairGenerator
-import org.bouncycastle.crypto.params.ECDomainParameters
-import org.bouncycastle.crypto.params.ECKeyGenerationParameters
-import org.bouncycastle.crypto.params.ECPrivateKeyParameters
-import org.bouncycastle.crypto.params.ECPublicKeyParameters
 import org.junit.Assert.*
 import org.junit.Test
-import java.math.BigInteger
-import java.security.SecureRandom
 import java.util.concurrent.TimeUnit
 import java.util.stream.IntStream
 
