@@ -1,7 +1,7 @@
-package one.realme.crypto
+package one.realme.crypto.secp256k1
 
 import one.realme.crypto.encoding.Hex
-import sun.security.util.ECUtil
+import java.math.BigInteger
 import java.security.KeyFactory
 import java.security.KeyPairGenerator
 import java.security.SecureRandom
@@ -37,13 +37,13 @@ import java.security.spec.X509EncodedKeySpec
 object ECSecp256k1 {
     // the data already SHA256 hashed. so there is no need for SHA256withECDSA
     private const val ALG_SIGN = "NONEwithECDSA"
-    private const val ALG_PROVIDER = "EC"
+    private const val ALG = "EC"
     private const val CURVE = "secp256k1"
     private const val X509_HEAD = "3056301006072a8648ce3d020106052b8104000a03420004"
     private const val PKCS8_HEAD = "303e020100301006072a8648ce3d020106052b8104000a042730250201010420"
 
     fun newKeyPair(): Pair<String, String> {
-        val keyPairGenerator = KeyPairGenerator.getInstance(ALG_PROVIDER)
+        val keyPairGenerator = KeyPairGenerator.getInstance(ALG)
         val curve = ECGenParameterSpec(CURVE)
         keyPairGenerator.initialize(curve, SecureRandom())
         val keyPair = keyPairGenerator.generateKeyPair()
@@ -51,21 +51,22 @@ object ECSecp256k1 {
         val pub = keyPair.public as ECPublicKey
 
         // gX, gY, s need fix to 64 size
-        val gX = adjustTo64(pub.w.affineX.toString(16))
-        val gY = adjustTo64(pub.w.affineY.toString(16))
-        val s = adjustTo64(pri.s.toString(16))
+        val gX = adjustTo64(pub.w.affineX)
+        val gY = adjustTo64(pub.w.affineY)
+        val s = adjustTo64(pri.s)
         return Pair(s, "04$gX$gY")
     }
 
 
-    fun computePublicKey(privateKey: String): String {
-        val pkcs8Encode = Hex.decode(PKCS8_HEAD + privateKey)
-        val keyFactory = KeyFactory.getInstance(ALG_PROVIDER)
+    fun sign(data: String, sec: String): String {
+        val pkcs8Encode = Hex.decode(PKCS8_HEAD + sec)
+        val keyFactory = KeyFactory.getInstance(ALG)
         val priKey = keyFactory.generatePrivate(PKCS8EncodedKeySpec(pkcs8Encode)) as ECPrivateKey
-        val ecPoint = ECUtil.decodePoint(priKey.s.toByteArray(), priKey.params.curve)
-        val gX = adjustTo64(ecPoint.affineX.toString(16))
-        val gY = adjustTo64(ecPoint.affineY.toString(16))
-        return "04$gX$gY"
+        // verify
+        val signature = Signature.getInstance(ALG_SIGN)
+        signature.initSign(priKey)
+        signature.update(Hex.decode(data))
+        return Hex.encode(signature.sign())
     }
 
     /**
@@ -87,7 +88,7 @@ object ECSecp256k1 {
             val sigBytes = Hex.decode(sig)
 
             // gen  public key
-            val keyFactory = KeyFactory.getInstance(ALG_PROVIDER)
+            val keyFactory = KeyFactory.getInstance(ALG)
             val pubKey = keyFactory.generatePublic(X509EncodedKeySpec(pubX509Encode))
 
             // verify
@@ -101,12 +102,5 @@ object ECSecp256k1 {
         }
     }
 
-    private fun adjustTo64(s: String): String {
-        return when (s.length) {
-            62 -> "00$s"
-            63 -> "0$s"
-            64 -> s
-            else -> throw IllegalArgumentException("not a valid key: $s")
-        }
-    }
+    private fun adjustTo64(s: BigInteger): String = String.format("%064x", s)
 }

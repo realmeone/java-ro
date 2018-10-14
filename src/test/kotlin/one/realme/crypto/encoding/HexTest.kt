@@ -1,8 +1,14 @@
 package one.realme.crypto.encoding
 
+import com.google.common.base.Stopwatch
+import one.realme.crypto.digest.Ripemd160
+import one.realme.crypto.digest.inOneGo
+import org.bouncycastle.crypto.digests.RIPEMD160Digest
 import org.junit.Assert.*
 import org.junit.Test
 import java.lang.Exception
+import java.util.concurrent.TimeUnit
+import java.util.stream.IntStream
 
 /**
  * test cases from https://tools.ietf.org/html/rfc4648#page-10
@@ -13,26 +19,70 @@ import java.lang.Exception
  * it require UpperCase or LowerCase, so we implements one
  */
 class HexTest {
-    private val cases = arrayOf(
-            arrayOf("".toByteArray(), ""),
-            arrayOf("1".toByteArray(), "31"),
-            arrayOf("A".toByteArray(), "41"),
-            arrayOf("f".toByteArray(), "66"),
-            arrayOf("fo".toByteArray(), "666f"),
-            arrayOf("foo".toByteArray(), "666f6f"),
-            arrayOf("foob".toByteArray(), "666f6f62"),
-            arrayOf("fooba".toByteArray(), "666f6f6261"),
-            arrayOf("foobar".toByteArray(), "666f6f626172"),
-            arrayOf("Hello World".toByteArray(), "48656C6C6F20576F726C64"),
-            arrayOf(ByteArray(1) { 10 }, "0a"),
-            arrayOf(ByteArray(1) { 255.toByte() }, "ff"),
-            arrayOf(ByteArray(1), "00"),
-            arrayOf(ByteArray(2), "0000"),
-            arrayOf(ByteArray(3), "000000"),
-            arrayOf(ByteArray(4), "00000000"),
-            arrayOf(ByteArray(5), "0000000000"),
-            arrayOf(ByteArray(6), "000000000000"),
-            arrayOf(ByteArray(36), "000000000000000000000000000000000000000000000000000000000000000000000000")
+    @Test
+    fun whoIsFasterDecode() {
+        val raw = "666f6f"
+
+        val round = 500000
+        println("Hex decode round : $round")
+        val watch = Stopwatch.createStarted()
+        IntStream.range(0, round).parallel().forEach {
+            Hex.decode(raw)
+        }
+        watch.stop()
+        println("my use time : ${watch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
+
+        watch.reset()
+        watch.start()
+        IntStream.range(0, round).parallel().forEach {
+            org.bouncycastle.util.encoders.Hex.decode(raw)
+        }
+        watch.stop()
+        println("BC use time : ${watch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
+    }
+
+    @Test
+    fun whoIsFaster() {
+        val raw = "foo".toByteArray()
+
+        val round = 500000
+        println("Hex round : $round")
+        val watch = Stopwatch.createStarted()
+        IntStream.range(0, round).parallel().forEach {
+            Hex.encode(raw)
+        }
+        watch.stop()
+        println("my use time : ${watch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
+
+        watch.reset()
+        watch.start()
+        IntStream.range(0, round).parallel().forEach {
+            org.bouncycastle.util.encoders.Hex.encode(raw)
+        }
+        watch.stop()
+        println("BC use time : ${watch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
+    }
+
+    private val cases = listOf(
+            listOf("".toByteArray(), ""),
+            listOf("1".toByteArray(), "31"),
+            listOf("A".toByteArray(), "41"),
+            listOf("f".toByteArray(), "66"),
+            listOf("fo".toByteArray(), "666f"),
+            listOf("foo".toByteArray(), "666f6f"),
+            listOf("foob".toByteArray(), "666f6f62"),
+            listOf("fooba".toByteArray(), "666f6f6261"),
+            listOf("foobar".toByteArray(), "666f6f626172"),
+            listOf("Hello World".toByteArray(), "48656C6C6F20576F726C64"),
+            listOf(ByteArray(1) { 10 }, "0a"),
+            listOf(ByteArray(1) { 255.toByte() }, "ff"),
+            listOf(ByteArray(1), "00"),
+            listOf(ByteArray(2), "0000"),
+            listOf(ByteArray(3), "000000"),
+            listOf(ByteArray(4), "00000000"),
+            listOf(ByteArray(5), "0000000000"),
+            listOf(ByteArray(6), "000000000000"),
+            listOf(ByteArray(36), "000000000000000000000000000000000000000000000000000000000000000000000000")
     )
 
 

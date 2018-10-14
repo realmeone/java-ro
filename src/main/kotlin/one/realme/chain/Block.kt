@@ -3,10 +3,10 @@ package one.realme.chain
 import java.util.*
 
 class Block(
-    val version: Int,
-    val height: Long,
-    val prevBlockHash: Hash,
-    val timestamp: Long
+        val version: Int,
+        val height: Long,
+        val prevBlockHash: Hash,
+        val timestamp: Long
 ) {
     private val transactions = Vector<Transaction>()
     private var merkleRootHash: Hash = Hash.empty()
@@ -14,21 +14,17 @@ class Block(
 
     fun header(): BlockHeader {
         return BlockHeader(
-            version = version,
-            prevBlockHash = prevBlockHash,
-            merkleRootHash = merkleRootHash(),
-            time = timestamp,
-            nonce = transactions.size
+                version = version,
+                prevBlockHash = prevBlockHash,
+                merkleRootHash = merkleRootHash(),
+                time = timestamp,
+                nonce = transactions.size
         )
     }
 
-    // ----------------- merkle -------------------------
-    /**
-     * merkle
-     */
     fun merkleRootHash(): Hash {
         if (merkleRootHash.isEmpty())
-            merkleRootHash = Hash.merkleTreeRoot(transactions.map { it.hash() }.toList())
+            merkleRootHash = Merkle.merkleTreeRoot(transactions.map { it.hash() }.toList())
         return merkleRootHash
     }
 
@@ -41,13 +37,13 @@ class Block(
 
     override fun toString(): String {
         return String.format(
-            "Block(height=%d, hash=%s, ver=0x%08x, prevBlockHash=%s, prevMerkleRoot=%s, time=%u)\n",
-            height,
-            hash(),
-            version,
-            prevBlockHash,
-            merkleRootHash(),
-            timestamp
+                "Block(height=%d, hash=%s, ver=0x%08x, prevBlockHash=%s, prevMerkleRoot=%s, time=%u)\n",
+                height,
+                hash(),
+                version,
+                prevBlockHash,
+                merkleRootHash(),
+                timestamp
         )
     }
 }

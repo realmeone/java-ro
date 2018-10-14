@@ -10,8 +10,7 @@ object Digests {
     fun ripemd160(input: ByteArray): ByteArray = Ripemd160().digest(input)
 
     fun sha256(input: ByteArray): ByteArray = newSha256Digest().digest(input)
-
-    fun sha256(b1: ByteArray, b2: ByteArray): ByteArray = newSha256Digest().digest(b1 + b2)
+    fun sha256Twice(b1: ByteArray, b2: ByteArray): ByteArray = sha256Twice(b1 + b2)
 
     fun sha256Twice(input: ByteArray): ByteArray {
         val digest = newSha256Digest()

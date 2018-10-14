@@ -4,6 +4,8 @@ package one.realme.crypto.digest;
  * ripemd 160 hash
  * <p>
  * Covert from bitcoin source hashBytes.h and hashBytes.cpp
+ *
+ * and this is faster than BC implements, see the test
  */
 public final class Ripemd160 {
 

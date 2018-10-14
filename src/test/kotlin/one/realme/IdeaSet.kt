@@ -5,7 +5,7 @@ import one.realme.common.ripemd160
 import one.realme.common.sha256
 import one.realme.common.sha256Twice
 import one.realme.common.toHexString
-import one.realme.crypto.ECSecp256k1
+import one.realme.crypto.secp256k1.ECSecp256k1
 import one.realme.crypto.encoding.Hex
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

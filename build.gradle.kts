@@ -24,6 +24,7 @@ dependencies {
     implementation("io.netty:netty-all:4.1.30.Final")
     implementation("com.google.guava:guava:26.0-jre")
     implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("org.bouncycastle:bcprov-jdk15on:1.60")
     testImplementation("junit:junit:4.12")
 }
 
