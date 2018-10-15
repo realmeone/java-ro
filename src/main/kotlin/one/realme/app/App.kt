@@ -15,20 +15,25 @@ object App {
     fun main(args: Array<String>) {
         Banner.printBanner()
         val stopwatch = Stopwatch.createStarted()
-        log.info("Starting ${App.javaClass.simpleName} on ${InetAddress.getLocalHost().hostName} with PID ${ManagementFactory.getRuntimeMXBean().name.split("@")[0]} started by ${System.getProperty("user.name")}")
+        log.info("Starting ${App.javaClass.simpleName} on ${InetAddress.getLocalHost().hostName} with PID ${ManagementFactory.getRuntimeMXBean().name.split("@")[0]} by ${System.getProperty("user.name")}")
 
         val services = mutableListOf(NetService)
         val serviceManager = ServiceManager(services)
+
+        Runtime.getRuntime().addShutdownHook(Thread {
+            stopwatch.reset()
+            log.info("Closing ${App.javaClass.simpleName} by ${System.getProperty("user.name")}")
+            stopwatch.start()
+            serviceManager.stopAsync().awaitStopped()
+            stopwatch.stop()
+            log.info("Closed ${App.javaClass.simpleName} in ${stopwatch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
+            log.info("See you next time. ")
+        })
+
         serviceManager.startAsync()
 
         stopwatch.stop()
         log.info("Started ${App.javaClass.simpleName} in ${stopwatch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
 
-        Runtime.getRuntime().addShutdownHook(Thread {
-            println("Realme one is closing...")
-            serviceManager.stopAsync()
-            println("Realme one is closed.")
-            println("See you next time. ")
-        })
     }
 }

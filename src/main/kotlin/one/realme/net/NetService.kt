@@ -30,9 +30,10 @@ object NetService : AbstractExecutionThreadService() {
         workerGroup = NioEventLoopGroup()
     }
 
-    override fun shutDown() {
-        workerGroup.shutdownGracefully()
-        bossGroup.shutdownGracefully()
+    override fun triggerShutdown() {
+        workerGroup.shutdownGracefully().await()
+        bossGroup.shutdownGracefully().await()
+        log.info("NetService stopped.")
     }
 
     override fun run() {
