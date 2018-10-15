@@ -1,6 +1,6 @@
 package one.realme.chain
 
-import one.realme.common.Digests
+import one.realme.crypto.Digests
 import java.util.ArrayList
 
 

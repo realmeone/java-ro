@@ -1,6 +1,7 @@
 package one.realme.crypto.secp256k1;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
@@ -56,17 +57,15 @@ class Signature {
         int b1 = 1 + 1 + vr + 1 + 1 + vs; // b1 = 1(0x02) +  1(b2) + vr + 1(0x02) + 1(b3) + vs
         int derLength = 1 + 1 + b1;  // derL = 1(0x30) + 1(b1) + b1L
 
-        byte[] data = new byte[derLength];
-        data[0] = 0x30;
-        data[1] = (byte) b1;
-        data[2] = 0x02;
-        data[3] = (byte) vr;
-        System.arraycopy(rBytes, 0, data, 4, vr);
-        data[4 + vr] = 0x02;
-        data[5 + vr] = (byte) vs;
-        System.arraycopy(sBytes, 0, data, 6 + vr, vs);
-
-        return data;
+        return ByteBuffer.allocate(derLength)
+                .put((byte) 0x30)
+                .put((byte) b1)
+                .put((byte) 0x02)
+                .put((byte) vr)
+                .put(rBytes)
+                .put((byte) 0x02)
+                .put((byte) vs)
+                .put(sBytes).array();
     }
 
     BigInteger r() {

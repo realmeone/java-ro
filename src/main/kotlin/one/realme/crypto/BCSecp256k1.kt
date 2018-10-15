@@ -1,6 +1,8 @@
 package one.realme.crypto
 
 import one.realme.crypto.encoding.Hex
+import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey
+import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey
 import org.bouncycastle.jce.ECNamedCurveTable
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.jce.spec.ECPrivateKeySpec
@@ -33,14 +35,11 @@ object BCSecp256k1 {
         val g = KeyPairGenerator.getInstance(ALG, ALG_PROVIDER)
         g.initialize(ecSpec, SecureRandom())
         val keyPair = g.generateKeyPair()
-        val privateKey = keyPair.private as ECPrivateKey
-        val publicKey = keyPair.public as ECPublicKey
+        val privateKey = keyPair.private as BCECPrivateKey
+        val publicKey = keyPair.public as BCECPublicKey
 
-        // gX, gY, s need fix to 64 size
-        val gX = adjustTo64(publicKey.w.affineX)
-        val gY = adjustTo64(publicKey.w.affineY)
-        val s = adjustTo64(privateKey.s)
-        return Pair(s, "04$gX$gY")
+        return Pair(Hex.encode(privateKey.s.toByteArray()),
+                Hex.encode(publicKey.q.getEncoded(false)))
     }
 
     fun computePublicKey(sec: String): String {

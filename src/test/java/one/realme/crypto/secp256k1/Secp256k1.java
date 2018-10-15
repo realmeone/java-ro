@@ -66,13 +66,10 @@ public final class Secp256k1 {
     public boolean verify(String hash, String signedData, String rawPublicKey) {
         try {
             // verify site
-            if (hash.length() != HASH_DATA_LENGTH)
-                throw new IllegalArgumentException("Not a valid data, have you passed sha256 hash data?");
+            if (hash.length() != HASH_DATA_LENGTH) throw new IllegalArgumentException("Not a valid data, have you passed sha256 hash data?");
             if (signedData.length() > 520) throw new IllegalArgumentException("Signed data is too big");
-            if (rawPublicKey.length() != RAW_PUBLIC_KEY_LENGTH)
-                throw new IllegalArgumentException("Public key is too big");
-            if (!rawPublicKey.startsWith(RAW_PUBLIC_KEY_PREFIX))
-                throw new IllegalArgumentException("Not a valid public key");
+            if (rawPublicKey.length() != RAW_PUBLIC_KEY_LENGTH) throw new IllegalArgumentException("Public key is too big");
+            if (!rawPublicKey.startsWith(RAW_PUBLIC_KEY_PREFIX)) throw new IllegalArgumentException("Not a valid public key");
 
             // decode data from hex
             BigInteger data = new BigInteger(hash, RADIX);

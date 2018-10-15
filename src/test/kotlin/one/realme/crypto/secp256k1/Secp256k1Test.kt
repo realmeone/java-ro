@@ -110,7 +110,7 @@ class Secp256k1Test {
         assertTrue(mySecp256k1.verify(data, signedData, pub))
 
         val bcSig = BCSecp256k1.sign(data, sec)
-        assertTrue(BCSecp256k1.verify(data, signedData, pub))
+        assertTrue(BCSecp256k1.verify(data, bcSig, pub))
     }
 
     @Test

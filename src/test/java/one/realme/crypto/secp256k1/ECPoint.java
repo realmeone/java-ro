@@ -49,7 +49,6 @@ public class ECPoint {
 
     public ECPoint multiply(BigInteger that) {
         BigInteger e = that;
-        assert e.compareTo(ZERO) > 0;
         final BigInteger e3 = THREE.multiply(e);
         final ECPoint negativeSelf = new ECPoint(this.curve, this.x, this.y.negate());
 
@@ -65,7 +64,7 @@ public class ECPoint {
             // if ( e3 & i ) == 0 and ( e & i ) != 0: result = result + negative_self
             if (e3.and(i).compareTo(ZERO) == 0 && e.and(i).compareTo(ZERO) != 0) result = result.add(negativeSelf);
             // i = i / 2
-            i = i.divide(TWO);
+            i = i.shiftRight(1);
         }
         return result;
     }

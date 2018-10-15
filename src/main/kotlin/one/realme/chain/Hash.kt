@@ -1,10 +1,8 @@
 package one.realme.chain
 
 import com.google.common.primitives.Ints
-import one.realme.common.Digests
-import one.realme.common.toHexString
 import one.realme.crypto.encoding.Hex
-import java.util.*
+import one.realme.crypto.toHexString
 
 /**
  * maybe hash32 is the right name?
