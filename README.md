@@ -13,4 +13,13 @@ Coming soon
 Because some heavy compute in Java are faster than Kotlin, like Hashing, Signature.
 so if there is a jar lib had such methods, we can do these in kotlin, else we use Java to implements.
 
-I am very expect on native kotlin release, at that time, we can use Kotlin to implements.    
+I am very expect on native kotlin release, at that time, we can use Kotlin to implements.
+
+
+## Todo
+* [] add conf feature
+* [] add protocol message structure
+* [] add store blocks feature
+* [] add p2p discover feature
+* [] add consensus alg DPOS feature 
+* [] ...

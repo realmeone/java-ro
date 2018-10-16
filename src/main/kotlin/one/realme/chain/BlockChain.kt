@@ -3,8 +3,8 @@ package one.realme.chain
 import java.util.*
 
 class BlockChain(
-    val genesisBlock: Block,
-    var tailBlock: Block = genesisBlock
+        val genesisBlock: Block,
+        var tailBlock: Block = genesisBlock
 ) {
     private val blocks = Vector<Block>()
     private val txPool = Vector<Transaction>()

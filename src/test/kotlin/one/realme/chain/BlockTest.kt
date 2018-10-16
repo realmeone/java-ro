@@ -1,17 +1,18 @@
 package one.realme.chain
 
+import one.realme.common.UnixTime
 import one.realme.common.Version
-import one.realme.common.toUnix
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.util.*
 
 class BlockTest {
 
     @Test
     fun testBlock() {
-        val b1 = Block(Version.CURRENT, 2, Hash.empty(), Date().toUnix())
-        val b2 = Block(Version.CURRENT, 2, b1.hash(), Date().toUnix())
+        val b1 = Block(Version.CURRENT, 1, Hash.empty(), UnixTime.now())
+        val b2 = Block(Version.CURRENT, 2, b1.hash(), UnixTime.now())
         assertEquals(b1.hash(), b2.header().prevBlockHash)
+        println(b1.hash())
+        println(b2.hash())
     }
 }

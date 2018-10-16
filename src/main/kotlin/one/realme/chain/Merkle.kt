@@ -40,8 +40,8 @@ object Merkle {
                 tempHashList.add(
                         Hash.fromBytes(
                                 Digests.sha256Twice(
-                                        result[i].asBytesLE(),
-                                        result[i + 1].asBytesLE()
+                                        result[i].toBytesLE(),
+                                        result[i + 1].toBytesLE()
                                 ).reversedArray()
                         )
                 )
@@ -52,8 +52,8 @@ object Merkle {
                 tempHashList.add(
                         Hash.fromBytes(
                                 Digests.sha256Twice(
-                                        result[result.size - 1].asBytesLE(),   // do not use result.last() replace
-                                        result[result.size - 1].asBytesLE()
+                                        result[result.size - 1].toBytesLE(),   // do not use result.last() replace
+                                        result[result.size - 1].toBytesLE()
                                 ).reversedArray()
                         )
                 )

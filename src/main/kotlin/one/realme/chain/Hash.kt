@@ -12,13 +12,13 @@ import one.realme.crypto.toHexString
  */
 class Hash private constructor(private val bytes: ByteArray) {
     fun bits(): Int = bytes.size * 8
-    fun asBytes(): ByteArray = bytes.clone()
-    fun asBytesLE(): ByteArray = bytes.reversedArray()
-    fun asInt(): Int = Ints.fromByteArray(bytes)
-    fun asIntLE(): Int = Ints.fromByteArray(bytes.reversedArray())
+    fun toBytes(): ByteArray = bytes.clone()
+    fun toBytesLE(): ByteArray = bytes.reversedArray()
+    fun toInt(): Int = Ints.fromByteArray(bytes)
+    fun toIntLE(): Int = Ints.fromByteArray(bytes.reversedArray())
 
-    override fun toString(): String = asBytes().toHexString()
-    override fun hashCode(): Int = asInt()
+    override fun toString(): String = toBytes().toHexString()
+    override fun hashCode(): Int = toInt()
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
