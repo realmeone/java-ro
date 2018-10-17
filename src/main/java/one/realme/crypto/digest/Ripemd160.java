@@ -4,7 +4,7 @@ package one.realme.crypto.digest;
  * ripemd 160 hash
  * <p>
  * Covert from bitcoin source hashBytes.h and hashBytes.cpp
- *
+ * <p>
  * and this is faster than BC implements, see the test
  */
 public final class Ripemd160 {
@@ -434,13 +434,11 @@ public final class Ripemd160 {
         int inOff = 0;
         int len = in.length;
 
-        // 处理整个字节
         int limit = ((len - i) & ~3) + i;
         for (; i < limit; i += 4) {
             processWord(in, inOff + i);
         }
 
-        // 处理剩余部分
         while (i < len) {
             xBuf[xBufOff++] = in[inOff + i++];
         }
@@ -449,9 +447,6 @@ public final class Ripemd160 {
 
         long bitLength = (byteCount << 3);
 
-        //
-        // 加入 pad bytes.
-        //
         update((byte) 128);
 
         while (xBufOff != 0) {
@@ -462,7 +457,6 @@ public final class Ripemd160 {
             processBlock();
         }
 
-        // 最后再来一次
         x[14] = (int) (bitLength & 0xffffffff);
         x[15] = (int) (bitLength >>> 32);
         processBlock();
