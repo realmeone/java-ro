@@ -1,7 +1,7 @@
 package one.realme.chain
 
 /**
- * todo read conifg for custom coin
+ * future: read conifg for custom coin
  * decimal?
  */
 class Coin private constructor(private val value: Long) : Comparable<Coin> {

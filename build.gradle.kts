@@ -25,7 +25,13 @@ dependencies {
     implementation("com.google.guava:guava:26.0-jre")
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation("org.bouncycastle:bcprov-jdk15on:1.60")
-    testImplementation("junit:junit:4.12")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1")
+
+    testImplementation("com.typesafe:config:1.3.3")
+    testImplementation("org.rocksdb:rocksdbjni:5.15.10")
 }
 
 configure<JavaPluginConvention> {
@@ -36,6 +42,13 @@ configure<JavaPluginConvention> {
 tasks {
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
+    }
+
+    withType<Test> {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
     }
 
     withType<Jar> {

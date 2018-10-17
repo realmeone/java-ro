@@ -2,8 +2,8 @@ package one.realme.chain
 
 import one.realme.common.UnixTime
 import one.realme.common.Version
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
 class BlockTest {
 

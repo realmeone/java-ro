@@ -1,9 +1,8 @@
 package one.realme.chain
 
 import one.realme.crypto.secp256k1.ECSecp256k1
-import org.junit.Assert.*
-import org.junit.Test
-import java.lang.IllegalArgumentException
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 
 /**
  *

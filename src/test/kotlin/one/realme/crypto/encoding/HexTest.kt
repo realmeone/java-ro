@@ -1,12 +1,10 @@
 package one.realme.crypto.encoding
 
 import com.google.common.base.Stopwatch
-import one.realme.crypto.digest.Ripemd160
-import one.realme.crypto.digest.inOneGo
-import org.bouncycastle.crypto.digests.RIPEMD160Digest
-import org.junit.Assert.*
-import org.junit.Test
-import java.lang.Exception
+import org.junit.jupiter.api.Assertions.assertArrayEquals
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.fail
 import java.util.concurrent.TimeUnit
 import java.util.stream.IntStream
 
@@ -42,7 +40,7 @@ class HexTest {
     }
 
     @Test
-    fun whoIsFaster() {
+    fun whoIsFasterEncode() {
         val raw = "foo".toByteArray()
 
         val round = 500000
@@ -87,19 +85,18 @@ class HexTest {
 
 
     @Test
-    fun testEncoding() {
+    fun testHexEncode() {
         for (it in cases)
             assertEquals(Hex.encode(it[0] as ByteArray).toUpperCase(), (it[1] as String).toUpperCase())
     }
 
     @Test
-    fun testDecoding() {
+    fun testHexDecode() {
         for (it in cases)
             try {
                 assertArrayEquals(it[0] as ByteArray, Hex.decode(it[1] as String))
             } catch (e: Exception) {
-                fail("${it[1]} decoded to ${it[0]} is failed")
-                e.printStackTrace()
+                fail("${it[1]} decoded to ${it[0]} is failed", e)
             }
     }
 }

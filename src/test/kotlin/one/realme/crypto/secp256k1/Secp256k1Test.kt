@@ -2,8 +2,9 @@ package one.realme.crypto.secp256k1
 
 import com.google.common.base.Stopwatch
 import one.realme.crypto.BCSecp256k1
-import org.junit.Assert.*
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.fail
 import java.util.concurrent.TimeUnit
 import java.util.stream.IntStream
 
@@ -491,7 +492,7 @@ class Secp256k1Test {
             try {
                 assertEquals(ecdsa.computePublicKey(it[0]).toUpperCase(), it[1].toUpperCase())
             } catch (e: Exception) {
-                fail("${it[0]}, ${it[1]} is fail")
+                fail("${it[0]}, ${it[1]} is fail", e)
             }
 
         for (it in cases)
