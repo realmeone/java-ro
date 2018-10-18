@@ -17,7 +17,7 @@ gradle.properties
 secret-keys.gpg
 **/*.log
 
-### macOS ###
+# macOS
 *.DS_Store
 .AppleDouble
 .LSOverride
@@ -25,9 +25,8 @@ secret-keys.gpg
 # Thumbnails
 ._*
 
-# Output
-# log
-logs/
-
-# chain data
+# App creates
 data/
+logs/
+caches/
+locales/

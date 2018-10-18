@@ -48,7 +48,7 @@ class Secp256k1Test {
         val mySecp256k1 = Secp256k1()
         val keyPair = ECSecp256k1.newKeyPair()
         val sec = keyPair.first
-        val ecPub = keyPair.second
+//        val ecPub = keyPair.second
 
         val round = 2000
         println("sign round : $round")
@@ -97,7 +97,7 @@ class Secp256k1Test {
 
         // sign with bc, verify with my
         val bcSig = BCSecp256k1.sign(data, sec)
-        val ecSig = ECSecp256k1.sign(data, sec)
+//        val ecSig = ECSecp256k1.sign(data, sec)
         assertTrue(mySecp256k1.verify(data, bcSig, myPub))
     }
 
