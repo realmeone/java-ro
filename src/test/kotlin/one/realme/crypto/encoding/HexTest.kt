@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
 import java.util.concurrent.TimeUnit
 import java.util.stream.IntStream
+import kotlin.system.measureTimeMillis
 
 /**
  * test cases from https://tools.ietf.org/html/rfc4648#page-10
@@ -21,22 +22,22 @@ class HexTest {
     fun whoIsFasterDecode() {
         val raw = "666f6f"
 
-        val round = 500000
+        val round = 5000001
         println("Hex decode round : $round")
-        val watch = Stopwatch.createStarted()
-        IntStream.range(0, round).parallel().forEach {
-            Hex.decode(raw)
-        }
-        watch.stop()
-        println("my use time : ${watch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
 
-        watch.reset()
-        watch.start()
-        IntStream.range(0, round).parallel().forEach {
-            org.bouncycastle.util.encoders.Hex.decode(raw)
+        val myTimeUsed = measureTimeMillis {
+            IntStream.range(0, round).parallel().forEach {
+                Hex.decode(raw)
+            }
         }
-        watch.stop()
-        println("BC use time : ${watch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
+        println("my use time : ${myTimeUsed / 1000.0} seconds")
+
+        val bcTimeUsed = measureTimeMillis {
+            IntStream.range(0, round).parallel().forEach {
+                org.bouncycastle.util.encoders.Hex.decode(raw)
+            }
+        }
+        println("BC use time : ${bcTimeUsed / 1000.0} seconds")
     }
 
     @Test
@@ -45,20 +46,19 @@ class HexTest {
 
         val round = 500000
         println("Hex round : $round")
-        val watch = Stopwatch.createStarted()
-        IntStream.range(0, round).parallel().forEach {
-            Hex.encode(raw)
+        val myTimeUsed = measureTimeMillis {
+            IntStream.range(0, round).parallel().forEach {
+                Hex.encode(raw)
+            }
         }
-        watch.stop()
-        println("my use time : ${watch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
+        println("my use time : ${myTimeUsed / 1000.0} seconds")
 
-        watch.reset()
-        watch.start()
-        IntStream.range(0, round).parallel().forEach {
-            org.bouncycastle.util.encoders.Hex.encode(raw)
+        val bcTimeUsed = measureTimeMillis {
+            IntStream.range(0, round).parallel().forEach {
+                org.bouncycastle.util.encoders.Hex.encode(raw)
+            }
         }
-        watch.stop()
-        println("BC use time : ${watch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
+        println("BC use time : ${bcTimeUsed / 1000.0} seconds")
     }
 
     private val cases = listOf(

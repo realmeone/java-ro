@@ -1,12 +1,11 @@
 package one.realme.crypto.secp256k1
 
-import com.google.common.base.Stopwatch
 import one.realme.crypto.BCSecp256k1
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
-import java.util.concurrent.TimeUnit
 import java.util.stream.IntStream
+import kotlin.system.measureTimeMillis
 
 
 /**
@@ -26,20 +25,19 @@ class Secp256k1Test {
 
         val round = 2000
         println("verify round : $round")
-        val watch = Stopwatch.createStarted()
-        IntStream.range(0, round).parallel().forEach {
-            mySecp256k1.verify(data, sig, pub)
+        val myTimeUsed = measureTimeMillis {
+            IntStream.range(0, round).parallel().forEach {
+                mySecp256k1.verify(data, sig, pub)
+            }
         }
-        watch.stop()
-        println("my use time : ${watch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
+        println("my use time : ${myTimeUsed / 1000.0} seconds")
 
-        watch.reset()
-        watch.start()
-        IntStream.range(0, round).parallel().forEach {
-            BCSecp256k1.verify(data, sig, pub)
+        val bcTimeUsed = measureTimeMillis {
+            IntStream.range(0, round).parallel().forEach {
+                BCSecp256k1.verify(data, sig, pub)
+            }
         }
-        watch.stop()
-        println("BC use time : ${watch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
+        println("BC use time : ${bcTimeUsed / 1000.0} seconds")
     }
 
     @Test
@@ -52,20 +50,19 @@ class Secp256k1Test {
 
         val round = 2000
         println("sign round : $round")
-        val watch = Stopwatch.createStarted()
-        IntStream.range(0, round).parallel().forEach {
-            mySecp256k1.sign(data, sec)
+        val myTimeUsed = measureTimeMillis {
+            IntStream.range(0, round).parallel().forEach {
+                mySecp256k1.sign(data, sec)
+            }
         }
-        watch.stop()
-        println("my use time : ${watch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
+        println("my use time : ${myTimeUsed / 1000.0} seconds")
 
-        watch.reset()
-        watch.start()
-        IntStream.range(0, round).parallel().forEach {
-            BCSecp256k1.sign(data, sec)
+        val bcTimeUsed = measureTimeMillis {
+            IntStream.range(0, round).parallel().forEach {
+                BCSecp256k1.sign(data, sec)
+            }
         }
-        watch.stop()
-        println("BC use time : ${watch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
+        println("BC use time : ${bcTimeUsed / 1000.0} seconds")
     }
 
     @Test

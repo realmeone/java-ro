@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.Coroutines
 
 plugins {
     base
@@ -19,19 +20,25 @@ application {
     mainClassName = "one.realme.app.App"
 }
 
+kotlin {
+    experimental.coroutines = Coroutines.ENABLE
+}
+
+
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+
     implementation("io.netty:netty-all:4.1.30.Final")
     implementation("com.google.guava:guava:26.0-jre")
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation("org.bouncycastle:bcprov-jdk15on:1.60")
-
+    
+    testImplementation("com.typesafe:config:1.3.3")
+    testImplementation("org.rocksdb:rocksdbjni:5.15.10")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:0.30.2")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1")
-
-    testImplementation("com.typesafe:config:1.3.3")
-    testImplementation("org.rocksdb:rocksdbjni:5.15.10")
 }
 
 configure<JavaPluginConvention> {

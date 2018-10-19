@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import java.util.concurrent.TimeUnit
 import java.util.stream.IntStream
+import kotlin.system.measureTimeMillis
 
 fun RIPEMD160Digest.inOneGo(input: ByteArray): ByteArray {
     val output = ByteArray(digestSize)
@@ -29,23 +30,22 @@ class Ripemd160Test {
     @Test
     fun whoIsFaster() {
         val raw = "abc".toByteArray()
-
         val round = 500000
         println("ripemd160 round : $round")
-        val watch = Stopwatch.createStarted()
-        IntStream.range(0, round).parallel().forEach {
-            Ripemd160().digest(raw)
-        }
-        watch.stop()
-        println("my use time : ${watch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
 
-        watch.reset()
-        watch.start()
-        IntStream.range(0, round).parallel().forEach {
-            RIPEMD160Digest().inOneGo(raw)
+        val myTimeUsed = measureTimeMillis {
+            IntStream.range(0, round).parallel().forEach {
+                Ripemd160().digest(raw)
+            }
         }
-        watch.stop()
-        println("BC use time : ${watch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
+        println("my use time : ${myTimeUsed / 1000.0} seconds")
+
+        val bcTimeUsed = measureTimeMillis {
+            IntStream.range(0, round).parallel().forEach {
+                RIPEMD160Digest().inOneGo(raw)
+            }
+        }
+        println("BC use time : ${bcTimeUsed / 1000.0} seconds")
     }
 
     @Test
