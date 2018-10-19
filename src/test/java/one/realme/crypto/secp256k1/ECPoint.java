@@ -2,10 +2,7 @@ package one.realme.crypto.secp256k1;
 
 import java.math.BigInteger;
 
-import static one.realme.crypto.secp256k1.Secp256k1.THREE;
-import static one.realme.crypto.secp256k1.Secp256k1.TWO;
-import static one.realme.crypto.secp256k1.Secp256k1.ONE;
-import static one.realme.crypto.secp256k1.Secp256k1.ZERO;
+import static one.realme.crypto.secp256k1.Secp256k1.*;
 
 public class ECPoint {
     private CurveFp curve;

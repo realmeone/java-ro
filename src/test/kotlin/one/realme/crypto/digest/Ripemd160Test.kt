@@ -1,13 +1,9 @@
 package one.realme.crypto.digest
 
-import com.google.common.base.Stopwatch
 import one.realme.crypto.encoding.Hex
 import org.bouncycastle.crypto.digests.RIPEMD160Digest
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.CsvSource
-import java.util.concurrent.TimeUnit
 import java.util.stream.IntStream
 import kotlin.system.measureTimeMillis
 
