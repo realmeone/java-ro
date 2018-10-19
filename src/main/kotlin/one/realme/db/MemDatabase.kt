@@ -1,5 +1,6 @@
 package one.realme.db
 
+import org.rocksdb.RocksDB
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
@@ -26,10 +27,11 @@ class MemDatabase : Database {
             }
 
 
-    override fun close() =
+    override fun close() {}
+
+    override fun destroy() =
             lock.withLock {
                 db.clear()
             }
-
 
 }

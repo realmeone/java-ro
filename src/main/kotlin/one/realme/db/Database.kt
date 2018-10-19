@@ -6,4 +6,5 @@ interface Database {
     fun has(key: ByteArray): Boolean
     fun delete(key: ByteArray)
     fun close()
+    fun destroy()
 }

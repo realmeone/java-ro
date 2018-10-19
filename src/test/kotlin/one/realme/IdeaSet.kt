@@ -12,9 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
-import org.rocksdb.Options
-import org.rocksdb.RocksDB
-import org.rocksdb.RocksDBException
+import org.rocksdb.*
 import java.io.File
 import kotlin.system.measureTimeMillis
 
@@ -144,30 +142,5 @@ class IdeaSet {
     private suspend fun printWorld(no: Int) {
         delay(1000)
         println("world from no $no!!")
-    }
-
-    @Test
-    fun testRocksDb() {
-        val chain = "data/chain"
-        val nodes = "data/nodes"
-        val options = Options()
-        options.setCreateIfMissing(true)
-
-        try {
-            Files.createParentDirs(File(chain))
-            val chainDb = RocksDB.open(options, chain)
-            val nodesDb = RocksDB.open(options, nodes)
-            chainDb.put("1".toByteArray(), "test".toByteArray())
-            nodesDb.put("1".toByteArray(), "test".toByteArray())
-            nodesDb.put("1".toByteArray(), "test".toByteArray())
-            chainDb.close()
-            nodesDb.close()
-        } catch (e: RocksDBException) {
-            fail { "Caught the expected exception -- ${e.message}" }
-        } finally {
-            RocksDB.destroyDB(chain, options)
-            RocksDB.destroyDB(nodes, options)
-        }
-
     }
 }
