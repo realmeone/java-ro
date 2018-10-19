@@ -1,7 +1,10 @@
 package one.realme.db
 
+import org.rocksdb.CompactionStyle
+import org.rocksdb.CompressionType
 import org.rocksdb.Options
 import org.rocksdb.RocksDB
+import org.rocksdb.util.SizeUnit
 import java.io.File
 
 class RocksDatabase(private val dbPath: String) : Database {
@@ -16,6 +19,9 @@ class RocksDatabase(private val dbPath: String) : Database {
     init {
         File(dbPath).mkdirs()
         val options = Options().setCreateIfMissing(true)
+                .setWriteBufferSize(8 * SizeUnit.KB)
+                .setMaxWriteBufferNumber(3)
+                .setMaxBackgroundCompactions(10)
         db = RocksDB.open(options, dbPath)
     }
 
