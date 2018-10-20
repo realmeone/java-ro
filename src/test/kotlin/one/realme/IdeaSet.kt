@@ -1,6 +1,5 @@
 package one.realme
 
-import com.google.common.io.Files
 import com.typesafe.config.ConfigFactory
 import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.channels.Channel
@@ -9,19 +8,12 @@ import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.channels.produce
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.fail
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
-import org.rocksdb.*
-import java.io.File
 import kotlin.system.measureTimeMillis
 
 
 class IdeaSet {
-    init {
-        RocksDB.loadLibrary()
-    }
-
     @ParameterizedTest
     @CsvSource(
             "mainnet.conf, mainnet, 50505",

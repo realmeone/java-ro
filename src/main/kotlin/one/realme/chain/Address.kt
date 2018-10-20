@@ -11,7 +11,7 @@ import java.util.*
 
 /**
  *
- * base58(prefix + base58(ripemd160(sha256(pubkey))) + String(sha256twice(version + data), 0, 4)
+ * base58(prefix + base58(ripemd160(sha256(pubkey))) + String(sha256twice(CURRENT_VERSION + data), 0, 4)
  *
  * only support p2pkh & p2sh
  */

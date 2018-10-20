@@ -10,7 +10,7 @@ class RocksDatabaseTest {
     private val key = "key".toByteArray()
     private val fakeKey = "fake".toByteArray()
     private val value = "value".toByteArray()
-    private val rounds = 200000
+    private val rounds = 300000
 
     @Test
     fun testConcurrentPut() = runBlocking {
