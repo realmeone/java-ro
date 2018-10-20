@@ -29,9 +29,11 @@ class Address {
         bytes = addr + checksum
     }
 
+    fun toHash160(): String = Hex.encode(bytes.copyOfRange(1, 21))
+    fun toBytes(): ByteArray = bytes.clone()
+    fun toBytesLE(): ByteArray = bytes.reversedArray()
+    
     override fun toString(): String = Base58.encode(bytes)
-
-    fun hash160(): String = Hex.encode(bytes.copyOfRange(1, 21))
 
     fun isValid(): Boolean {
         val checksum = bytes.copyOfRange(21, bytes.size)
@@ -39,4 +41,6 @@ class Address {
         val toVerify = addr.sha256Twice().copyOf(4)
         return checksum.contentEquals(toVerify)
     }
+
+
 }

@@ -34,7 +34,7 @@ class AddressTest {
         for (case in cases) {
             val addr = Address(case[0])
             assertTrue(addr.isValid())
-            assertEquals(case[1], addr.hash160())
+            assertEquals(case[1], addr.toHash160())
         }
     }
 
