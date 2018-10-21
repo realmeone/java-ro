@@ -12,8 +12,6 @@ import java.util.*
 /**
  *
  * base58(prefix + base58(ripemd160(sha256(pubkey))) + String(sha256twice(CURRENT_VERSION + data), 0, 4)
- *
- * only support p2pkh & p2sh
  */
 class Address {
     private val bytes: ByteArray
@@ -32,7 +30,7 @@ class Address {
     fun toHash160(): String = Hex.encode(bytes.copyOfRange(1, 21))
     fun toBytes(): ByteArray = bytes.clone()
     fun toBytesLE(): ByteArray = bytes.reversedArray()
-    
+
     override fun toString(): String = Base58.encode(bytes)
 
     fun isValid(): Boolean {

@@ -1,16 +1,17 @@
 package one.realme.chain
 
 import one.realme.common.UnixTime
+import one.realme.common.Version
 import one.realme.common.toBytesLE
 import one.realme.crypto.sha256Twice
 import java.nio.ByteBuffer
 import java.util.*
 
 class Block(
-        val version: Int,
-        val height: Long,
-        val prevBlockHash: Hash,
-        val timestamp: UnixTime
+        val version: Int = Version.CURRENT,
+        val height: Long = -1,
+        val prevBlockHash: Hash = Hash.empty(),
+        val timestamp: UnixTime = UnixTime.now()
 ) {
     private val transactions = Vector<Transaction>()
     private var merkleRootHash: Hash = Hash.empty()
