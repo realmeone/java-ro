@@ -32,4 +32,10 @@ class Transaction(
                 .put(payload)  // calculate
         return Hash.fromBytes(buffer.array().sha256Twice())
     }
+
+    override fun toString(): String {
+        return "Transaction(from=$from, to=$to, amount=$amount, timestamp=$timestamp, nVersion=$nVersion)"
+    }
+
+
 }

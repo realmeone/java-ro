@@ -1,5 +1,6 @@
 package one.realme.app
 
+import com.github.ajalt.mordant.TermColors
 import one.realme.common.Version
 
 object Banner {
@@ -28,7 +29,9 @@ object Banner {
         while (padding.length < gap) {
             padding.append(" ")
         }
-        println("$slogan$padding$version")
+        with(TermColors()) {
+            println((brightBlue)("$slogan$padding$version"))
+        }
         println()
     }
 }

@@ -11,6 +11,7 @@ class TransactionTest {
         val txCb = Transaction.coinbase(to)
         println(txCb)
         println(txCb.hash())
+        assertEquals(Coin.BASE_REWARD, txCb.amount)
         assertEquals(32, txCb.hash().toBytes().size)
     }
 

@@ -33,6 +33,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation("org.bouncycastle:bcprov-jdk15on:1.60")
     implementation("org.rocksdb:rocksdbjni:5.15.10")
+    implementation("com.github.ajalt:clikt:1.5.0")
+    implementation("com.github.ajalt:mordant:1.2.0")
 
     testImplementation("com.typesafe:config:1.3.3")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:0.30.2")

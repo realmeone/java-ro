@@ -22,6 +22,11 @@ class Coin private constructor(private val value: Long) : Comparable<Coin> {
         return this.value.compareTo(other.value)
     }
 
+    override fun toString(): String {
+        return "Coin(value=$value)"
+    }
+
+
     companion object {
         const val DECIMAL = 8
 
