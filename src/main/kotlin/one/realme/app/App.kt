@@ -4,17 +4,21 @@ import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.options.versionOption
 import one.realme.app.cmd.AddressCmd
 import one.realme.app.cmd.RoCmd
-import org.slf4j.LoggerFactory
+import one.realme.app.cmd.address.CreateCmd
+import one.realme.app.cmd.address.ListCmd
 
 object App {
-    val log = LoggerFactory.getLogger(App.javaClass)!!
 
     @JvmStatic
     fun main(args: Array<String>) {
         // parse args
-        RoCmd()
-                .versionOption("1", message = { "Realme.One version $it" })
-                .subcommands(AddressCmd())
+        RoCmd.versionOption("1", message = { "Realme.One version $it" })
+                .subcommands(
+                        AddressCmd.subcommands(
+                                CreateCmd,
+                                ListCmd
+                        )
+                )
                 .main(args)
     }
 }
