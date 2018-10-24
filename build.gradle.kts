@@ -5,11 +5,12 @@ plugins {
     base
     java
     application
+    id("com.google.protobuf") version "0.8.6"
     kotlin("jvm") version "1.2.71"
 }
 
 repositories {
-    maven { setUrl("http://dl.bintray.com/kotlin/kotlin-eap") }
+    maven("http://dl.bintray.com/kotlin/kotlin-eap")
     mavenCentral()
     jcenter()
 }
@@ -35,6 +36,7 @@ dependencies {
     implementation("org.rocksdb:rocksdbjni:5.15.10")
     implementation("com.github.ajalt:clikt:1.5.0")
     implementation("com.github.ajalt:mordant:1.2.0")
+    implementation("com.google.protobuf:protobuf-java:3.6.1")
 
     testImplementation("com.typesafe:config:1.3.3")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:0.30.2")
@@ -49,6 +51,7 @@ configure<JavaPluginConvention> {
 }
 
 tasks {
+    // todo generate proto by us or protobuf gradle plugin?
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
     }
@@ -67,4 +70,9 @@ tasks {
         }
         from(configurations.runtime.map { if (it.isDirectory) it else zipTree(it) })
     }
+}
+
+protobuf {
+    protobuf
+
 }
