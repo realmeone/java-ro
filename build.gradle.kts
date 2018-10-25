@@ -28,14 +28,6 @@ application {
     mainClassName = "one.realme.krot.app.Krot"
 }
 
-idea {
-    // avoid idea build into "out" dirs
-    module {
-        outputDir = file("$buildDir/classes/java/main")
-        testOutputDir = file("$buildDir/classes/java/test")
-    }
-}
-
 protobuf {
     protobuf.generatedFilesBaseDir = "src"
     protobuf.protoc(closureOf<ExecutableLocator> {
@@ -83,5 +75,10 @@ tasks {
             attributes["Main-Class"] = application.mainClassName
         }
         from(configurations.runtime.map { if (it.isDirectory) it else zipTree(it) })
+    }
+
+    withType<Tar> {
+        compression = Compression.GZIP
+        extension = "tar.gz"
     }
 }
