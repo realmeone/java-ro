@@ -1,3 +1,4 @@
+import com.google.protobuf.gradle.ExecutableLocator
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 
@@ -5,6 +6,7 @@ plugins {
     base
     java
     application
+    idea
     id("com.google.protobuf") version "0.8.6"
     kotlin("jvm") version "1.2.71"
 }
@@ -15,16 +17,35 @@ repositories {
     jcenter()
 }
 
+idea {
+    // avoid idea build into "out" dirs
+    module {
+        outputDir = file("$buildDir/classes/java/main")
+        testOutputDir = file("$buildDir/classes/java/test")
+    }
+}
+
 application {
     group = "one.realme"
     version = "0.1.0"
     mainClassName = "one.realme.app.App"
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 kotlin {
     experimental.coroutines = Coroutines.ENABLE
 }
 
+protobuf {
+    protobuf.generatedFilesBaseDir = "src"
+    protobuf.protoc(closureOf<ExecutableLocator> {
+        artifact = "com.google.protobuf:protoc:3.6.1"
+    })
+}
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
@@ -43,11 +64,6 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1")
-}
-
-configure<JavaPluginConvention> {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 tasks {
@@ -70,9 +86,4 @@ tasks {
         }
         from(configurations.runtime.map { if (it.isDirectory) it else zipTree(it) })
     }
-}
-
-protobuf {
-    protobuf
-
 }
