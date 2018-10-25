@@ -1,19 +1,32 @@
-# Java-RO
+# Krot
 
-It is named Java-RO, but actually it is kotlin based, so whatever, jvm family.
 
-It is a blockchain product. follow my interest.OK, not just interest.
-RO is short name of realme.one project, it is for identity. 
+~~It is named Java-RO, but actually it is kotlin based, so whatever, jvm family.~~
+
+It is named Krot, first word of kotlin & realme.one tech
 
 ## Install
 
 Coming soon
 
+## Build & Assemble
+
+run ./gradlew assemble
+
+## Tech Stack
+* Java 1.8+
+* Kotlin 1.2.71+
+* Guava 26.0-jre
+* rocksdb 5.15.10
+* protobuf-java 3.6.1
+* nettty 4.1.30
+* junit 5.3.1
+
 ## Why not all in Kotlin?
-Because some heavy compute in Java are faster than Kotlin, like Hashing, Signature.
+Because some heavy compute in Java are faster than Kotlin, like Hashing, Bytes Ops.
 so if there is a jar lib had such methods, we can do these in kotlin, else we use Java to implements.
 
-I am very expect on native kotlin release, at that time, we can use Kotlin to implements.
+I am very expect on native kotlin, when it release, we can use pure Kotlin to implements all.
 
 ## cmd
 

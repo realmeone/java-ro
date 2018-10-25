@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option java_package = "one.realme.net.protos";
+option java_package = "one.realme.krot.net.protos";
 option java_outer_classname = "Protocol";
 
 message Block {

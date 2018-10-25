@@ -2,6 +2,12 @@ import com.google.protobuf.gradle.ExecutableLocator
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 
+repositories {
+    maven("http://dl.bintray.com/kotlin/kotlin-eap")
+    mavenCentral()
+    jcenter()
+}
+
 plugins {
     base
     java
@@ -11,10 +17,19 @@ plugins {
     kotlin("jvm") version "1.2.71"
 }
 
-repositories {
-    maven("http://dl.bintray.com/kotlin/kotlin-eap")
-    mavenCentral()
-    jcenter()
+base {
+    archivesBaseName = "krot" // also set to project.name
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+application {
+    group = "one.realme.krot"
+    version = "0.1.0"
+    mainClassName = "one.realme.krot.app.Krot"
 }
 
 idea {
@@ -25,26 +40,15 @@ idea {
     }
 }
 
-application {
-    group = "one.realme"
-    version = "0.1.0"
-    mainClassName = "one.realme.app.App"
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-kotlin {
-    experimental.coroutines = Coroutines.ENABLE
-}
-
 protobuf {
     protobuf.generatedFilesBaseDir = "src"
     protobuf.protoc(closureOf<ExecutableLocator> {
         artifact = "com.google.protobuf:protoc:3.6.1"
     })
+}
+
+kotlin {
+    experimental.coroutines = Coroutines.ENABLE
 }
 
 dependencies {
@@ -67,7 +71,6 @@ dependencies {
 }
 
 tasks {
-    // todo generate proto by us or protobuf gradle plugin?
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
     }
@@ -80,10 +83,18 @@ tasks {
     }
 
     withType<Jar> {
-        baseName = "realme_one"
+        baseName = base.archivesBaseName
         manifest {
             attributes["Main-Class"] = application.mainClassName
         }
         from(configurations.runtime.map { if (it.isDirectory) it else zipTree(it) })
+    }
+
+    withType<Tar> {
+        baseName = base.archivesBaseName
+    }
+
+    withType<Zip> {
+        baseName = base.archivesBaseName
     }
 }
