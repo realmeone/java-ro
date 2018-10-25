@@ -32,7 +32,7 @@ I am very expect on native kotlin, when it release, we can use pure Kotlin to im
 
 ### address
 ```shell
-$ ro address <command> [options...] [arguments...]
+$ krot address <command> [options...] [arguments...]
 ```
 ```shell
 COMMANDS:

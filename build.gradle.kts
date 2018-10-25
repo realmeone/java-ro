@@ -17,10 +17,6 @@ plugins {
     kotlin("jvm") version "1.2.71"
 }
 
-base {
-    archivesBaseName = "krot" // also set to project.name
-}
-
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
@@ -83,18 +79,9 @@ tasks {
     }
 
     withType<Jar> {
-        baseName = base.archivesBaseName
         manifest {
             attributes["Main-Class"] = application.mainClassName
         }
         from(configurations.runtime.map { if (it.isDirectory) it else zipTree(it) })
-    }
-
-    withType<Tar> {
-        baseName = base.archivesBaseName
-    }
-
-    withType<Zip> {
-        baseName = base.archivesBaseName
     }
 }
