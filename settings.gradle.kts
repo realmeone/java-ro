@@ -1,1 +1,1 @@
-rootProject.name = "java-ro"
+rootProject.name = "krot"
