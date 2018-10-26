@@ -8,7 +8,11 @@ import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender
+import io.netty.handler.logging.LoggingHandler
+import io.netty.handler.timeout.ReadTimeoutHandler
 import org.slf4j.LoggerFactory
+import java.util.concurrent.TimeUnit
 
 /**
  * NetService Service
@@ -39,19 +43,28 @@ object NetService : AbstractExecutionThreadService() {
 
     override fun run() {
         val server = ServerBootstrap()
-        server.group(bossGroup, workerGroup)
-                .channel(NioServerSocketChannel::class.java)
-                .childHandler(object : ChannelInitializer<SocketChannel>() {
-                    override fun initChannel(ch: SocketChannel) {
-                        ch.pipeline().addLast(ProtobufVarint32FrameDecoder())
-                    }
-                })
-                .option(ChannelOption.SO_BACKLOG, maxPeer)
-                .childOption(ChannelOption.SO_KEEPALIVE, true)
 
+        server.group(bossGroup, workerGroup)
+        server.channel(NioServerSocketChannel::class.java)
+        server.option(ChannelOption.SO_BACKLOG, maxPeer)
+        server.handler(LoggingHandler())
+
+        server.childHandler(object : ChannelInitializer<SocketChannel>() {
+            override fun initChannel(ch: SocketChannel) {
+                ch.pipeline().addLast(ReadTimeoutHandler(60, TimeUnit.SECONDS))
+                ch.pipeline().addLast(ProtobufVarint32LengthFieldPrepender()) // out
+                ch.pipeline().addLast(ProtobufVarint32FrameDecoder()) // in
+
+                ch.pipeline().addLast(MessageHandler()) // handle in
+            }
+        })
+        server.childOption(ChannelOption.SO_KEEPALIVE, true)
         server.bind(port).sync().addListener {
             if (it.isSuccess)
                 log.info("NetService started on port: $port")
-        }.channel().closeFuture().sync()
+        }.channel().closeFuture().sync().addListener {
+            if (it.isSuccess)
+                log.info("")
+        }
     }
 }

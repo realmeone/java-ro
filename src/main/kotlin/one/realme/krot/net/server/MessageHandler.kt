@@ -2,12 +2,21 @@ package one.realme.krot.net.server
 
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
-import io.netty.channel.ChannelInboundHandlerAdapter
+import io.netty.channel.SimpleChannelInboundHandler
 import one.realme.krot.common.UnixTime
+import one.realme.krot.net.message.Message
 import org.slf4j.LoggerFactory
 
-class ByteInHandler : ChannelInboundHandlerAdapter() {
-    private val log = LoggerFactory.getLogger(ByteInHandler::class.java)
+class MessageHandler : SimpleChannelInboundHandler<Message>() {
+    private val log = LoggerFactory.getLogger(MessageHandler::class.java)
+
+    override fun channelRead0(ctx: ChannelHandlerContext, msg: Message) {
+
+    }
+
+    override fun channelInactive(ctx: ChannelHandlerContext) {
+        log.info("Peer ${ctx.channel().remoteAddress()} is disconnected.")
+    }
 
     override fun channelActive(ctx: ChannelHandlerContext) {
         log.info("Peer ${ctx.channel().remoteAddress()} is connected.")
