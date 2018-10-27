@@ -7,19 +7,17 @@ import io.netty.channel.ChannelOption
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
-import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder
-import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender
 import io.netty.handler.logging.LoggingHandler
 import io.netty.handler.timeout.ReadTimeoutHandler
+import one.realme.krot.net.message.MessageDecoder
+import one.realme.krot.net.message.MessageEncoder
 import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit
 
 /**
  * NetService Service
  *
- * Remote Peer will connect to this NetService and exchange data
- *
- * use vert.x replaced later?
+ * Remote Peer will connect to this NetService and exchange payload
  */
 object NetService : AbstractExecutionThreadService() {
     private val log = LoggerFactory.getLogger(NetService.javaClass)
@@ -52,10 +50,9 @@ object NetService : AbstractExecutionThreadService() {
         server.childHandler(object : ChannelInitializer<SocketChannel>() {
             override fun initChannel(ch: SocketChannel) {
                 ch.pipeline().addLast(ReadTimeoutHandler(60, TimeUnit.SECONDS))
-                ch.pipeline().addLast(ProtobufVarint32LengthFieldPrepender()) // out
-                ch.pipeline().addLast(ProtobufVarint32FrameDecoder()) // in
-
-                ch.pipeline().addLast(MessageHandler()) // handle in
+                ch.pipeline().addLast(MessageEncoder())
+                ch.pipeline().addLast(MessageDecoder())
+                ch.pipeline().addLast(MessageHandler())
             }
         })
         server.childOption(ChannelOption.SO_KEEPALIVE, true)
@@ -64,7 +61,7 @@ object NetService : AbstractExecutionThreadService() {
                 log.info("NetService started on port: $port")
         }.channel().closeFuture().sync().addListener {
             if (it.isSuccess)
-                log.info("")
+                log.info("NetService stopped")
         }
     }
 }
