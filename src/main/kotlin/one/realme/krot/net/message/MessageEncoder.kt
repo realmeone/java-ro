@@ -6,7 +6,6 @@ import io.netty.handler.codec.MessageToByteEncoder
 
 class MessageEncoder : MessageToByteEncoder<Message>() {
     override fun encode(ctx: ChannelHandlerContext, msg: Message, out: ByteBuf) {
-        println("encode $msg to bytes")
         out.writeBytes(msg.payload)
     }
 }

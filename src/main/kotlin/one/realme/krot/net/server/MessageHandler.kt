@@ -16,13 +16,13 @@ class MessageHandler : SimpleChannelInboundHandler<Message>() {
         log.info("received from ${ctx.channel().remoteAddress()} : [$cmd]")
         when (cmd) {
             "ping" -> {
-                val pong = "pong".toByteArray()
-                ctx.writeAndFlush(Message(pong))
+                ctx.writeAndFlush(Message("pong".toByteArray()))
             }
             "time" -> {
-                val time = ctx.alloc().buffer(8)
-                time.writeInt(UnixTime.now().toInt())
-                ctx.writeAndFlush(Message(time.array()))
+                ctx.writeAndFlush(Message(UnixTime.now().toString().toByteArray()))
+            }
+            "exit" -> {
+                ctx.close()
             }
             else -> ctx.close()
         }
@@ -38,7 +38,6 @@ class MessageHandler : SimpleChannelInboundHandler<Message>() {
     }
 
     override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) {
-        cause.printStackTrace()
         // if timeout send timeout
         when (cause) {
             is ReadTimeoutException -> {
@@ -54,7 +53,6 @@ class MessageHandler : SimpleChannelInboundHandler<Message>() {
                 log.info("an unknown error out from ${ctx.channel().remoteAddress()}", cause)
             }
         }
-
         ctx.close()
     }
 }

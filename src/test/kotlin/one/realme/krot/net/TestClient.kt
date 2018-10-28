@@ -6,8 +6,10 @@ import io.netty.channel.*
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioSocketChannel
+import io.netty.handler.logging.LoggingHandler
 import one.realme.krot.net.message.Message
 import one.realme.krot.net.message.MessageDecoder
+import one.realme.krot.net.message.MessageEncoder
 import one.realme.krot.net.server.NetService
 import org.slf4j.LoggerFactory
 import java.util.concurrent.Executors
@@ -17,8 +19,21 @@ class In : SimpleChannelInboundHandler<Message>() {
     private val log = LoggerFactory.getLogger(In::class.java)
 
     override fun channelRead0(ctx: ChannelHandlerContext, msg: Message) {
-        log.info("read msg $msg")
-        ctx.writeAndFlush(Message("ping".toByteArray()))
+        log.info("read from msg $msg")
+        when (msg.toString()) {
+            "hello" -> {
+                ctx.writeAndFlush(Message("ping".toByteArray()))
+                        .addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE)
+            }
+            "pong" -> {
+                ctx.writeAndFlush(Message("time".toByteArray()))
+                        .addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE)
+            }
+            else -> {
+                ctx.writeAndFlush(Message("exit".toByteArray()))
+            }
+        }
+
     }
 
     override fun channelActive(ctx: ChannelHandlerContext) {
@@ -46,6 +61,8 @@ class TestClient {
         b.option(ChannelOption.SO_KEEPALIVE, true)
         b.handler(object : ChannelInitializer<SocketChannel>() {
             override fun initChannel(ch: SocketChannel) {
+                ch.pipeline().addLast(LoggingHandler())
+                ch.pipeline().addLast(MessageEncoder())
                 ch.pipeline().addLast(MessageDecoder())
                 ch.pipeline().addLast(In())
             }
