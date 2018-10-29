@@ -16,7 +16,7 @@ object Banner {
             "| | \\ \\|  __/| (_| || || | | | | ||  __/",
             "|_|  \\_\\\\___| \\__,_||_||_| |_| |_| \\___|",
             "========================================")
-    private const val slogan = " :: Realme One :: "
+    private const val slogan = " :: realme.one krot :: "
     private const val strapLineSize = 40
 
     fun printBanner() {

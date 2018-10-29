@@ -4,33 +4,33 @@ import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
-import one.realme.krot.common.UnixTime
+import one.realme.krot.net.message.Command
 import one.realme.krot.net.message.Message
+import one.realme.krot.net.message.PongMessage
 import org.slf4j.LoggerFactory
 
 class MessageHandler : SimpleChannelInboundHandler<Message>() {
     private val log = LoggerFactory.getLogger(MessageHandler::class.java)
 
     override fun channelRead0(ctx: ChannelHandlerContext, msg: Message) {
-        val cmd = String(msg.payload)
-        log.info("received from ${ctx.channel().remoteAddress()} : [$cmd]")
-        when (cmd) {
-            "ping" -> {
-                ctx.writeAndFlush(Message("pong".toByteArray()))
+        log.info("received from ${ctx.channel().remoteAddress()} : [$msg]")
+        when (msg.command) {
+            Command.ping() -> {
+                ctx.writeAndFlush(PongMessage())
             }
-            "time" -> {
-                ctx.writeAndFlush(Message(UnixTime.now().toString().toByteArray()))
-            }
-            "exit" -> {
-                ctx.close()
-            }
+//            "time" -> {
+//                ctx.writeAndFlush(Message(UnixTime.now().toString().toByteArray()))
+//            }
+//            "exit" -> {
+//                ctx.close()
+//            }
             else -> ctx.close()
         }
     }
 
     override fun channelActive(ctx: ChannelHandlerContext) {
         log.info("Peer ${ctx.channel().remoteAddress()} is connected.")
-        ctx.writeAndFlush(Message("hello".toByteArray()))
+//        ctx.writeAndFlush(Message("hello".toByteArray()))
     }
 
     override fun channelInactive(ctx: ChannelHandlerContext) {

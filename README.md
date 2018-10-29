@@ -28,7 +28,7 @@ so if there is a jar lib had such methods, we can do these in kotlin, else we us
 
 I am very expect on native kotlin, when it release, we can use pure Kotlin to implements all.
 
-## cmd
+## Cmd
 
 ### address
 ```shell
@@ -42,9 +42,10 @@ COMMANDS:
      import  Import a private key
 ```
 ## Todo
-* [] add conf feature
-* [] add protocol message structure
-* [] add store blocks feature
-* [] add p2p discover feature
-* [] add consensus alg DPOS feature 
-* [] ...
+* [ ] add conf feature
+* [ ] add store blocks feature
+* [ ] add p2p discover feature
+* [ ] add consensus alg DPOS feature 
+* [ ] ...
+
+## Docs

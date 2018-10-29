@@ -7,6 +7,7 @@ import one.realme.krot.app.cmd.AddressCmd
 import one.realme.krot.app.cmd.KrotCmd
 import one.realme.krot.app.cmd.address.CreateCmd
 import one.realme.krot.app.cmd.address.ListCmd
+import one.realme.krot.common.Version
 import one.realme.krot.net.client.DiscoverService
 import one.realme.krot.net.server.NetService
 import org.slf4j.LoggerFactory
@@ -49,7 +50,7 @@ object Krot {
     @JvmStatic
     fun main(args: Array<String>) {
         // parse args
-        KrotCmd.versionOption("1", message = { "Realme.One version $it" })
+        KrotCmd.versionOption(Version.CURRENT.toString(), message = { "Realme.One version $it" })
                 .subcommands(
                         AddressCmd.subcommands(
                                 CreateCmd,

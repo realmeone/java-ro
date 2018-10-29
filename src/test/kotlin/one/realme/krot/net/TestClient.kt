@@ -7,12 +7,8 @@ import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioSocketChannel
 import io.netty.handler.logging.LoggingHandler
-import one.realme.krot.net.message.Message
-import one.realme.krot.net.message.MessageDecoder
-import one.realme.krot.net.message.MessageEncoder
-import one.realme.krot.net.server.NetService
+import one.realme.krot.net.message.*
 import org.slf4j.LoggerFactory
-import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 class In : SimpleChannelInboundHandler<Message>() {
@@ -20,17 +16,20 @@ class In : SimpleChannelInboundHandler<Message>() {
 
     override fun channelRead0(ctx: ChannelHandlerContext, msg: Message) {
         log.info("read from msg $msg")
-        when (msg.toString()) {
-            "hello" -> {
-                ctx.writeAndFlush(Message("ping".toByteArray()))
-                        .addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE)
-            }
-            "pong" -> {
-                ctx.writeAndFlush(Message("time".toByteArray()))
-                        .addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE)
+        when (msg.command) {
+//            "hello" -> {
+//                ctx.writeAndFlush(Message("ping".toByteArray()))
+//                        .addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE)
+//            }
+            Command.pong() -> {
+                println("bye")
+                ctx.close()
+//                ctx.writeAndFlush(Message("time".toByteArray()))
+//                        .addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE)
             }
             else -> {
-                ctx.writeAndFlush(Message("exit".toByteArray()))
+//                ctx.writeAndFlush(Message("exit".toByteArray()))
+                println("heeeeee")
             }
         }
 
@@ -38,6 +37,8 @@ class In : SimpleChannelInboundHandler<Message>() {
 
     override fun channelActive(ctx: ChannelHandlerContext) {
         log.info("connect to host: [${ctx.channel().remoteAddress()}]")
+        ctx.writeAndFlush(PingMessage())
+                .addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE)
     }
 
     override fun channelInactive(ctx: ChannelHandlerContext) {
