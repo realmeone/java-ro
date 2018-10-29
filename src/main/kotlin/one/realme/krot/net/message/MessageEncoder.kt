@@ -9,7 +9,7 @@ class MessageEncoder : MessageToByteEncoder<Message>() {
     override fun encode(ctx: ChannelHandlerContext, msg: Message, out: ByteBuf) {
         out.writeBytes(msg.command.code.toBytesLE() +
                 msg.length.toBytesLE() +
-                msg.checksum.toBytesLE() +
+                msg.checksum.reversedArray() +
                 msg.payload.reversedArray())
     }
 }

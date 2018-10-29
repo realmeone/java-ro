@@ -10,7 +10,7 @@ class MessageDecoder : ByteToMessageDecoder() {
     override fun decode(ctx: ChannelHandlerContext, `in`: ByteBuf, out: MutableList<Any>) {
         val data = ByteArray(`in`.readableBytes())
         `in`.readBytes(data)
-        
+
         val cmd = data.copyOfRange(0, 4)
         val len = data.copyOfRange(4, 8)
         val cs = data.copyOfRange(8, 12)
@@ -21,10 +21,7 @@ class MessageDecoder : ByteToMessageDecoder() {
         pl.reverse()
 
         val command = Command(cmd.toInt())
-        val length = len.toInt()
-        val checksum = cs.toInt()
-
-        out.add(Message(command, pl, length, checksum))
+        out.add(Message(command, pl, cs, len.toInt()))
     }
 
 }

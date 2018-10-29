@@ -8,12 +8,12 @@ import java.util.*
  * Net message
  *
  * Almost all integers are encoded in little  endian.Only IP or port number are encoded big endian.
- * | command(12) | length(4) | checksum(4) | payload(?) |
+ * | command(4) | length(4) | checksum(4) | payload(?) |
  */
 open class Message(
-        val command: Command, // 12 chars
+        val command: Command, // 4 bytes
         val payload: ByteArray, // the actual data
-        val checksum: Int = payload.sha256Twice().toInt(), // First 4 bytes of sha256(sha256(payload))
+        val checksum: ByteArray = payload.sha256Twice().copyOf(4), // First 4 bytes of sha256(sha256(payload))
         val length: Int = payload.size // 4 bytes,  Length of payload in number of bytes
 ) {
 

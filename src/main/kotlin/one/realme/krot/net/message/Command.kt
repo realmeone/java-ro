@@ -17,7 +17,7 @@ class Command(val code: Int) {
     }
 
     override fun hashCode(): Int {
-        return code * 23 + 31
+        return code
     }
 
     override fun toString(): String {
