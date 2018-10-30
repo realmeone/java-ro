@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 
 repositories {
-    maven("http://dl.bintray.com/kotlin/kotlin-eap")
     mavenCentral()
     jcenter()
 }
@@ -14,7 +13,7 @@ plugins {
     application
     idea
     id("com.google.protobuf") version "0.8.6"
-    kotlin("jvm") version "1.2.71"
+    kotlin("jvm") version "1.3.0"
 }
 
 java {
@@ -35,10 +34,6 @@ protobuf {
     })
 }
 
-kotlin {
-    experimental.coroutines = Coroutines.ENABLE
-}
-
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
@@ -52,7 +47,7 @@ dependencies {
     implementation("com.google.protobuf:protobuf-java:3.6.1")
 
     testImplementation("com.typesafe:config:1.3.3")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:0.30.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1")
