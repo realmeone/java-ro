@@ -1,3 +1,4 @@
+@file:kotlin.jvm.JvmName("DigestsKt")
 package one.realme.krot.crypto
 
 import com.google.common.primitives.Ints

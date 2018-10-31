@@ -5,9 +5,11 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.produce
+import one.realme.krot.common.measureTimeSeconds
 import org.junit.jupiter.api.Test
-import kotlin.system.measureTimeMillis
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 class CoroutineTest {
     private fun CoroutineScope.produceSquares(): ReceiveChannel<Int> = produce {
         for (x in 1..5) send(x * x)
@@ -20,21 +22,21 @@ class CoroutineTest {
 
     @Test
     fun testCoroutinesConcurrent() = runBlocking {
-        val time = measureTimeMillis {
+        val time = measureTimeSeconds {
             repeat(4) {
                 println(oneHeavyWork(it))
             }
         }
-        println("sync used: ${time / 1000.0} seconds.") // about 4 seconds
+        println("sync used: $time seconds.") // about 4 seconds
 
-        val asyncTime = measureTimeMillis {
+        val asyncTime = measureTimeSeconds {
             List(4) { it ->
                 async {
                     println(oneHeavyWork(it))
                 }
             }.forEach { it.join() }
         }
-        println("async Time used: ${asyncTime / 1000.0} seconds.") // about  1 seconds
+        println("async Time used: $asyncTime seconds.") // about  1 seconds
     }
 
     @Test

@@ -20,7 +20,7 @@ class MessageDecoder : ByteToMessageDecoder() {
         cs.reverse()
         pl.reverse()
 
-        val command = Command(cmd.toInt())
+        val command = Command.newCommand(cmd.toInt())
         out.add(Message(command, pl, cs, len.toInt()))
     }
 

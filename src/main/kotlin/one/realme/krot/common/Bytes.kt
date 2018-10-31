@@ -1,3 +1,4 @@
+@file:kotlin.jvm.JvmName("BytesKt")
 package one.realme.krot.common
 
 import com.google.common.primitives.Ints

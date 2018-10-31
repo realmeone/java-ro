@@ -2,9 +2,9 @@ package one.realme.krot.db
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import one.realme.krot.common.measureTimeSeconds
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import kotlin.system.measureTimeMillis
 
 class MemDatabaseTest {
     private val key = "key".toByteArray()
@@ -15,14 +15,14 @@ class MemDatabaseTest {
     @Test
     fun testConcurrent() = runBlocking {
         val db = MemDatabase()
-        val t = measureTimeMillis {
+        val t = measureTimeSeconds {
             List(rounds) {
                 async {
                     db.put(key, value)
                 }
             }.forEach { it.join() }
         }
-        println("$rounds puts use time: ${t / 1000.0} seconds")
+        println("$rounds puts use time: $t seconds")
     }
 
     @Test

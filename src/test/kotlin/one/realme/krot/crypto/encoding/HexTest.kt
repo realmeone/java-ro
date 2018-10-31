@@ -1,12 +1,11 @@
 package one.realme.krot.crypto.encoding
 
-import one.realme.krot.crypto.encoding.Hex
+import one.realme.krot.common.measureTimeSeconds
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
 import java.util.stream.IntStream
-import kotlin.system.measureTimeMillis
 
 /**
  * test cases from https://tools.ietf.org/html/rfc4648#page-10
@@ -24,19 +23,19 @@ class HexTest {
         val round = 5000001
         println("Hex decode round : $round")
 
-        val myTimeUsed = measureTimeMillis {
+        val myTimeUsed = measureTimeSeconds {
             IntStream.range(0, round).parallel().forEach {
                 Hex.decode(raw)
             }
         }
-        println("my use time : ${myTimeUsed / 1000.0} seconds")
+        println("my use time : $myTimeUsed seconds")
 
-        val bcTimeUsed = measureTimeMillis {
+        val bcTimeUsed = measureTimeSeconds {
             IntStream.range(0, round).parallel().forEach {
                 org.bouncycastle.util.encoders.Hex.decode(raw)
             }
         }
-        println("BC use time : ${bcTimeUsed / 1000.0} seconds")
+        println("BC use time : $bcTimeUsed seconds")
     }
 
     @Test
@@ -45,19 +44,19 @@ class HexTest {
 
         val round = 500000
         println("Hex round : $round")
-        val myTimeUsed = measureTimeMillis {
+        val myTimeUsed = measureTimeSeconds {
             IntStream.range(0, round).parallel().forEach {
                 Hex.encode(raw)
             }
         }
-        println("my use time : ${myTimeUsed / 1000.0} seconds")
+        println("my use time : $myTimeUsed seconds")
 
-        val bcTimeUsed = measureTimeMillis {
+        val bcTimeUsed = measureTimeSeconds {
             IntStream.range(0, round).parallel().forEach {
                 org.bouncycastle.util.encoders.Hex.encode(raw)
             }
         }
-        println("BC use time : ${bcTimeUsed / 1000.0} seconds")
+        println("BC use time : $bcTimeUsed seconds")
     }
 
     private val cases = listOf(

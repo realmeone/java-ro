@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
-import kotlin.system.measureTimeMillis
 
 
 class BytesTest {
@@ -15,11 +14,11 @@ class BytesTest {
     private val rounds = 10_000_000
 
     private fun measureTime(desc: String, action: () -> ByteArray) {
-        val timeUsed = measureTimeMillis {
+        val timeUsed = measureTimeSeconds {
             for (i in 1..rounds)
                 action()
         }
-        println("$desc with $rounds times use time :  ${timeUsed / 1000.0} seconds")
+        println("$desc with $rounds times use time :  $timeUsed seconds")
     }
 
     @Test

@@ -2,9 +2,9 @@ package one.realme.krot.db
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import one.realme.krot.common.measureTimeSeconds
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import kotlin.system.measureTimeMillis
 
 class RocksDatabaseTest {
     private val key = "key".toByteArray()
@@ -15,7 +15,7 @@ class RocksDatabaseTest {
     @Test
     fun testConcurrentPut() = runBlocking {
         val db = RocksDatabase("data/test")
-        val t = measureTimeMillis {
+        val t = measureTimeSeconds {
             List(rounds) {
                 async {
                     db.put(key, value)
@@ -24,14 +24,14 @@ class RocksDatabaseTest {
         }
         db.close()
         db.destroy()
-        println("$rounds puts use time: ${t / 1000.0} seconds")
+        println("$rounds puts use time: $t seconds")
     }
 
     @Test
     fun testConcurrentGet() = runBlocking {
         val db = RocksDatabase("data/test")
         db.put(key, value)
-        val t = measureTimeMillis {
+        val t = measureTimeSeconds {
             List(rounds) {
                 async {
                     db.get(key)
@@ -40,7 +40,7 @@ class RocksDatabaseTest {
         }
         db.close()
         db.destroy()
-        println("$rounds puts use time: ${t / 1000.0} seconds")
+        println("$rounds gets use time: $t seconds")
     }
 
     @Test

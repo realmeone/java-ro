@@ -11,7 +11,7 @@ class MessageTest {
 
     @Test
     fun testMessage() {
-        val cmd = Command.ping()
+        val cmd = Command.PING
         val payload = ByteArray(0)
         val length = payload.size
         val checksum = payload.sha256Twice().copyOf(4)
@@ -26,13 +26,13 @@ class MessageTest {
 
     @Test
     fun testEncodeDecode() {
-        val cmd = Command.ping()
+        val cmd = Command.PING
         val payload = ByteArray(0)
         val length = payload.size
         val checksum = payload.sha256Twice().copyOf(4)
 
         // MessageEncode
-        val data = cmd.code.toBytesLE() +
+        val data = cmd.toBytesLE() +
                 length.toBytesLE() +
                 checksum.reversedArray() +
                 payload.reversedArray()
@@ -50,7 +50,7 @@ class MessageTest {
         checksumByteArray.reverse()
         payloadByteArray.reverse()
 
-        assertEquals(cmd.code, cmdByteArray.toInt())
+        assertEquals(cmd.cmd, cmdByteArray.toInt())
         assertEquals(length, lengthByteArray.toInt())
         assertArrayEquals(checksum, checksumByteArray)
         assertArrayEquals(payload, payloadByteArray)

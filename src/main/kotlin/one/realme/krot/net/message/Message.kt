@@ -1,7 +1,7 @@
 package one.realme.krot.net.message
 
+import one.realme.krot.common.UnixTime
 import one.realme.krot.crypto.sha256Twice
-import one.realme.krot.crypto.toInt
 import java.util.*
 
 /**
@@ -10,26 +10,20 @@ import java.util.*
  * Almost all integers are encoded in little  endian.Only IP or port number are encoded big endian.
  * | command(4) | length(4) | checksum(4) | payload(?) |
  */
-open class Message(
+class Message(
         val command: Command, // 4 bytes
-        val payload: ByteArray, // the actual data
+        val payload: ByteArray = ByteArray(0), // the actual data
         val checksum: ByteArray = payload.sha256Twice().copyOf(4), // First 4 bytes of sha256(sha256(payload))
         val length: Int = payload.size // 4 bytes,  Length of payload in number of bytes
 ) {
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Message
-
-        if (!Arrays.equals(payload, other.payload)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return Arrays.hashCode(payload)
+    companion object {
+        val HELLO = Message(Command.HELLO)
+        val DISCONNECT = Message(Command.DISCONNECT)
+        val PING = Message(Command.PING)
+        val PONG = Message(Command.PONG)
+        val GET_TIME = Message(Command.GET_TIME)
+        val TIME_NOW = Message(Command.TIME_NOW, UnixTime.now().toBytes())
     }
 
     override fun toString(): String {

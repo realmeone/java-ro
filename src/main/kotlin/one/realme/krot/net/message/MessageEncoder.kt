@@ -7,7 +7,7 @@ import one.realme.krot.common.toBytesLE
 
 class MessageEncoder : MessageToByteEncoder<Message>() {
     override fun encode(ctx: ChannelHandlerContext, msg: Message, out: ByteBuf) {
-        out.writeBytes(msg.command.code.toBytesLE() +
+        out.writeBytes(msg.command.toBytesLE() +
                 msg.length.toBytesLE() +
                 msg.checksum.reversedArray() +
                 msg.payload.reversedArray())

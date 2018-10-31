@@ -6,35 +6,34 @@ import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
 import one.realme.krot.net.message.Command
 import one.realme.krot.net.message.Message
-import one.realme.krot.net.message.PongMessage
 import org.slf4j.LoggerFactory
 
-class MessageHandler : SimpleChannelInboundHandler<Message>() {
-    private val log = LoggerFactory.getLogger(MessageHandler::class.java)
+class ServerHandler : SimpleChannelInboundHandler<Message>() {
+    private val log = LoggerFactory.getLogger(ServerHandler::class.java)
 
     override fun channelRead0(ctx: ChannelHandlerContext, msg: Message) {
         log.info("received from ${ctx.channel().remoteAddress()} : [$msg]")
         when (msg.command) {
-            Command.ping() -> {
-                ctx.writeAndFlush(PongMessage())
+            Command.PING -> {
+                ctx.writeAndFlush(Message.PONG)
             }
-//            "time" -> {
-//                ctx.writeAndFlush(Message(UnixTime.now().toString().toByteArray()))
-//            }
-//            "exit" -> {
-//                ctx.close()
-//            }
+            Command.GET_TIME -> {
+                ctx.writeAndFlush(Message.TIME_NOW)
+            }
+            Command.DISCONNECT -> {
+                ctx.close()
+            }
             else -> ctx.close()
         }
     }
 
     override fun channelActive(ctx: ChannelHandlerContext) {
-        log.info("Peer ${ctx.channel().remoteAddress()} is connected.")
-//        ctx.writeAndFlush(Message("hello".toByteArray()))
+        log.info("Peer Client ${ctx.channel().remoteAddress()} is connected.")
+        ctx.writeAndFlush(Message.HELLO)
     }
 
     override fun channelInactive(ctx: ChannelHandlerContext) {
-        log.info("Peer ${ctx.channel().remoteAddress()} is disconnected.")
+        log.info("Peer Client ${ctx.channel().remoteAddress()} is disconnected.")
     }
 
     override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) {

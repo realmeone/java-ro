@@ -8,12 +8,12 @@ import one.realme.krot.app.cmd.KrotCmd
 import one.realme.krot.app.cmd.address.CreateCmd
 import one.realme.krot.app.cmd.address.ListCmd
 import one.realme.krot.common.Version
-import one.realme.krot.net.client.DiscoverService
-import one.realme.krot.net.server.NetService
+import one.realme.krot.common.measureTimeSeconds
+import one.realme.krot.net.discover.DiscoverService
+import one.realme.krot.net.server.PeerService
 import org.slf4j.LoggerFactory
 import java.lang.management.ManagementFactory
 import java.net.InetAddress
-import kotlin.system.measureTimeMillis
 
 /**
  * Name like go-ethereum -> geth
@@ -23,11 +23,11 @@ object Krot {
     private val simpleName = javaClass.simpleName
 
     fun launch() {
-        val startElapsed = measureTimeMillis {
+        val startElapsed = measureTimeSeconds {
             log.info("Starting $simpleName on ${InetAddress.getLocalHost().hostName} with PID ${ManagementFactory.getRuntimeMXBean().name.split("@")[0]} by ${System.getProperty("user.name")}")
 
             val services = mutableListOf(
-                    NetService,
+                    PeerService,
                     DiscoverService
             )
 
@@ -35,16 +35,16 @@ object Krot {
 
             Runtime.getRuntime().addShutdownHook(Thread {
                 log.info("Closing $simpleName by ${System.getProperty("user.name")}")
-                val stopElapsed = measureTimeMillis {
+                val stopElapsed = measureTimeSeconds {
                     serviceManager.stopAsync().awaitStopped()
                 }
-                log.info("Closed $simpleName in ${stopElapsed / 1000.0} seconds")
+                log.info("Closed $simpleName in $stopElapsed seconds")
                 log.info("ByeBye.")
             })
 
             serviceManager.startAsync()
         }
-        log.info("Started $simpleName in ${startElapsed / 1000.0} seconds")
+        log.info("Started $simpleName in $startElapsed seconds")
     }
 
     @JvmStatic

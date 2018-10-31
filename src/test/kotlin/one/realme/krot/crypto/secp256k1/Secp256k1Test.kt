@@ -1,12 +1,11 @@
 package one.realme.krot.crypto.secp256k1
 
+import one.realme.krot.common.measureTimeSeconds
 import one.realme.krot.crypto.BCSecp256k1
-import one.realme.krot.crypto.secp256k1.Secp256k1
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
 import java.util.stream.IntStream
-import kotlin.system.measureTimeMillis
 
 
 /**
@@ -26,19 +25,19 @@ class Secp256k1Test {
 
         val round = 2000
         println("verify round : $round")
-        val myTimeUsed = measureTimeMillis {
+        val myTimeUsed = measureTimeSeconds {
             IntStream.range(0, round).parallel().forEach {
                 mySecp256k1.verify(data, sig, pub)
             }
         }
-        println("my use time : ${myTimeUsed / 1000.0} seconds")
+        println("my use time : $myTimeUsed seconds")
 
-        val bcTimeUsed = measureTimeMillis {
+        val bcTimeUsed = measureTimeSeconds {
             IntStream.range(0, round).parallel().forEach {
                 BCSecp256k1.verify(data, sig, pub)
             }
         }
-        println("BC use time : ${bcTimeUsed / 1000.0} seconds")
+        println("BC use time : $bcTimeUsed seconds")
     }
 
     @Test
@@ -51,19 +50,19 @@ class Secp256k1Test {
 
         val round = 2000
         println("sign round : $round")
-        val myTimeUsed = measureTimeMillis {
+        val myTimeUsed = measureTimeSeconds {
             IntStream.range(0, round).parallel().forEach {
                 mySecp256k1.sign(data, sec)
             }
         }
-        println("my use time : ${myTimeUsed / 1000.0} seconds")
+        println("my use time : $myTimeUsed seconds")
 
-        val bcTimeUsed = measureTimeMillis {
+        val bcTimeUsed = measureTimeSeconds {
             IntStream.range(0, round).parallel().forEach {
                 BCSecp256k1.sign(data, sec)
             }
         }
-        println("BC use time : ${bcTimeUsed / 1000.0} seconds")
+        println("BC use time : $bcTimeUsed seconds")
     }
 
     @Test
