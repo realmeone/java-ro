@@ -18,7 +18,7 @@ class ServerHandler : SimpleChannelInboundHandler<Message>() {
                 ctx.writeAndFlush(Message.PONG)
             }
             Command.GET_TIME -> {
-                ctx.writeAndFlush(Message.TIME_NOW)
+                ctx.writeAndFlush(Message.timeNow())
             }
             Command.DISCONNECT -> {
                 ctx.close()

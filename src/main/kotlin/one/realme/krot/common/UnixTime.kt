@@ -1,5 +1,6 @@
 package one.realme.krot.common
 
+import one.realme.krot.crypto.toInt
 import java.time.Instant
 
 class UnixTime private constructor(private val value: Int) {
@@ -13,6 +14,7 @@ class UnixTime private constructor(private val value: Int) {
 
 
     companion object {
+        fun fromBytes(bytes: ByteArray): UnixTime = UnixTime(bytes.toInt())
         fun fromMillis(milliSeconds: Long): UnixTime = UnixTime((milliSeconds / 1000).toInt())
         fun now(): UnixTime = UnixTime(Instant.now().epochSecond.toInt())
         fun fromSeconds(seconds: Int): UnixTime = UnixTime(seconds)

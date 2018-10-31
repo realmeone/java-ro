@@ -4,6 +4,7 @@ package one.realme.krot.net.client
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
+import one.realme.krot.common.UnixTime
 import one.realme.krot.net.message.Command
 import one.realme.krot.net.message.Message
 import org.slf4j.LoggerFactory
@@ -21,6 +22,7 @@ class ClientHandler : SimpleChannelInboundHandler<Message>() {
                 ctx.writeAndFlush(Message.GET_TIME)
             }
             Command.TIME_NOW -> {
+                log.info(UnixTime.fromBytes(msg.payload).toString())
                 ctx.writeAndFlush(Message.DISCONNECT)
             }
             else -> ctx.close()

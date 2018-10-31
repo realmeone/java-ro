@@ -5,7 +5,7 @@ import one.realme.krot.crypto.sha256Twice
 import java.util.*
 
 /**
- * Net message
+ * Peer Message
  *
  * Almost all integers are encoded in little  endian.Only IP or port number are encoded big endian.
  * | command(4) | length(4) | checksum(4) | payload(?) |
@@ -18,12 +18,14 @@ class Message(
 ) {
 
     companion object {
+        // const message
         val HELLO = Message(Command.HELLO)
         val DISCONNECT = Message(Command.DISCONNECT)
         val PING = Message(Command.PING)
         val PONG = Message(Command.PONG)
         val GET_TIME = Message(Command.GET_TIME)
-        val TIME_NOW = Message(Command.TIME_NOW, UnixTime.now().toBytes())
+        // instance message
+        fun timeNow() = Message(Command.TIME_NOW, UnixTime.now().toBytes())
     }
 
     override fun toString(): String {
