@@ -7,20 +7,24 @@ It is named Krot, first word of kotlin & realme.one tech
 
 ## Install
 
-Coming soon
+todo
 
 ## Build & Assemble
 
-run ./gradlew assemble
+Run 
+```shell
+./gradlew assemble
+```
 
 ## Tech Stack
 * Java 1.8+
-* Kotlin 1.2.71+
+* Kotlin 1.3.0+
 * Guava 26.0-jre
-* rocksdb 5.15.10
-* protobuf-java 3.6.1
-* nettty 4.1.30
-* junit 5.3.1
+* Rocksdb 5.15.10
+* Protobuf-java 3.6.1
+* Netty 4.1.30
+* Junit 5.3.1
+* Gradle 4.10.2+
 
 ## Why not all in Kotlin?
 Because some heavy compute in Java are faster than Kotlin, like Hashing, Bytes Ops.
@@ -49,3 +53,5 @@ COMMANDS:
 * [ ] ...
 
 ## Docs
+
+See the wiki
