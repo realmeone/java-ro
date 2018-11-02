@@ -7,7 +7,7 @@ It is named Krot, first word of kotlin & realme.one tech
 
 ## We use
 | Tech | Version | Description |
-|----------|:-------------:|-------------:|
+|:----------|:-------------|:-------------|
 | Java | 1.8+| Oracle Java |
 | Kotlin | 1.3.0+ | |
 | Gradle | 4.10.2+ | |
