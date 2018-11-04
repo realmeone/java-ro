@@ -9,9 +9,9 @@ import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioSocketChannel
 import io.netty.handler.timeout.ReadTimeoutHandler
-import one.realme.krot.net.message.Message
-import one.realme.krot.net.message.MessageDecoder
-import one.realme.krot.net.message.MessageEncoder
+import one.realme.krot.net.romtp.Message
+import one.realme.krot.net.romtp.MessageDecoder
+import one.realme.krot.net.romtp.MessageEncoder
 import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit
 

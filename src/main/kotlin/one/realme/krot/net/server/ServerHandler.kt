@@ -4,8 +4,8 @@ import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
-import one.realme.krot.net.message.Command
-import one.realme.krot.net.message.Message
+import one.realme.krot.net.romtp.MessageType
+import one.realme.krot.net.romtp.Message
 import org.slf4j.LoggerFactory
 
 class ServerHandler : SimpleChannelInboundHandler<Message>() {
@@ -13,14 +13,14 @@ class ServerHandler : SimpleChannelInboundHandler<Message>() {
 
     override fun channelRead0(ctx: ChannelHandlerContext, msg: Message) {
         log.info("received from ${ctx.channel().remoteAddress()} : [$msg]")
-        when (msg.command) {
-            Command.PING -> {
+        when (msg.type) {
+            MessageType.PING -> {
                 ctx.writeAndFlush(Message.PONG)
             }
-            Command.GET_TIME -> {
-                ctx.writeAndFlush(Message.timeNow())
+            MessageType.GET_TIME -> {
+                ctx.writeAndFlush(Message.time())
             }
-            Command.DISCONNECT -> {
+            MessageType.DISCONNECT -> {
                 ctx.close()
             }
             else -> ctx.close()

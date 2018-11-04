@@ -9,15 +9,15 @@ import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.handler.logging.LoggingHandler
 import io.netty.handler.timeout.ReadTimeoutHandler
-import one.realme.krot.net.message.MessageDecoder
-import one.realme.krot.net.message.MessageEncoder
+import one.realme.krot.net.romtp.MessageDecoder
+import one.realme.krot.net.romtp.MessageEncoder
 import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit
 
 /**
  * PeerService Service
  *
- * Remote Peer will connect to this PeerService and exchange payload
+ * Remote Peer will connect to this PeerService and exchange content
  */
 object PeerService : AbstractExecutionThreadService() {
     private val log = LoggerFactory.getLogger(PeerService.javaClass)

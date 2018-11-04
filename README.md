@@ -6,8 +6,8 @@
 It is named Krot, first word of kotlin & realme.one tech
 
 ## We use
-| Tech | Version | Description |
-|:----------|:-------------|:-------------|
+| Component | Version | Description |
+|:------------|:-------------|:-------------|
 | Java | 1.8+| Oracle Java |
 | Kotlin | 1.3.0+ | |
 | Gradle | 4.10.2+ | |
@@ -62,6 +62,6 @@ See the wiki
 
 ## Contribution
 
-We welcome everyone to contribute to this project, not just the code, but also the documentation, ideas, and my English grammar (lol)
+We welcome everyone to contribute to this project, not just the code, but also the documentation, ideas, and my English (lol)
 
 No matter what you help us improve is a sentence, a few lines of code, or an article, you will receive our reward (ROT) once adopted.
