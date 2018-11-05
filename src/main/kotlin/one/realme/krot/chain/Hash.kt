@@ -15,7 +15,6 @@ class Hash private constructor(private val bytes: ByteArray) {
     fun toBytes(): ByteArray = bytes.clone()
     fun toBytesLE(): ByteArray = bytes.reversedArray()
     fun toInt(): Int = Ints.fromByteArray(bytes)
-    fun toIntLE(): Int = Ints.fromByteArray(bytes.reversedArray())
 
     override fun toString(): String = toBytes().toHexString()
     override fun hashCode(): Int = toInt()

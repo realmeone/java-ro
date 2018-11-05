@@ -16,7 +16,6 @@ class Coin private constructor(private val value: Long) : Comparable<Coin> {
 
     fun toLong(): Long = this.value
     fun toBytes(): ByteArray = this.value.toBytes()
-    fun toBytesLE(): ByteArray = this.value.toBytesLE()
 
     override fun compareTo(other: Coin): Int {
         return this.value.compareTo(other.value)

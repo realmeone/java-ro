@@ -7,7 +7,7 @@ object ChainDb {
     private val db = RocksDatabase(chainDbPath)
 
     fun putBlock(block: Block) {
-        db.put(block.hash().toBytes(), block.hash().toBytes())
+        db.put(block.hash.toBytes(), block.hash.toBytes())
     }
 
 //

@@ -16,7 +16,6 @@ class Transaction(
         val payload: ByteArray = ByteArray(0),
         val timestamp: UnixTime = UnixTime.now()
 ) {
-    val nVersion = 1
     var signature = ""
 
     companion object {
@@ -28,18 +27,17 @@ class Transaction(
     }
 
     fun hash(): Hash {
-        val buffer = ByteBuffer.allocate(66 + payload.size)
-                .put(nVersion.toBytesLE()) // 4 bytes
-                .put(from.toBytesLE()) // 25 bytes
-                .put(to.toBytesLE()) // 25 bytes
-                .put(amount.toBytesLE()) // 8 bytes
-                .put(timestamp.toBytesLE()) // 4 bytes
-                .put(payload)  // calculate
+        val buffer = ByteBuffer.allocate(62 + payload.size)
+                .put(from.toBytes()) // 25 bytes
+                .put(to.toBytes()) // 25 bytes
+                .put(amount.toBytes()) // 8 bytes
+                .put(timestamp.toBytes()) // 4 bytes
+                .put(payload)
         return Hash.fromBytes(buffer.array().sha256Twice())
     }
 
     override fun toString(): String {
-        return "Transaction(from=$from, to=$to, amount=$amount, timestamp=$timestamp, nVersion=$nVersion)"
+        return "Transaction(from=$from, to=$to, amount=$amount, timestamp=$timestamp)"
     }
 
 

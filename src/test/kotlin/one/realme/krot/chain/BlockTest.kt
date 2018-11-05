@@ -11,10 +11,10 @@ class BlockTest {
     @Test
     fun testBlock() {
         val b1 = Block(Version.CURRENT, 1, Hash.empty())
-        val b2 = Block(Version.CURRENT, 2, b1.hash())
-        assertEquals(b1.hash(), b2.header().prevBlockHash)
-        println(b1.hash())
-        println(b2.hash())
+        val b2 = Block(Version.CURRENT, 2, b1.hash)
+        assertEquals(b1.hash, b2.header().prevBlockHash)
+        println(b1.hash)
+        println(b2.hash)
     }
 
     @Test
@@ -27,6 +27,6 @@ class BlockTest {
 
         val genesis = Block(version, height, Hash.fromString(prevBlockHash), UnixTime.fromSeconds(timestamp))
         println(genesis)
-        println(genesis.hash())
+        println(genesis.hash)
     }
 }
