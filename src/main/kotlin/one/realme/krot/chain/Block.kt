@@ -2,7 +2,6 @@ package one.realme.krot.chain
 
 import one.realme.krot.common.UnixTime
 import one.realme.krot.common.Version
-import one.realme.krot.common.toBytesLE
 import one.realme.krot.crypto.sha256Twice
 import java.nio.ByteBuffer
 import java.util.*
@@ -26,7 +25,7 @@ class Block(
                 .put(merkleRootHash.toBytes()) // hash 32 bytes
                 .put(timestamp.toBytes()) // time 4 bytes
                 .array()
-        Hash.fromBytes(bytes.sha256Twice().reversedArray())
+        Hash.fromBytes(bytes.sha256Twice())
     }
 
     fun header(): BlockHeader {

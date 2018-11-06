@@ -1,7 +1,6 @@
 package one.realme.krot.chain
 
 import one.realme.krot.common.toBytes
-import one.realme.krot.common.toBytesLE
 
 /**
  * future: read conifg for custom coin

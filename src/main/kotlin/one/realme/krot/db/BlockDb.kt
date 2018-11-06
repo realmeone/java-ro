@@ -2,9 +2,7 @@ package one.realme.krot.db
 
 import one.realme.krot.chain.Block
 
-object ChainDb {
-    private const val chainDbPath = "data/chain"
-    private val db = RocksDatabase(chainDbPath)
+class BlockDb(private val db: Database) {
 
     fun putBlock(block: Block) {
         db.put(block.hash.toBytes(), block.hash.toBytes())

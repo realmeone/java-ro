@@ -1,7 +1,6 @@
 package one.realme.krot.chain
 
 import one.realme.krot.common.UnixTime
-import one.realme.krot.common.toBytesLE
 import one.realme.krot.crypto.BCSecp256k1
 import one.realme.krot.crypto.sha256Twice
 import java.nio.ByteBuffer
