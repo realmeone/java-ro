@@ -5,11 +5,11 @@ import one.realme.krot.chain.Block
 class BlockDb(private val db: Database) {
 
     fun putBlock(block: Block) {
-        db.put(block.hash.toBytes(), block.hash.toBytes())
+        db.put(block.hash.toByteArray(), block.hash.toByteArray())
     }
 
 //
 //    fun getBlock(hash: String) : Block {
-//        rocksdb.get(Hash.fromString(hash).toBytes())
+//        rocksdb.get(Hash.fromString(hash).toByteArray())
 //    }
 }

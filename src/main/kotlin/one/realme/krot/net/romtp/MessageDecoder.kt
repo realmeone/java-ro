@@ -3,7 +3,7 @@ package one.realme.krot.net.romtp
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
-import one.realme.krot.crypto.toInt
+import one.realme.krot.common.toInt
 
 class MessageDecoder : ByteToMessageDecoder() {
 

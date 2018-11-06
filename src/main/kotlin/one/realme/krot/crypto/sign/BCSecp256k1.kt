@@ -1,4 +1,4 @@
-package one.realme.krot.crypto
+package one.realme.krot.crypto.sign
 
 import one.realme.krot.crypto.encoding.Hex
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey

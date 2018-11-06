@@ -15,8 +15,8 @@ class ProtobufTest {
                 .setHash(Int.MAX_VALUE)
                 .setVersion(1)
                 .setTimestamp(UnixTime.now().toInt())
-                .setPreviousBlockHash(ByteString.copyFrom(Hash.empty().toBytes()))
-                .setMerkleRootHash(ByteString.copyFrom(Hash.empty().toBytes()))
+                .setPreviousBlockHash(ByteString.copyFrom(Hash.empty().toByteArray()))
+                .setMerkleRootHash(ByteString.copyFrom(Hash.empty().toByteArray()))
                 .build()
 
         println(Hex.encode(mb.toByteArray()))

@@ -1,10 +1,10 @@
 package one.realme.krot.common
 
-import one.realme.krot.crypto.toInt
+
 import java.time.Instant
 
 class UnixTime private constructor(private val value: Int) {
-    fun toBytes(): ByteArray = value.toBytes()
+    fun toBytes(): ByteArray = value.toByteArray()
     fun toInt(): Int = value
 
     override fun toString(): String {

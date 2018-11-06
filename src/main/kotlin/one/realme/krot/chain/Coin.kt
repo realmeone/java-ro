@@ -1,6 +1,6 @@
 package one.realme.krot.chain
 
-import one.realme.krot.common.toBytes
+import one.realme.krot.common.toByteArray
 
 /**
  * future: read conifg for custom coin
@@ -14,7 +14,7 @@ class Coin private constructor(private val value: Long) : Comparable<Coin> {
 
 
     fun toLong(): Long = this.value
-    fun toBytes(): ByteArray = this.value.toBytes()
+    fun toByteArray(): ByteArray = this.value.toByteArray()
 
     override fun compareTo(other: Coin): Int {
         return this.value.compareTo(other.value)

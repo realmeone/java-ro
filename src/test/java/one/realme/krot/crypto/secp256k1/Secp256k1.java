@@ -60,7 +60,7 @@ public final class Secp256k1 {
         BigInteger s = k.modInverse(n).multiply(data.add(secret.multiply(r).mod(n))).mod(n);  //        s = ( inverse_mod( k, n ) * ( hash + ( self.secret_multiplier * r ) % n ) ) % n
         if (s.equals(ZERO))
             throw new IllegalArgumentException("amazingly unlucky random number s"); //        if s == 0: raise RuntimeError, "amazingly unlucky random number s"
-        return Hex.encode(new Signature(r, s).der());
+        return Hex.INSTANCE.encode(new Signature(r, s).der());
     }
 
     public boolean verify(String hash, String signedData, String rawPublicKey) {
@@ -73,7 +73,7 @@ public final class Secp256k1 {
 
             // decode data from hex
             BigInteger data = new BigInteger(hash, RADIX);
-            Signature signature = new Signature(Hex.decode(signedData));
+            Signature signature = new Signature(Hex.INSTANCE.decode(signedData));
             // point of public key
             rawPublicKey = rawPublicKey.substring(2);
             ECPoint pubKey = new ECPoint(curve256,

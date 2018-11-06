@@ -1,6 +1,6 @@
 package one.realme.krot.net.romtp
 
-import one.realme.krot.common.toBytes
+import one.realme.krot.common.toByteArray
 
 class ContentType private constructor(val code: Int) {
 
@@ -21,7 +21,7 @@ class ContentType private constructor(val code: Int) {
         }
     }
 
-    fun toBytes(): ByteArray = code.toBytes()
+    fun toByteArray(): ByteArray = code.toByteArray()
 
     override fun toString(): String {
         return "${javaClass.simpleName}(code=$code)"

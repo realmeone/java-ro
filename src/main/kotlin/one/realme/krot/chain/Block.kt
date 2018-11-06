@@ -2,7 +2,7 @@ package one.realme.krot.chain
 
 import one.realme.krot.common.UnixTime
 import one.realme.krot.common.Version
-import one.realme.krot.crypto.sha256Twice
+import one.realme.krot.crypto.digest.sha256Twice
 import java.nio.ByteBuffer
 import java.util.*
 
@@ -21,8 +21,8 @@ class Block(
     val hash by lazy {
         val bytes = ByteBuffer.allocate(72)
                 .put(version.toByte()) // int 4 bytes
-                .put(prevBlockHash.toBytes()) // hash 32 bytes
-                .put(merkleRootHash.toBytes()) // hash 32 bytes
+                .put(prevBlockHash.toByteArray()) // hash 32 bytes
+                .put(merkleRootHash.toByteArray()) // hash 32 bytes
                 .put(timestamp.toBytes()) // time 4 bytes
                 .array()
         Hash.fromBytes(bytes.sha256Twice())

@@ -1,6 +1,6 @@
 package one.realme.krot.net.message
 
-import one.realme.krot.crypto.sha256Twice
+import one.realme.krot.crypto.digest.sha256Twice
 import one.realme.krot.net.romtp.Message
 import one.realme.krot.net.romtp.MessageType
 import org.junit.jupiter.api.Assertions.assertArrayEquals
@@ -32,8 +32,8 @@ class MessageTest {
 //        val checksum = content.sha256Twice().copyOf(4)
 //
 //        // MessageEncode
-//        val data = cmd.toBytesLE() +
-//                length.toBytesLE() +
+//        val data = cmd.toByteArrayLE() +
+//                length.toByteArrayLE() +
 //                checksum.reversedArray() +
 //                payload.reversedArray()
 //

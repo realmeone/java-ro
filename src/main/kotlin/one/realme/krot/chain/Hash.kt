@@ -2,7 +2,7 @@ package one.realme.krot.chain
 
 import com.google.common.primitives.Ints
 import one.realme.krot.crypto.encoding.Hex
-import one.realme.krot.crypto.toHexString
+import one.realme.krot.crypto.digest.toHexString
 
 /**
  * maybe hash32 is the right name?
@@ -12,11 +12,11 @@ import one.realme.krot.crypto.toHexString
  */
 class Hash private constructor(private val bytes: ByteArray) {
     fun bits(): Int = bytes.size * 8
-    fun toBytes(): ByteArray = bytes.clone()
-    fun toBytesLE(): ByteArray = bytes.reversedArray()
+    fun toByteArray(): ByteArray = bytes.clone()
+    fun toByteArrayLE(): ByteArray = bytes.reversedArray()
     fun toInt(): Int = Ints.fromByteArray(bytes)
 
-    override fun toString(): String = toBytes().toHexString()
+    override fun toString(): String = toByteArray().toHexString()
     override fun hashCode(): Int = toInt()
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

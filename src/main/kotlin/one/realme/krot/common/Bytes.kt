@@ -2,8 +2,18 @@
 
 package one.realme.krot.common
 
-import com.google.common.primitives.Ints
-import com.google.common.primitives.Longs
+//fun Int.toByteArray() = Ints.toByteArray(this)
+fun Int.toByteArray() = ByteArray(4) {
+    (this shr 8 * (3 - it) and 0xff).toByte()
+}
 
-fun Int.toBytes() = Ints.toByteArray(this)
-fun Long.toBytes() = Longs.toByteArray(this)
+//fun Long.toByteArray() = Longs.toByteArray(this)
+fun Long.toByteArray() = ByteArray(8) {
+    (this shr 8 * (7 - it) and 0xffL).toByte()
+}
+
+//fun ByteArray.toInt() = Ints.fromByteArray(this)
+fun ByteArray.toInt() = this[0].toInt() shl 24 or
+        (this[1].toInt() and 0xff shl 16) or
+        (this[2].toInt() and 0xff shl 8) or
+        (this[3].toInt() and 0xff)

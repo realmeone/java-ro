@@ -1,11 +1,9 @@
 # Krot
 
-
-~~It is named Java-RO, but actually it is kotlin based, so whatever, jvm family.~~
-
 It is named Krot, first word of kotlin & realme.one tech
 
 ## We use
+
 | Component | Version | Description |
 |:------------|:-------------|:-------------|
 | Java | 1.8+| Oracle Java |
@@ -33,9 +31,9 @@ Get into the project root folder
 ```
 
 ## Why not all in Kotlin?
-Because some heavy compute in Java are faster than Kotlin, like Hashing, Bytes Ops.
-so if there is a jar lib had such methods, we can do these in kotlin, else we use Java to implements.
 
+Because protobuf can't generate kt files.   :-)
+Use RLP replaced? Maybe. 
 I am very expect on native kotlin, when it release, we can use pure Kotlin to implements all.
 
 ## Cmd

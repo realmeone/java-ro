@@ -24,14 +24,14 @@ class HexTest {
         println("Hex decode round : $round")
 
         val myTimeUsed = measureTimeSeconds {
-            IntStream.range(0, round).parallel().forEach {
+            IntStream.range(0, round).forEach {
                 Hex.decode(raw)
             }
         }
         println("my use time : $myTimeUsed seconds")
 
         val bcTimeUsed = measureTimeSeconds {
-            IntStream.range(0, round).parallel().forEach {
+            IntStream.range(0, round).forEach {
                 org.bouncycastle.util.encoders.Hex.decode(raw)
             }
         }
@@ -42,17 +42,17 @@ class HexTest {
     fun whoIsFasterEncode() {
         val raw = "foo".toByteArray()
 
-        val round = 500000
+        val round = 5000000
         println("Hex round : $round")
         val myTimeUsed = measureTimeSeconds {
-            IntStream.range(0, round).parallel().forEach {
+            IntStream.range(0, round).forEach {
                 Hex.encode(raw)
             }
         }
         println("my use time : $myTimeUsed seconds")
 
         val bcTimeUsed = measureTimeSeconds {
-            IntStream.range(0, round).parallel().forEach {
+            IntStream.range(0, round).forEach {
                 org.bouncycastle.util.encoders.Hex.encode(raw)
             }
         }

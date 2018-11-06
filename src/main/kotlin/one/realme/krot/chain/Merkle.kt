@@ -1,6 +1,6 @@
 package one.realme.krot.chain
 
-import one.realme.krot.crypto.Digests
+import one.realme.krot.crypto.digest.Digests
 import java.util.ArrayList
 
 
@@ -40,8 +40,8 @@ object Merkle {
                 tempHashList.add(
                         Hash.fromBytes(
                                 Digests.sha256Twice(
-                                        result[i].toBytesLE(),
-                                        result[i + 1].toBytesLE()
+                                        result[i].toByteArrayLE(),
+                                        result[i + 1].toByteArrayLE()
                                 ).reversedArray()
                         )
                 )
@@ -52,8 +52,8 @@ object Merkle {
                 tempHashList.add(
                         Hash.fromBytes(
                                 Digests.sha256Twice(
-                                        result[result.size - 1].toBytesLE(),   // do not use result.last() replace
-                                        result[result.size - 1].toBytesLE()
+                                        result[result.size - 1].toByteArrayLE(),   // do not use result.last() replace
+                                        result[result.size - 1].toByteArrayLE()
                                 ).reversedArray()
                         )
                 )

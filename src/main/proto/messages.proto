@@ -13,11 +13,9 @@ message Block {
 }
 
 message Transaction {
-    bytes version = 1;
-    bytes hash  = 2;
-    bytes from = 3;
-    bytes to = 4;
-    bytes amount = 5;
-    int64 timestamp = 6;
-    bytes signature = 7;
+    bytes from = 1;
+    bytes to = 2;
+    bytes amount = 3;
+    int64 timestamp = 4;
+    bytes signature = 5;
 }

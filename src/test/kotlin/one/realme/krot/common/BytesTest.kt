@@ -1,7 +1,10 @@
 package one.realme.krot.common
 
 import com.google.common.primitives.Bytes
-import one.realme.krot.crypto.Digests
+import one.realme.krot.crypto.digest.sha256
+import one.realme.krot.crypto.digest.toHexString
+import one.realme.krot.crypto.encoding.Hex
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayOutputStream
@@ -9,9 +12,9 @@ import java.nio.ByteBuffer
 
 
 class BytesTest {
-    private val b1 = Digests.sha256("b1".toByteArray())
-    private val b2 = Digests.sha256("b2".toByteArray())
-    private val rounds = 10_000_000
+    private val b1 = "b1".toByteArray().sha256()
+    private val b2 = "b2".toByteArray().sha256()
+    private val rounds = 100_000_000
 
     private fun measureTime(desc: String, action: () -> ByteArray) {
         val timeUsed = measureTimeSeconds {
@@ -19,6 +22,31 @@ class BytesTest {
                 action()
         }
         println("$desc with $rounds times use time :  $timeUsed seconds")
+    }
+
+    @Test
+    fun testIntToByteArray() {
+        assertEquals("0000000f", 15.toByteArray().toHexString())
+        assertEquals("000000ff", 255.toByteArray().toHexString())
+        assertEquals("0000ffff", 65535.toByteArray().toHexString())
+        assertEquals("7fffffff", Int.MAX_VALUE.toByteArray().toHexString())
+    }
+
+    @Test
+    fun testLongToByteArray() {
+        assertEquals("000000000000000f", 15L.toByteArray().toHexString())
+        assertEquals("00000000000000ff", 255L.toByteArray().toHexString())
+        assertEquals("000000000000ffff", 65535L.toByteArray().toHexString())
+        assertEquals("000000007fffffff", Int.MAX_VALUE.toLong().toByteArray().toHexString())
+        assertEquals("7fffffffffffffff", Long.MAX_VALUE.toByteArray().toHexString())
+    }
+
+    @Test
+    fun testByteArrayToInt() {
+        assertEquals(15, Hex.decode("0000000f").toInt())
+        assertEquals(255, Hex.decode("000000ff").toInt())
+        assertEquals(65535, Hex.decode("0000ffff").toInt())
+        assertEquals(Int.MAX_VALUE, Hex.decode("7fffffff").toInt())
     }
 
     @Test

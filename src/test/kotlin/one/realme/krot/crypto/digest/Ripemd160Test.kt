@@ -26,7 +26,7 @@ class Ripemd160Test {
     @Test
     fun whoIsFaster() {
         val raw = "abc".toByteArray()
-        val round = 500000
+        val round = 5000000
         println("ripemd160 round : $round")
 
         val myTimeUsed = measureTimeSeconds {

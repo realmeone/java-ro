@@ -5,7 +5,7 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.int
 import one.realme.krot.chain.Address
-import one.realme.krot.crypto.BCSecp256k1
+import one.realme.krot.crypto.sign.BCSecp256k1
 
 /**
  * ro address create

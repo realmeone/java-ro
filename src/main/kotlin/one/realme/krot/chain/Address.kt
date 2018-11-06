@@ -1,10 +1,10 @@
 package one.realme.krot.chain
 
+import one.realme.krot.crypto.digest.ripemd160
+import one.realme.krot.crypto.digest.sha256
+import one.realme.krot.crypto.digest.sha256Twice
 import one.realme.krot.crypto.encoding.Base58
 import one.realme.krot.crypto.encoding.Hex
-import one.realme.krot.crypto.ripemd160
-import one.realme.krot.crypto.sha256
-import one.realme.krot.crypto.sha256Twice
 import java.nio.ByteBuffer
 import java.util.*
 
@@ -28,7 +28,7 @@ class Address {
     }
 
     fun toHash160(): String = Hex.encode(bytes.copyOfRange(1, 21))
-    fun toBytes(): ByteArray = bytes.clone()
+    fun toByteArray(): ByteArray = bytes.clone()
 
     override fun toString(): String = Base58.encode(bytes)
 

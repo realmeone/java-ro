@@ -1,7 +1,7 @@
 package one.realme.krot.crypto.secp256k1
 
 import one.realme.krot.common.measureTimeSeconds
-import one.realme.krot.crypto.BCSecp256k1
+import one.realme.krot.crypto.sign.BCSecp256k1
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
