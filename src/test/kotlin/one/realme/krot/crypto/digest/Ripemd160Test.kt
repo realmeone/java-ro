@@ -25,23 +25,22 @@ class Ripemd160Test {
 
     @Test
     fun whoIsFaster() {
-        val raw = "abc".toByteArray()
+        val raw = "abc".repeat(10).toByteArray()
         val round = 5000000
         println("ripemd160 round : $round")
-
-        val myTimeUsed = measureTimeSeconds {
-            IntStream.range(0, round).parallel().forEach {
-                Ripemd160().digest(raw)
-            }
-        }
-        println("my use time : $myTimeUsed seconds")
-
         val bcTimeUsed = measureTimeSeconds {
-            IntStream.range(0, round).parallel().forEach {
+            IntStream.range(0, round).forEach {
                 RIPEMD160Digest().inOneGo(raw)
             }
         }
         println("BC use time : $bcTimeUsed seconds")
+
+        val ktTimeUsed = measureTimeSeconds {
+            IntStream.range(0, round).forEach {
+                Ripemd160().digest(raw)
+            }
+        }
+        println("kt use time : $ktTimeUsed seconds")
     }
 
     @Test
@@ -54,7 +53,8 @@ class Ripemd160Test {
                 listOf("F71C27109C692C1B56BBDCEB5B9D2865B3708DBC", "abcdefghijklmnopqrstuvwxyz"),
                 listOf("12A053384A9C0C88E405A06C27DCF49ADA62EB2B", "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"),
                 listOf("B0E20B6E3116640286ED3A87A5713079B21F5189", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"),
-                listOf("9B752E45573D4B39F4DBD3323CAB82BF63326BFB", "12345678901234567890123456789012345678901234567890123456789012345678901234567890"),
+                listOf("9B752E45573D4B39F4DBD3323CAB82BF63326BFB", "1234567890".repeat(8)),
+                listOf("52783243c1697bdbe16d37f97f68f08325dc1528", "a".repeat(1_000_000)),
                 listOf("A7AB75AE5E53DBA6EEA54B2F74A08BCB03991CAA", "7"),
                 listOf("613C79611BFC3C408FB38CEC52DFF48DC60BF101", "Zw"),
                 listOf("33BD259D8C4E0D09B521CFE56C56AA7862A0A72B", "W5!"),
