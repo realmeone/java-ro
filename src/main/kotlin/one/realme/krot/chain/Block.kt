@@ -15,37 +15,37 @@ class Block(
     private val transactions = Vector<Transaction>()
 
     val merkleRootHash by lazy {
-        Merkle.merkleTreeRoot(transactions.map { it.hash() }.toList())
+        Merkle.merkleTreeRoot(transactions.map { it.hash }.toList())
     }
 
     val hash by lazy {
-        val bytes = ByteBuffer.allocate(72)
-                .put(version.toByte()) // int 4 bytes
-                .put(prevBlockHash.toByteArray()) // hash 32 bytes
-                .put(merkleRootHash.toByteArray()) // hash 32 bytes
-                .put(timestamp.toByteArray()) // time 4 bytes
-                .array()
-        Hash.fromBytes(bytes.sha256Twice())
+        Hash.fromBytes(toByteArray().sha256Twice())
     }
 
-    fun header(): BlockHeader {
-        return BlockHeader(
-                version = version,
-                prevBlockHash = prevBlockHash,
-                merkleRootHash = merkleRootHash,
-                time = timestamp
-        )
-    }
+    fun toByteArray(): ByteArray = ByteBuffer.allocate(72)
+            .put(version.toByte()) // int 4 bytes
+            .put(prevBlockHash.toByteArray()) // hash 32 bytes
+            .put(merkleRootHash.toByteArray()) // hash 32 bytes
+            .put(timestamp.toByteArray()) // time 4 bytes
+            .array()
 
-    override fun toString(): String {
-        return String.format(
-                "Block(height=%d, hash=%s, ver=0x%08x, prevBlockHash=%s, merkleRoot=%s, time=%d)\n",
-                height,
-                hash,
-                version,
-                prevBlockHash,
-                merkleRootHash,
-                timestamp.toInt()
-        )
-    }
+    fun header(): BlockHeader =
+            BlockHeader(
+                    version = version,
+                    prevBlockHash = prevBlockHash,
+                    merkleRootHash = merkleRootHash,
+                    time = timestamp
+            )
+
+    override fun toString(): String =
+            String.format(
+                    "Block(height=%d, hash=%s, ver=0x%08x, prevBlockHash=%s, merkleRoot=%s, time=%d)\n",
+                    height,
+                    hash,
+                    version,
+                    prevBlockHash,
+                    merkleRootHash,
+                    timestamp.toInt()
+            )
+    
 }

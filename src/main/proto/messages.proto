@@ -8,7 +8,7 @@ message Block {
     bytes previous_block_hash = 2;
     bytes merkle_root_hash = 3;
     uint32 timestamp = 4;
-    uint32 hash = 5;
+    bytes hash = 5;
     repeated Transaction transactions = 7;
 }
 

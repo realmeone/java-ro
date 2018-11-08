@@ -10,9 +10,9 @@ class TransactionTest {
         val to = Address("1NHA43BPGU5CFjGLzht5KDyZPeccdGUPch")
         val txCb = Transaction.coinbase(to)
         println(txCb)
-        println(txCb.hash())
+        println(txCb.hash)
         assertEquals(Coin.BASE_REWARD, txCb.amount)
-        assertEquals(32, txCb.hash().toByteArray().size)
+        assertEquals(32, txCb.hash.toByteArray().size)
     }
 
     @Test
@@ -21,9 +21,9 @@ class TransactionTest {
         val to = Address("1NHA43BPGU5CFjGLzht5KDyZPeccdGUPch")
         val amount = Coin.ONE * 10 // 10 coins
         val tx1 = Transaction(from, to, amount)
-        val tx1Hash = tx1.hash()
+        val tx1Hash = tx1.hash
         println(tx1Hash.toString())
-        assertEquals(32, tx1.hash().toByteArray().size)
+        assertEquals(32, tx1.hash.toByteArray().size)
     }
 
     @Test
@@ -32,9 +32,9 @@ class TransactionTest {
         val to = Address("1NHA43BPGU5CFjGLzht5KDyZPeccdGUPch")
         val amount = Coin.ONE * 10 // 10 coins
         val tx1 = Transaction(from, to, amount, "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks".toByteArray())
-        val tx1Hash = tx1.hash()
+        val tx1Hash = tx1.hash
         println(tx1Hash.toString())
-        assertEquals(32, tx1.hash().toByteArray().size)
+        assertEquals(32, tx1.hash.toByteArray().size)
     }
 
     @Test
@@ -43,8 +43,8 @@ class TransactionTest {
         val to = Address("1NHA43BPGU5CFjGLzht5KDyZPeccdGUPch")
         val amount = Coin.ONE * 10 // 10 coins
         val tx1 = Transaction(from, to, amount, "OP_DUP OP_HASH160 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG".toByteArray())
-        val tx1Hash = tx1.hash()
+        val tx1Hash = tx1.hash
         println(tx1Hash.toString())
-        assertEquals(32, tx1.hash().toByteArray().size)
+        assertEquals(32, tx1.hash.toByteArray().size)
     }
 }
