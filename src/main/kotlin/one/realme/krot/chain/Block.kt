@@ -23,7 +23,7 @@ class Block(
                 .put(version.toByte()) // int 4 bytes
                 .put(prevBlockHash.toByteArray()) // hash 32 bytes
                 .put(merkleRootHash.toByteArray()) // hash 32 bytes
-                .put(timestamp.toBytes()) // time 4 bytes
+                .put(timestamp.toByteArray()) // time 4 bytes
                 .array()
         Hash.fromBytes(bytes.sha256Twice())
     }

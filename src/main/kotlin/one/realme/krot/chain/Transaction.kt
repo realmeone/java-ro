@@ -1,8 +1,8 @@
 package one.realme.krot.chain
 
 import one.realme.krot.common.UnixTime
-import one.realme.krot.crypto.sign.BCSecp256k1
 import one.realme.krot.crypto.digest.sha256Twice
+import one.realme.krot.crypto.sign.BCSecp256k1
 import java.nio.ByteBuffer
 
 /**
@@ -30,7 +30,7 @@ class Transaction(
                 .put(from.toByteArray()) // 25 bytes
                 .put(to.toByteArray()) // 25 bytes
                 .put(amount.toByteArray()) // 8 bytes
-                .put(timestamp.toBytes()) // 4 bytes
+                .put(timestamp.toByteArray()) // 4 bytes
                 .put(payload)
         return Hash.fromBytes(buffer.array().sha256Twice())
     }

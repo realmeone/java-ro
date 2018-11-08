@@ -69,12 +69,8 @@ class Ripemd160 {
             update(0.toByte())
         }
 
-        if (xOff > 14) {
-            processBlock()
-        }
+        processLength(bitLength)
 
-        x[14] = (bitLength and -0x1).toInt()
-        x[15] = bitLength.ushr(32).toInt()
         processBlock()
 
 
@@ -87,6 +83,22 @@ class Ripemd160 {
         writeLE32(output, h4, 16)
 
         return output
+    }
+
+    private fun processWord(bytes: ByteArray, inOff: Int) {
+        x[xOff++] = readLE32(bytes, inOff)
+        if (xOff == 16) {
+            processBlock()
+        }
+    }
+
+    private fun processLength(bitLength: Long) {
+        if (xOff > 14) {
+            processBlock()
+        }
+
+        x[14] = (bitLength and -0x1).toInt()
+        x[15] = bitLength.ushr(32).toInt()
     }
 
 
@@ -145,16 +157,9 @@ class Ripemd160 {
         return x xor (y or z.inv())
     }
 
-    private fun processWord(`in`: ByteArray, inOff: Int) {
-        x[xOff++] = readLE32(`in`, inOff)
-        if (xOff == 16) {
-            processBlock()
-        }
-    }
 
-
-    private fun update(`in`: Byte) {
-        xBuf[xBufOff++] = `in`
+    private fun update(byte: Byte) {
+        xBuf[xBufOff++] = byte
 
         if (xBufOff == xBuf.size) {
             processWord(xBuf, 0)

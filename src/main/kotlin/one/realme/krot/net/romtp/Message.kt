@@ -26,7 +26,7 @@ class Message(
         val PONG = Message(type = MessageType.PONG)
         val GET_TIME = Message(type = MessageType.GET_TIME)
         // instance message
-        fun time() = Message(type = MessageType.TIME, content = UnixTime.now().toBytes())
+        fun time() = Message(type = MessageType.TIME, content = UnixTime.now().toByteArray())
     }
 
     override fun toString(): String {
