@@ -5,7 +5,7 @@ import one.realme.krot.chain.Block
 import one.realme.krot.chain.Hash
 import one.realme.krot.common.UnixTime
 import one.realme.krot.common.measureTimeSeconds
-import one.realme.krot.crypto.encoding.Hex
+import one.realme.krot.crypto.Hex
 import one.realme.krot.net.romtp.Messages
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

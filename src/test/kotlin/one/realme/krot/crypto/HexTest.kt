@@ -1,4 +1,4 @@
-package one.realme.krot.crypto.encoding
+package one.realme.krot.crypto
 
 import one.realme.krot.common.measureTimeSeconds
 import org.junit.jupiter.api.Assertions.assertArrayEquals

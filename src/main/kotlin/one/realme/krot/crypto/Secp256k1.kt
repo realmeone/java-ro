@@ -1,6 +1,5 @@
-package one.realme.krot.crypto.sign
+package one.realme.krot.crypto
 
-import one.realme.krot.crypto.encoding.Hex
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey
 import org.bouncycastle.jce.ECNamedCurveTable
@@ -16,7 +15,7 @@ import java.security.*
  *
  * secp256k1 faster than SUN Provider and my Provider
  */
-object BCSecp256k1 {
+object Secp256k1 {
     // the data already SHA256 hashed. so there is no need for SHA256withECDSA
     private const val ALG_SIGN = "NONEwithECDSA"
     private const val ALG_PROVIDER = "BC"

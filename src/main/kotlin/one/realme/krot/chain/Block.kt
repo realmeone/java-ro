@@ -2,7 +2,7 @@ package one.realme.krot.chain
 
 import one.realme.krot.common.UnixTime
 import one.realme.krot.common.Version
-import one.realme.krot.crypto.digest.sha256Twice
+import one.realme.krot.crypto.sha256Twice
 import java.nio.ByteBuffer
 import java.util.*
 

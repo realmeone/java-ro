@@ -1,6 +1,6 @@
 package one.realme.krot.crypto.secp256k1;
 
-import one.realme.krot.crypto.encoding.Hex;
+import one.realme.krot.crypto.Hex;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -15,7 +15,7 @@ import java.security.SecureRandom;
  * @deprecated use provider BC , because it is faster faster faster!!!!
  */
 @Deprecated
-public final class Secp256k1 {
+public final class PySecp256k1 {
     private final static int RADIX = 16;
     private final static int HASH_DATA_LENGTH = 64;
     private final static int RAW_PUBLIC_KEY_LENGTH = 2 + 64 + 64;
@@ -33,7 +33,7 @@ public final class Secp256k1 {
     private final ECPoint bigG;
     private final CurveFp curve256;
 
-    public Secp256k1() {
+    public PySecp256k1() {
         curve256 = CurveFp.curve256();
         bigG = new ECPoint(curve256, gX, gY);
     }

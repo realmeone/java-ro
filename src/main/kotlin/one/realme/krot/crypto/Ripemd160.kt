@@ -1,4 +1,4 @@
-package one.realme.krot.crypto.digest
+package one.realme.krot.crypto
 
 /**
  * ripemd 160 hash

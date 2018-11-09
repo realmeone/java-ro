@@ -1,7 +1,7 @@
-package one.realme.krot.crypto.secp256k1
+package one.realme.krot.crypto
 
 import one.realme.krot.common.measureTimeSeconds
-import one.realme.krot.crypto.sign.BCSecp256k1
+import one.realme.krot.crypto.secp256k1.PySecp256k1
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
@@ -14,14 +14,14 @@ import java.util.stream.IntStream
  * some test case from https://github.com/bitcoin-core/secp256k1/blob/master/src/java/org/bitcoin/NativeSecp256k1Test.java
  * some test case from https://github.com/ludbb/secp256k1-py
  */
-class Secp256k1Test {
+class Secp256K1Test {
 
     @Test
     fun whoIsFasterVeriy() {
         val sig = "3044022079BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F817980220294F14E883B3F525B5367756C2A11EF6CF84B730B36C17CB0C56F0AAB2C98589"
         val data = "CF80CD8AED482D5D1527D7DC72FCEFF84E6326592848447D2DC0B0E87DFC9A90"//sha256hash of "testing"
         val pub = "040A629506E1B65CD9D2E0BA9C75DF9C4FED0DB16DC9625ED14397F0AFC836FAE595DC53F8B0EFE61E703075BD9B143BAC75EC0E19F82A2208CAEB32BE53414C40"
-        val mySecp256k1 = Secp256k1()
+        val mySecp256k1 = PySecp256k1()
 
         val round = 2000
         println("verify round : $round")
@@ -34,7 +34,7 @@ class Secp256k1Test {
 
         val bcTimeUsed = measureTimeSeconds {
             IntStream.range(0, round).parallel().forEach {
-                BCSecp256k1.verify(data, sig, pub)
+                Secp256k1.verify(data, sig, pub)
             }
         }
         println("BC use time : $bcTimeUsed seconds")
@@ -43,7 +43,7 @@ class Secp256k1Test {
     @Test
     fun whoIsFaster() {
         val data = "CF80CD8AED482D5D1527D7DC72FCEFF84E6326592848447D2DC0B0E87DFC9A90"//sha256hash of "testing"
-        val mySecp256k1 = Secp256k1()
+        val mySecp256k1 = PySecp256k1()
         val keyPair = ECSecp256k1.newKeyPair()
         val sec = keyPair.first
 //        val ecPub = keyPair.second
@@ -59,7 +59,7 @@ class Secp256k1Test {
 
         val bcTimeUsed = measureTimeSeconds {
             IntStream.range(0, round).parallel().forEach {
-                BCSecp256k1.sign(data, sec)
+                Secp256k1.sign(data, sec)
             }
         }
         println("BC use time : $bcTimeUsed seconds")
@@ -68,7 +68,7 @@ class Secp256k1Test {
     @Test
     fun heavyTestSignAndVerifyWithBc() {
         val data = "CF80CD8AED482D5D1527D7DC72FCEFF84E6326592848447D2DC0B0E87DFC9A90"//sha256hash of "testing"
-        val mySecp256k1 = Secp256k1()
+        val mySecp256k1 = PySecp256k1()
         IntStream.range(0, 1000).parallel().forEach {
             iTestSignAndVerifyWithBc(mySecp256k1, data)
         }
@@ -77,38 +77,38 @@ class Secp256k1Test {
     @Test
     fun testSignAndVerifyWithBc() {
         val data = "CF80CD8AED482D5D1527D7DC72FCEFF84E6326592848447D2DC0B0E87DFC9A90"//sha256hash of "testing"
-        val mySecp256k1 = Secp256k1()
+        val mySecp256k1 = PySecp256k1()
         iTestSignAndVerifyWithBc(mySecp256k1, data)
     }
 
-    private fun iTestSignAndVerifyWithBc(mySecp256k1: Secp256k1, data: String) {
+    private fun iTestSignAndVerifyWithBc(myPySecp256K1: PySecp256k1, data: String) {
         val keyPair = ECSecp256k1.newKeyPair()
         val sec = keyPair.first
         val ecPub = keyPair.second
-        val myPub = mySecp256k1.computePublicKey(sec)
+        val myPub = myPySecp256K1.computePublicKey(sec)
         assertEquals(ecPub, myPub)
 
         // sign with my, verify with bc
-        val mySig = mySecp256k1.sign(data, sec)
-        assertTrue(BCSecp256k1.verify(data, mySig, ecPub))
+        val mySig = myPySecp256K1.sign(data, sec)
+        assertTrue(Secp256k1.verify(data, mySig, ecPub))
 
         // sign with bc, verify with my
-        val bcSig = BCSecp256k1.sign(data, sec)
+        val bcSig = Secp256k1.sign(data, sec)
 //        val ecSig = ECSecp256k1.sign(data, sec)
-        assertTrue(mySecp256k1.verify(data, bcSig, myPub))
+        assertTrue(myPySecp256K1.verify(data, bcSig, myPub))
     }
 
     @Test
     fun testSignAndVerify() {
         val data = "CF80CD8AED482D5D1527D7DC72FCEFF84E6326592848447D2DC0B0E87DFC9A90"//sha256hash of "testing"
         val sec = "67E56582298859DDAE725F972992A07C6C4FB9F62A8FFF58CE3CA926A1063530" // private key
-        val mySecp256k1 = Secp256k1()
+        val mySecp256k1 = PySecp256k1()
         val pub = mySecp256k1.computePublicKey(sec)
         val signedData = mySecp256k1.sign(data, sec)
         assertTrue(mySecp256k1.verify(data, signedData, pub))
 
-        val bcSig = BCSecp256k1.sign(data, sec)
-        assertTrue(BCSecp256k1.verify(data, bcSig, pub))
+        val bcSig = Secp256k1.sign(data, sec)
+        assertTrue(Secp256k1.verify(data, bcSig, pub))
     }
 
     @Test
@@ -116,8 +116,8 @@ class Secp256k1Test {
         val data = "CF80CD8AED482D5D1527D7DC72FCEFF84E6326592848447D2DC0B0E87DFC9A90" //sha256hash of "testing"
         val sig = "3044022079BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F817980220294F14E883B3F525B5367756C2A11EF6CF84B730B36C17CB0C56F0AAB2C98589"
         val pub = "040A629506E1B65CD9D2E0BA9C75DF9C4FED0DB16DC9625ED14397F0AFC836FAE595DC53F8B0EFE61E703075BD9B143BAC75EC0E19F82A2208CAEB32BE53414C40"
-        assertTrue(Secp256k1().verify(data, sig, pub))
-        assertTrue(BCSecp256k1.verify(data, sig, pub))
+        assertTrue(PySecp256k1().verify(data, sig, pub))
+        assertTrue(Secp256k1.verify(data, sig, pub))
     }
 
     @Test
@@ -125,8 +125,8 @@ class Secp256k1Test {
         val data = "CF80CD8AED482D5D1527D7DC72FCEFF84E6326592848447D2DC0B0E87DFC9A91" //sha256hash of "testing"
         val sig = "3044022079BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F817980220294F14E883B3F525B5367756C2A11EF6CF84B730B36C17CB0C56F0AAB2C98589".toLowerCase()
         val pub = "040A629506E1B65CD9D2E0BA9C75DF9C4FED0DB16DC9625ED14397F0AFC836FAE595DC53F8B0EFE61E703075BD9B143BAC75EC0E19F82A2208CAEB32BE53414C40".toLowerCase()
-        assertFalse(Secp256k1().verify(data, sig, pub))
-        assertFalse(BCSecp256k1.verify(data, sig, pub))
+        assertFalse(PySecp256k1().verify(data, sig, pub))
+        assertFalse(Secp256k1.verify(data, sig, pub))
     }
 
     @Test
@@ -484,7 +484,7 @@ class Secp256k1Test {
                 listOf("0794feceff06b3873adf72de307de3e095042d6bceee3b891efb82e84c666a28", "04725d165db619f79f7625fb978aca08180164e9a6b8be32c9bebc0876df261ed761184cbdeb5ac3d7ce1a159a0febe3c227c8bb837f014ab3cd8a3d43a6fcc203"),
                 listOf("14d6860653e80af5c3111a8ff82e138666e3403fdca8915086d9ffab1da5bfec", "040c3dc445708a0055f72c079915ce612921789646ea45d336300e689a5c3b78cd477a5d4ebb0067d24ffed7c63ea2110cbbef923edfa74a4cc187835b5113175f")
         )
-        val ecdsa = Secp256k1()
+        val ecdsa = PySecp256k1()
         for (it in cases)
             try {
                 assertEquals(ecdsa.computePublicKey(it[0]).toUpperCase(), it[1].toUpperCase())
@@ -493,6 +493,6 @@ class Secp256k1Test {
             }
 
         for (it in cases)
-            assertEquals(BCSecp256k1.computePublicKey(it[0]).toUpperCase(), it[1].toUpperCase())
+            assertEquals(Secp256k1.computePublicKey(it[0]).toUpperCase(), it[1].toUpperCase())
     }
 }

@@ -1,8 +1,8 @@
 package one.realme.krot.chain
 
 import com.google.common.primitives.Ints
-import one.realme.krot.crypto.encoding.Hex
-import one.realme.krot.crypto.digest.toHexString
+import one.realme.krot.crypto.Hex
+import one.realme.krot.crypto.toHexString
 
 /**
  * maybe hash32 is the right name?

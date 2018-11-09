@@ -1,6 +1,6 @@
 package one.realme.krot.net.message
 
-import one.realme.krot.crypto.digest.sha256Twice
+import one.realme.krot.crypto.sha256Twice
 import one.realme.krot.net.romtp.Message
 import one.realme.krot.net.romtp.MessageType
 import org.junit.jupiter.api.Assertions.assertArrayEquals

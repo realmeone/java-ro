@@ -1,7 +1,7 @@
 package one.realme.krot.net.romtp
 
 import one.realme.krot.common.UnixTime
-import one.realme.krot.crypto.digest.sha256Twice
+import one.realme.krot.crypto.sha256Twice
 import java.util.*
 
 /**

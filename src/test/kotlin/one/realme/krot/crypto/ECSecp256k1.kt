@@ -1,6 +1,5 @@
-package one.realme.krot.crypto.secp256k1
+package one.realme.krot.crypto
 
-import one.realme.krot.crypto.encoding.Hex
 import java.math.BigInteger
 import java.security.KeyFactory
 import java.security.KeyPairGenerator

@@ -1,4 +1,4 @@
-package one.realme.krot.crypto.encoding
+package one.realme.krot.crypto
 
 
 import org.junit.jupiter.api.Assertions.assertEquals

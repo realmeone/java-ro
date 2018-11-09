@@ -1,6 +1,6 @@
 package one.realme.krot.chain
 
-import one.realme.krot.crypto.secp256k1.ECSecp256k1
+import one.realme.krot.crypto.ECSecp256k1
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

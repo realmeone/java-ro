@@ -1,18 +1,15 @@
-package one.realme.krot.crypto.digest
+package one.realme.krot.crypto
 
 import one.realme.krot.common.measureTimeSeconds
-import one.realme.krot.crypto.encoding.Hex
 import org.bouncycastle.crypto.digests.RIPEMD160Digest
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Test
 import java.util.stream.IntStream
 
-fun RIPEMD160Digest.inOneGo(input: ByteArray): ByteArray {
+fun RIPEMD160Digest.digest(input: ByteArray): ByteArray {
     val output = ByteArray(digestSize)
-
     update(input, 0, input.size)
     doFinal(output, 0)
-
     return output
 }
 
@@ -30,7 +27,7 @@ class Ripemd160Test {
         println("ripemd160 round : $round")
         val bcTimeUsed = measureTimeSeconds {
             IntStream.range(0, round).forEach {
-                RIPEMD160Digest().inOneGo(raw)
+                RIPEMD160Digest().digest(raw)
             }
         }
         println("BC use time : $bcTimeUsed seconds")
