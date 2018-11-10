@@ -1,8 +1,8 @@
 package one.realme.krot.chain
 
 import one.realme.krot.common.UnixTime
-import one.realme.krot.crypto.sha256Twice
 import one.realme.krot.crypto.Secp256k1
+import one.realme.krot.crypto.sha256Twice
 import java.nio.ByteBuffer
 
 /**
@@ -13,20 +13,31 @@ class Transaction(
         val to: Address,
         val amount: Coin,
         val payload: ByteArray = ByteArray(0),
-        val timestamp: UnixTime = UnixTime.now()
+        val timestamp: UnixTime = UnixTime.now(),
+        var signature: String = ""
 ) {
-    var signature: String = ""
     val hash by lazy {
         Hash.fromBytes(toByteArray().sha256Twice())
     }
 
     companion object {
-        fun coinbase(to: Address): Transaction = Transaction(to, to, Coin.BASE_REWARD)
+        fun coinbase(to: Address): Transaction = Transaction(Address.empty(), to, Coin.BASE_REWARD)
     }
 
     fun sign(privateKey: String) {
         signature = Secp256k1.sign(hash.toString(), privateKey)
     }
+
+    fun isValid(): Boolean =
+            if (isCoinbase()) true
+            else try {
+                Secp256k1.verify(hash.toString(), signature, from.toString())
+            } catch (ex: Exception) {
+                false
+            }
+
+    fun isCoinbase(): Boolean = Address.empty() == to
+
 
     fun toByteArray(): ByteArray =
             ByteBuffer.allocate(62 + payload.size)

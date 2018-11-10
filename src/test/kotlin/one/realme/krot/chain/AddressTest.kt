@@ -1,6 +1,6 @@
 package one.realme.krot.chain
 
-import one.realme.krot.crypto.ECSecp256k1
+import one.realme.krot.crypto.Secp256k1
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
@@ -11,7 +11,7 @@ class AddressTest {
 
     @Test
     fun testCreate() {
-        val keyPair = ECSecp256k1.newKeyPair()
+        val keyPair = Secp256k1.newKeyPair()
         val pubKey = keyPair.second
         val addr = Address(pubKey, 0)
         println(addr)

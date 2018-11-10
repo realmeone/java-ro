@@ -12,6 +12,14 @@ import java.util.*
 class Address {
     private val bytes: ByteArray
 
+    companion object {
+        fun empty(): Address = Address(ByteArray(25))
+    }
+
+    private constructor(rawBytes: ByteArray) {
+        bytes = rawBytes
+    }
+
     constructor(base58: String) {
         bytes = Base58.decode(base58)
     }

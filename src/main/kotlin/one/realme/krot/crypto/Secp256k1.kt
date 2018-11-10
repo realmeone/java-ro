@@ -61,7 +61,7 @@ object Secp256k1 {
      * @param pub public key with "04" prefix
      */
     fun verify(data: String, sig: String, pub: String): Boolean {
-        // verify site
+        // verify params
         require(data.length == 64) { "Not a valid data, have you passed sha256 hash data?" }
         require(sig.length <= 520) { "Signed data is too big." }
         require(pub.length <= 520) { "Public key is too big." }
