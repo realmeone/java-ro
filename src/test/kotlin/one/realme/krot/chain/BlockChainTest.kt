@@ -23,5 +23,9 @@ class BlockChainTest {
         chain.slice(LongRange(1, 2)).forEach {
             println(it)
         }
+
+        chain.slice(LongRange(0, 4)).forEach {
+            println(it)
+        }
     }
 }
