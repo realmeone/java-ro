@@ -4,8 +4,8 @@ import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
-import one.realme.krot.net.romtp.MessageType
 import one.realme.krot.net.romtp.Message
+import one.realme.krot.net.romtp.header.MessageType
 import org.slf4j.LoggerFactory
 
 class ServerHandler : SimpleChannelInboundHandler<Message>() {
@@ -22,6 +22,9 @@ class ServerHandler : SimpleChannelInboundHandler<Message>() {
             }
             MessageType.DISCONNECT -> {
                 ctx.close()
+            }
+            MessageType.INV -> {
+//                ctx.writeAndFlush(Message.inv())
             }
             else -> ctx.close()
         }

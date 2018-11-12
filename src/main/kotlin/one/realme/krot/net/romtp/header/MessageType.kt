@@ -1,4 +1,4 @@
-package one.realme.krot.net.romtp
+package one.realme.krot.net.romtp.header
 
 import one.realme.krot.common.toByteArray
 
@@ -11,7 +11,12 @@ class MessageType private constructor(val code: Int) {
         val PONG = MessageType(0x03)
         val GET_TIME = MessageType(0x04)
         val TIME = MessageType(0x05)
-
+        val INV = MessageType(0x06)
+        val GET_DATA = MessageType(0x07)
+        val GET_BLOCKS = MessageType(0x08)
+        val GET_HEADERS = MessageType(0x09)
+        val BLOCK = MessageType(0x0A)
+        val TX = MessageType(0x0B)
         private val MAX = MessageType(0xFF) // just for range check
 
         fun isValid(cmd: Int): Boolean = cmd >= HELLO.code && cmd <= MAX.code

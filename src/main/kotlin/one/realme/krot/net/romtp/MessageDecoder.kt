@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
 import one.realme.krot.common.toInt
+import one.realme.krot.net.romtp.header.MessageType
 
 class MessageDecoder : ByteToMessageDecoder() {
 
@@ -13,23 +14,13 @@ class MessageDecoder : ByteToMessageDecoder() {
 
         val version = data.copyOfRange(0, 4)
         val type = data.copyOfRange(4, 8)
-        val contentChecksum = data.copyOfRange(8, 12)
-        val contentType = data.copyOfRange(12, 16)
-        val contentLength = data.copyOfRange(16, 20)
-        val content = data.copyOfRange(20, data.size)
-
-        val msg = Message(version.toInt(), MessageType.ofCode(type.toInt()),
-                ContentType.ofCode(contentType.toInt()), content)
-
-        // validate
-        require(!msg.contentChecksum.contentEquals(contentChecksum)) {
-            "content not valid"
+        val contentLength = data.copyOfRange(8, 12)
+        if (0 == contentLength.toInt())
+            out.add(Message(version.toInt(), MessageType.ofCode(type.toInt())))
+        else {
+            val content = data.copyOfRange(12, data.size)
+            out.add(Message(version.toInt(), MessageType.ofCode(type.toInt()), content))
         }
-        require(msg.contentLength != contentLength.toInt()) {
-            "content is broken"
-        }
-
-        out.add(msg)
     }
 
 }

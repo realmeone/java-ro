@@ -7,11 +7,12 @@ import one.realme.krot.common.toByteArray
 
 class MessageEncoder : MessageToByteEncoder<Message>() {
     override fun encode(ctx: ChannelHandlerContext, msg: Message, out: ByteBuf) {
-        out.writeBytes(msg.version.toByteArray() +
-                msg.type.toByteArray() +
-                msg.contentChecksum +
-                msg.contentType.toByteArray() +
-                msg.contentLength.toByteArray() +
-                msg.content)
+        if (0 == msg.length)
+            out.writeBytes(msg.version.toByteArray() + msg.type.toByteArray())
+        else
+            out.writeBytes(msg.version.toByteArray() +
+                    msg.type.toByteArray() +
+                    msg.length.toByteArray() +
+                    msg.content)
     }
 }
