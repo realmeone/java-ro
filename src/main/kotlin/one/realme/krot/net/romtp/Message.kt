@@ -1,8 +1,7 @@
 package one.realme.krot.net.romtp
 
 import one.realme.krot.common.UnixTime
-import one.realme.krot.net.romtp.body.Inv
-import one.realme.krot.net.romtp.header.MessageType
+import one.realme.krot.net.romtp.content.Inv
 import java.util.*
 
 /**

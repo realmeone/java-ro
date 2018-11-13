@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
 import one.realme.krot.common.toInt
-import one.realme.krot.net.romtp.header.MessageType
 
 class MessageDecoder : ByteToMessageDecoder() {
 

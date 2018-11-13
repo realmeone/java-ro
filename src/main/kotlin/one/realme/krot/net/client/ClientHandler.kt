@@ -5,8 +5,8 @@ import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
 import one.realme.krot.common.UnixTime
-import one.realme.krot.net.romtp.header.MessageType
 import one.realme.krot.net.romtp.Message
+import one.realme.krot.net.romtp.MessageType
 import org.slf4j.LoggerFactory
 
 class ClientHandler : SimpleChannelInboundHandler<Message>() {
@@ -31,6 +31,7 @@ class ClientHandler : SimpleChannelInboundHandler<Message>() {
 
     override fun channelActive(ctx: ChannelHandlerContext) {
         log.info("Peer Server ${ctx.channel().remoteAddress()} is connected.")
+//        ctx.writeAndFlush(Message.body(Version(Version.)))
     }
 
     override fun channelInactive(ctx: ChannelHandlerContext) {

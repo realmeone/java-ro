@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
 import one.realme.krot.net.romtp.Message
-import one.realme.krot.net.romtp.header.MessageType
+import one.realme.krot.net.romtp.MessageType
 import org.slf4j.LoggerFactory
 
 class ServerHandler : SimpleChannelInboundHandler<Message>() {

@@ -3,7 +3,6 @@ package one.realme.krot.chain
 import one.realme.krot.db.BlockDb
 import one.realme.krot.db.RocksDatabase
 import java.util.*
-import kotlin.collections.HashMap
 
 class BlockChain(
         val genesisBlock: Block,

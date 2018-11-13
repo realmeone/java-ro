@@ -7,6 +7,7 @@ import one.realme.krot.app.cmd.AddressCmd
 import one.realme.krot.app.cmd.KrotCmd
 import one.realme.krot.app.cmd.address.CreateCmd
 import one.realme.krot.app.cmd.address.ListCmd
+import one.realme.krot.chain.BlockChainService
 import one.realme.krot.common.Version
 import one.realme.krot.common.measureTimeSeconds
 import one.realme.krot.net.discover.DiscoverService
@@ -26,7 +27,8 @@ object Krot {
         val startElapsed = measureTimeSeconds {
             log.info("Starting $simpleName on ${InetAddress.getLocalHost().hostName} with PID ${ManagementFactory.getRuntimeMXBean().name.split("@")[0]} by ${System.getProperty("user.name")}")
 
-            val services = mutableListOf(
+            val services = listOf(
+                    BlockChainService,
                     PeerService,
                     DiscoverService
             )
