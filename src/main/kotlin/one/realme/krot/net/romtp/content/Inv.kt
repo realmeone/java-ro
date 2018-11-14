@@ -4,9 +4,10 @@ import one.realme.krot.common.toByteArray
 import java.nio.ByteBuffer
 
 /**
- * Allows a node to advertise its knowledge of one or more objects. It can be received unsolicited, or in reply to getblocks.
+ * Allows a node to advertise its knowledge of one or more objects.
+ * It can be received unsolicited, or in reply to getblocks.
  */
-class Inv(
+data class Inv(
         val count: Int, // Number of inventory entries
         val vectors: List<InventoryVector> // inventory vectors
 ) {

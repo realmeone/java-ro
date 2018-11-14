@@ -9,6 +9,7 @@ object BlockChainService : AbstractService() {
 
     override fun doStart() {
         log.info("Load block chain...")
+        // init block chain
         bc = BlockChain(Block.genesis())
     }
 

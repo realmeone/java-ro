@@ -13,7 +13,7 @@ import java.nio.ByteBuffer
  * in the chain is not allowed to avoid having clients
  * start to depend on nodes having full transaction indexes (which modern nodes do not).
  */
-class GetData(
+data class GetData(
         val count: Int, // Number of inventory entries
         val vectors: List<InventoryVector>
 ) {

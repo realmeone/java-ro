@@ -9,6 +9,7 @@ import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.handler.logging.LoggingHandler
 import io.netty.handler.timeout.ReadTimeoutHandler
+import one.realme.krot.chain.BlockChainService
 import one.realme.krot.net.romtp.MessageDecoder
 import one.realme.krot.net.romtp.MessageEncoder
 import org.slf4j.LoggerFactory
@@ -50,7 +51,7 @@ object PeerService : AbstractExecutionThreadService() {
                         ch.pipeline().addLast(ReadTimeoutHandler(60, TimeUnit.SECONDS))
                         ch.pipeline().addLast(MessageEncoder())
                         ch.pipeline().addLast(MessageDecoder())
-                        ch.pipeline().addLast(ServerHandler())
+                        ch.pipeline().addLast(ServerHandler(BlockChainService.bc))
                     }
                 })
                 .childOption(ChannelOption.SO_KEEPALIVE, true)

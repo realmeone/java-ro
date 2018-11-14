@@ -4,26 +4,24 @@ package one.realme.krot.net.client
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
+import one.realme.krot.chain.BlockChain
 import one.realme.krot.common.UnixTime
 import one.realme.krot.net.romtp.Message
 import one.realme.krot.net.romtp.MessageType
 import org.slf4j.LoggerFactory
 
-class ClientHandler : SimpleChannelInboundHandler<Message>() {
+class ClientHandler(val chain: BlockChain) : SimpleChannelInboundHandler<Message>() {
     private val log = LoggerFactory.getLogger(ClientHandler::class.java)
 
     override fun channelRead0(ctx: ChannelHandlerContext, msg: Message) {
         log.info("received from ${ctx.channel().remoteAddress()} : [$msg]")
         when (msg.type) {
-            MessageType.HELLO -> {
-                ctx.writeAndFlush(Message.PING)
+            MessageType.VERSION -> {
             }
             MessageType.PONG -> {
-                ctx.writeAndFlush(Message.GET_TIME)
             }
             MessageType.TIME -> {
                 log.info(UnixTime.fromBytes(msg.content).toString())
-                ctx.writeAndFlush(Message.DISCONNECT)
             }
             else -> ctx.close()
         }
@@ -31,7 +29,6 @@ class ClientHandler : SimpleChannelInboundHandler<Message>() {
 
     override fun channelActive(ctx: ChannelHandlerContext) {
         log.info("Peer Server ${ctx.channel().remoteAddress()} is connected.")
-//        ctx.writeAndFlush(Message.body(Version(Version.)))
     }
 
     override fun channelInactive(ctx: ChannelHandlerContext) {

@@ -9,6 +9,8 @@ import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioSocketChannel
 import io.netty.handler.timeout.ReadTimeoutHandler
+import one.realme.krot.chain.BlockChain
+import one.realme.krot.chain.BlockChainService
 import one.realme.krot.net.romtp.Message
 import one.realme.krot.net.romtp.MessageDecoder
 import one.realme.krot.net.romtp.MessageEncoder
@@ -20,7 +22,8 @@ import java.util.concurrent.TimeUnit
  */
 class PeerClient(
         val host: String = "127.0.0.1",
-        val port: Int = 50505
+        val port: Int = 50505,
+        val chain: BlockChain
 ) {
     private val log = LoggerFactory.getLogger(PeerClient::class.java)
     private val workerGroup: EventLoopGroup = NioEventLoopGroup()
@@ -35,7 +38,7 @@ class PeerClient(
                         ch.pipeline().addLast(ReadTimeoutHandler(60, TimeUnit.SECONDS))
                         ch.pipeline().addLast(MessageEncoder())
                         ch.pipeline().addLast(MessageDecoder())
-                        ch.pipeline().addLast(ClientHandler())
+                        ch.pipeline().addLast(ClientHandler(chain))
                     }
                 })
                 .connect(host, port).sync()

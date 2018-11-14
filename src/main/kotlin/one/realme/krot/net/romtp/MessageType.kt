@@ -5,8 +5,7 @@ import one.realme.krot.common.toByteArray
 class MessageType private constructor(val code: Int) {
 
     companion object {
-        val HELLO = MessageType(0x00)
-        val DISCONNECT = MessageType(0x01)
+        val VERSION = MessageType(0x00)
         val PING = MessageType(0x02)
         val PONG = MessageType(0x03)
         val GET_TIME = MessageType(0x04)
@@ -19,7 +18,7 @@ class MessageType private constructor(val code: Int) {
         val TX = MessageType(0x0B)
         private val MAX = MessageType(0xFF) // just for range check
 
-        fun isValid(cmd: Int): Boolean = cmd >= HELLO.code && cmd <= MAX.code
+        fun isValid(cmd: Int): Boolean = cmd >= VERSION.code && cmd <= MAX.code
         fun ofCode(code: Int): MessageType {
             require(isValid(code)) {
                 "not valid type"

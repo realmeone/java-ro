@@ -1,5 +1,9 @@
 package one.realme.krot.net.romtp.content
 
+/**
+ * when a peer client connect to server, send this message, and will receive ver.
+ * No further communication is possible until both peers have exchanged their ver.
+ */
 class Ver(
         val version: Int, // 4bytes
         val timestamp: Int, // 4 bytes

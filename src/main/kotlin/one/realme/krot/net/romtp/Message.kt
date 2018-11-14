@@ -1,7 +1,11 @@
 package one.realme.krot.net.romtp
 
 import one.realme.krot.common.UnixTime
+import one.realme.krot.common.Version
 import one.realme.krot.net.romtp.content.Inv
+import one.realme.krot.net.romtp.content.Ping
+import one.realme.krot.net.romtp.content.Pong
+import one.realme.krot.net.romtp.content.Ver
 import java.util.*
 
 /**
@@ -17,18 +21,15 @@ class Message(
 ) {
 
     companion object {
-        // static message
-        val HELLO = Message(type = MessageType.HELLO)
-        val DISCONNECT = Message(type = MessageType.DISCONNECT)
-        val PING = Message(type = MessageType.PING)
-        val PONG = Message(type = MessageType.PONG)
-        val GET_TIME = Message(type = MessageType.GET_TIME)
-        // instance message
+        fun getTime() = Message(type = MessageType.GET_TIME)
+        fun ping() = Message(type = MessageType.PING, content = Ping().toByteArray())
+        fun pong() = Message(type = MessageType.PING, content = Pong().toByteArray())
         fun time() = Message(type = MessageType.TIME, content = UnixTime.now().toByteArray())
         fun inv(inv: Inv) = Message(type = MessageType.INV, content = inv.toByteArray())
-    }
-
-    override fun toString(): String {
-        return "Message(type=$type, content=${Arrays.toString(content)}, length=$length)"
+//        fun version(height: Long) = Message(type = MessageType.VERSION,
+//                content = Ver(
+//                        Version.CURRENT,
+//                        UnixTime.now().toInt()
+//                ))
     }
 }
