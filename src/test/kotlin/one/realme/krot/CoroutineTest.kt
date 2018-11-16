@@ -5,7 +5,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.produce
-import one.realme.krot.common.measureTimeSeconds
+import one.realme.krot.common.lang.measureTimeSeconds
 import org.junit.jupiter.api.Test
 
 @ObsoleteCoroutinesApi
