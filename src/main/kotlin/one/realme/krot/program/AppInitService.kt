@@ -12,7 +12,7 @@ class AppInitService(private val context: AppContext) : AbstractService() {
         // create genesis
         val genesis = createGenesisBlock()
         context.chain = BlockChain(genesis)
-        context.config = AppEnvironment()
+        context.config = ApplicationConfig()
         context.config.load("testnet.conf")
     }
 

@@ -7,5 +7,5 @@ import one.realme.krot.module.chain.BlockChain
  */
 class AppContext {
     lateinit var chain: BlockChain
-    lateinit var config: AppEnvironment
+    lateinit var config: ApplicationConfig
 }
