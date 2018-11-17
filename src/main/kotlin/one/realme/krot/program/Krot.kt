@@ -6,9 +6,9 @@ import com.google.common.base.Stopwatch
 import com.google.common.util.concurrent.ServiceManager
 import one.realme.krot.common.Version
 import one.realme.krot.common.lang.measureTimeSeconds
-import one.realme.krot.module.chain.ChainService
-import one.realme.krot.module.discover.DiscoverService
-import one.realme.krot.module.net.server.PeerService
+import one.realme.krot.service.chain.ChainService
+import one.realme.krot.service.discover.DiscoverService
+import one.realme.krot.service.net.server.PeerService
 import one.realme.krot.program.cmd.AddressCmd
 import one.realme.krot.program.cmd.KrotCmd
 import one.realme.krot.program.cmd.address.CreateCmd
@@ -19,7 +19,6 @@ import java.net.InetAddress
 import java.util.concurrent.TimeUnit
 
 /**
- * A TCP Server
  */
 object Krot {
     private val log = LoggerFactory.getLogger(Krot.javaClass)
@@ -30,18 +29,18 @@ object Krot {
         log.info("Starting $simpleName on ${InetAddress.getLocalHost().hostName} with PID ${ManagementFactory.getRuntimeMXBean().name.split("@")[0]} by ${System.getProperty("user.name")}")
 
         // init config
-
-        // init blockchain
-        val context = ApplicationContext()
-
-        // init config
-        context.config = ApplicationConfig()
-        context.config.load("testnet.conf") // todo read from args
+        Context.config = Configuration()
+        Context.config.load("testnet.conf") // todo read from args
 
         // init services, follow order
-        val services = listOf(ChainService(context), PeerService(context), DiscoverService())
+        Context.chainService = ChainService()
+        Context.peerService = PeerService()
+        Context.discoverService = DiscoverService()
 
+        // start services
+        val services = listOf(Context.chainService, Context.peerService, Context.discoverService)
         val serviceManager = ServiceManager(services)
+
         Runtime.getRuntime().addShutdownHook(Thread {
             log.info("Closing $simpleName by ${System.getProperty("user.name")}")
             val stopElapsed = measureTimeSeconds {

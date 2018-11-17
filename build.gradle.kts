@@ -44,7 +44,6 @@ dependencies {
     implementation("com.github.ajalt:clikt:1.5.0")
     implementation("com.github.ajalt:mordant:1.2.0")
     implementation("com.typesafe:config:1.3.3")
-    implementation("org.kodein.di:kodein-di-generic-jvm:5.3.0")
     implementation("com.google.protobuf:protobuf-java:3.6.1")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1")
