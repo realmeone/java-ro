@@ -9,7 +9,7 @@ import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.handler.logging.LoggingHandler
 import io.netty.handler.timeout.ReadTimeoutHandler
-import one.realme.krot.program.AppContext
+import one.realme.krot.program.ApplicationContext
 import one.realme.krot.module.net.romtp.MessageDecoder
 import one.realme.krot.module.net.romtp.MessageEncoder
 import org.slf4j.LoggerFactory
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 /**
  * PeerService Service
  */
-class PeerService(val context: AppContext) : AbstractExecutionThreadService() {
+class PeerService(val context: ApplicationContext) : AbstractExecutionThreadService() {
     private val log = LoggerFactory.getLogger(PeerService::class.java)
 
     private var port = 50505
@@ -49,7 +49,7 @@ class PeerService(val context: AppContext) : AbstractExecutionThreadService() {
                         ch.pipeline().addLast(ReadTimeoutHandler(60, TimeUnit.SECONDS))
                         ch.pipeline().addLast(MessageEncoder())
                         ch.pipeline().addLast(MessageDecoder())
-                        ch.pipeline().addLast(ServerHandler(context.chain))
+                        ch.pipeline().addLast(ServerHandler(context.chainService))
                     }
                 })
                 .childOption(ChannelOption.SO_KEEPALIVE, true)

@@ -8,6 +8,7 @@ import com.typesafe.config.ConfigFactory
  */
 class ApplicationConfig {
     private val defaultConfFile = "testnet.conf"
+    
     lateinit var genesis: Genesis
     lateinit var net: Net
     lateinit var application: Application

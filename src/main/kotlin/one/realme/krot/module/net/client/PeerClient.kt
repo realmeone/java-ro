@@ -10,6 +10,7 @@ import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioSocketChannel
 import io.netty.handler.timeout.ReadTimeoutHandler
 import one.realme.krot.module.chain.BlockChain
+import one.realme.krot.module.chain.ChainService
 import one.realme.krot.module.net.romtp.Message
 import one.realme.krot.module.net.romtp.MessageDecoder
 import one.realme.krot.module.net.romtp.MessageEncoder

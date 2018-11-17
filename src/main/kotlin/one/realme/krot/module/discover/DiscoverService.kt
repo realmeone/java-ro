@@ -1,4 +1,4 @@
-package one.realme.krot.module.net.discover
+package one.realme.krot.module.discover
 
 import com.google.common.util.concurrent.AbstractExecutionThreadService
 import org.slf4j.LoggerFactory

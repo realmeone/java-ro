@@ -6,7 +6,8 @@ import com.google.common.base.Stopwatch
 import com.google.common.util.concurrent.ServiceManager
 import one.realme.krot.common.Version
 import one.realme.krot.common.lang.measureTimeSeconds
-import one.realme.krot.module.net.discover.DiscoverService
+import one.realme.krot.module.chain.ChainService
+import one.realme.krot.module.discover.DiscoverService
 import one.realme.krot.module.net.server.PeerService
 import one.realme.krot.program.cmd.AddressCmd
 import one.realme.krot.program.cmd.KrotCmd
@@ -31,9 +32,14 @@ object Krot {
         // init config
 
         // init blockchain
-        val context = AppContext()
+        val context = ApplicationContext()
+
+        // init config
+        context.config = ApplicationConfig()
+        context.config.load("testnet.conf") // todo read from args
+
         // init services, follow order
-        val services = listOf(AppInitService(context), PeerService(context), DiscoverService())
+        val services = listOf(ChainService(context), PeerService(context), DiscoverService())
 
         val serviceManager = ServiceManager(services)
         Runtime.getRuntime().addShutdownHook(Thread {

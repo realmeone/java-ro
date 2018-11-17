@@ -4,8 +4,9 @@ package one.realme.krot.module.net.client
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
-import one.realme.krot.module.chain.BlockChain
 import one.realme.krot.common.lang.UnixTime
+import one.realme.krot.module.chain.BlockChain
+import one.realme.krot.module.chain.ChainService
 import one.realme.krot.module.net.romtp.Message
 import one.realme.krot.module.net.romtp.MessageType
 import org.slf4j.LoggerFactory
