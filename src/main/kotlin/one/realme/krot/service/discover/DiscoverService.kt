@@ -1,12 +1,13 @@
 package one.realme.krot.service.discover
 
 import com.google.common.util.concurrent.AbstractExecutionThreadService
+import one.realme.krot.common.appbase.Configuration
 import org.slf4j.LoggerFactory
 
 /**
  * Discover a peer, add peer to peers and start peer
  */
-class DiscoverService : AbstractExecutionThreadService() {
+class DiscoverService(config: Configuration) : AbstractExecutionThreadService() {
     private val log = LoggerFactory.getLogger(DiscoverService::class.java)
     private var port = 50506
 

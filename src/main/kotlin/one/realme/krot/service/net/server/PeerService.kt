@@ -9,7 +9,8 @@ import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.handler.logging.LoggingHandler
 import io.netty.handler.timeout.ReadTimeoutHandler
-import one.realme.krot.program.Context
+import one.realme.krot.common.appbase.Configuration
+import one.realme.krot.service.chain.ChainService
 import one.realme.krot.service.net.romtp.MessageDecoder
 import one.realme.krot.service.net.romtp.MessageEncoder
 import org.slf4j.LoggerFactory
@@ -20,12 +21,11 @@ import java.util.concurrent.TimeUnit
  *
  * dependency to chain service
  */
-class PeerService : AbstractExecutionThreadService() {
+class PeerService(config: Configuration, private val chainService: ChainService) : AbstractExecutionThreadService() {
     private val log = LoggerFactory.getLogger(PeerService::class.java)
 
-    private val chainService = Context.chainService
-    private val port = Context.config.net.port
-    private val maxPeer = Context.config.net.maxPeer
+    private val port = config.net.port
+    private val maxPeer = config.net.maxPeer
 
     private lateinit var bossGroup: NioEventLoopGroup
     private lateinit var workerGroup: NioEventLoopGroup

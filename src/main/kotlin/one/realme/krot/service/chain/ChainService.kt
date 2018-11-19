@@ -1,24 +1,22 @@
 package one.realme.krot.service.chain
 
 import com.google.common.util.concurrent.AbstractService
-import one.realme.krot.common.db.RocksDatabase
+import one.realme.krot.common.appbase.Configuration
 import one.realme.krot.common.lang.UnixTime
 import one.realme.krot.common.primitive.Block
-import one.realme.krot.common.primitive.Transaction
-import one.realme.krot.program.Context
 import org.slf4j.LoggerFactory
-import java.util.*
 
 /**
  * chain service (facade)
  */
-class ChainService : AbstractService() {
+class ChainService(config: Configuration) : AbstractService() {
     private val log = LoggerFactory.getLogger(ChainService::class.java)
     private lateinit var chain: BlockChain
 
-    override fun doStart() {
+    public override fun doStart() {
         createGenesisBlock()
         log.info("Chain service stared.")
+        notifyStarted()
     }
 
     private fun createGenesisBlock() {
@@ -30,5 +28,6 @@ class ChainService : AbstractService() {
 
     override fun doStop() {
         log.info("Chain service stopped.")
+        notifyStopped()
     }
 }
