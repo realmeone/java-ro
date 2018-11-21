@@ -23,7 +23,7 @@ java {
 application {
     group = "one.realme.krot"
     version = "0.1.0"
-    mainClassName = "one.realme.krot.program.Krot"
+    mainClassName = "one.realme.krot.program.Main"
 }
 
 protobuf {
@@ -45,8 +45,8 @@ dependencies {
     implementation("com.github.ajalt:mordant:1.2.0")
     implementation("com.typesafe:config:1.3.3")
     implementation("com.google.protobuf:protobuf-java:3.6.1")
-
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1")
+    
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1")

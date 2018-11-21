@@ -2,36 +2,37 @@ package one.realme.krot.common.appbase
 
 import one.realme.krot.common.appbase.ServiceState.*
 
-abstract class AbstractService : Service {
+abstract class AbstractService {
     private var state = Registered
 
-    override fun state(): ServiceState = state
+    fun isRunning() = Started == state
 
-    override fun initialize(config: Configuration) {
+    fun doInitialize() {
         if (Registered == state) {
-            doInitialize(config)
             state = Initialized
+            initialize()
         }
         assert(Initialized == state)
     }
 
-    override fun startup() {
+    fun doStartup() {
         if (Initialized == state) {
-            doStartup()
             state = Started
+            startup()
         }
         assert(Started == state)
     }
 
-    override fun shutdown() {
+    fun doShutdown() {
         if (Started == state) {
-            doShutdown()
             state = Stopped
+            shutdown()
         }
-        assert(Stopped == state)
     }
 
-    abstract fun doInitialize(config: Configuration)
-    abstract fun doStartup()
-    abstract fun doShutdown()
+    fun state(): ServiceState = state
+    abstract fun name(): String
+    abstract fun initialize()
+    abstract fun startup()
+    abstract fun shutdown()
 }

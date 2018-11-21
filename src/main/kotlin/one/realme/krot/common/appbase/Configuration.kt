@@ -3,17 +3,8 @@ package one.realme.krot.common.appbase
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 
-/**
- * App Env
- */
-class Configuration(private val cfgPath: String) {
+class Configuration {
     private val defaultConfFile = "testnet.conf"
-    private val conf by lazy {
-        when (cfgPath) {
-            "mainnet.conf", "testnet.conf" -> cfgPath
-            else -> defaultConfFile
-        }
-    }
 
     lateinit var genesis: Genesis
     lateinit var net: Net
@@ -35,7 +26,12 @@ class Configuration(private val cfgPath: String) {
             val timestamp: Int
     )
 
-    fun load() {
+    fun load(cfgPath: String) {
+        val conf = when (cfgPath) {
+            "mainnet.conf", "testnet.conf" -> cfgPath
+            else -> defaultConfFile
+        }
+
         val config = ConfigFactory.load(conf)
 
         application = Application(

@@ -5,13 +5,17 @@ class ServiceManager {
     private val initializedServices = mutableListOf<AbstractService>()
     private val runningServices = mutableListOf<AbstractService>()
 
-    fun registerService(service: AbstractService) {
-        services.putIfAbsent(service.name(), service)
+    fun registerService(vararg servs: AbstractService) {
+        servs.forEach { service ->
+            services.getOrPut(service.name()) { service }
+        }
     }
 
-    fun initialize(config: Configuration) {
+    fun findService(name: String): AbstractService? = services[name]
+
+    fun initialize() {
         services.forEach { _, service ->
-            service.initialize(config)
+            service.doInitialize()
             initializedServices.add(service)
         }
     }
@@ -19,7 +23,7 @@ class ServiceManager {
     fun startup() {
         try {
             initializedServices.forEach { service ->
-                service.startup()
+                service.doStartup()
                 runningServices.add(service)
             }
         } catch (e: Exception) {
@@ -30,8 +34,8 @@ class ServiceManager {
 
     fun shutdown() {
         try {
-            runningServices.forEach {
-                it.shutdown()
+            runningServices.forEach { service ->
+                service.doShutdown()
             }
         } finally {
             initializedServices.clear()
