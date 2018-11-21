@@ -56,7 +56,7 @@ class NetService(val chainService: ChainService) : AbstractExecutionThreadServic
     }
 
 
-    override fun shutDown() {
+    override fun triggerShutdown() {
         workerGroup.shutdownGracefully().await()
         bossGroup.shutdownGracefully().await()
         log.info("PeerService stopped.")

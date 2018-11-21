@@ -26,25 +26,24 @@ application {
     mainClassName = "one.realme.krot.program.Main"
 }
 
-protobuf {
-    protobuf.generatedFilesBaseDir = "src"
-    protobuf.protoc(closureOf<ExecutableLocator> {
-        artifact = "com.google.protobuf:protoc:3.6.1"
-    })
-}
+//protobuf {
+//    protobuf.generatedFilesBaseDir = "src"
+//    protobuf.protoc(closureOf<ExecutableLocator> {
+//        artifact = "com.google.protobuf:protoc:3.6.1"
+//    })
+//}
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation("io.netty:netty-all:4.1.30.Final")
-    implementation("com.google.guava:guava:26.0-jre")
+    implementation("io.netty:netty-all:4.1.31.Final")
+    implementation("com.google.guava:guava:27.0-jre")
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation("org.bouncycastle:bcprov-jdk15on:1.60")
     implementation("org.rocksdb:rocksdbjni:5.15.10")
     implementation("com.github.ajalt:clikt:1.5.0")
     implementation("com.github.ajalt:mordant:1.2.0")
     implementation("com.typesafe:config:1.3.3")
-    implementation("com.google.protobuf:protobuf-java:3.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1")
     
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")

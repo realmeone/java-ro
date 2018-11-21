@@ -1,6 +1,8 @@
 package one.realme.krot.program
 
 import com.google.common.base.Stopwatch
+import com.google.common.util.concurrent.MoreExecutors
+import com.google.common.util.concurrent.Service
 import com.google.common.util.concurrent.ServiceManager
 import one.realme.krot.common.config.Configuration
 import one.realme.krot.service.chain.ChainService
@@ -11,6 +13,7 @@ import org.slf4j.LoggerFactory
 import java.lang.management.ManagementFactory
 import java.net.InetAddress
 import java.util.concurrent.TimeUnit
+import kotlin.system.exitProcess
 
 object Krot {
     private val log: Logger = LoggerFactory.getLogger(Krot.javaClass)
@@ -34,6 +37,13 @@ object Krot {
         val serviceManager = ServiceManager(listOf(
                 chainService, netService, discoverService
         ))
+
+        serviceManager.addListener(object : ServiceManager.Listener() {
+            override fun failure(service: Service) {
+                log.error("$service start failed, now exit")
+                exitProcess(1)
+            }
+        }, MoreExecutors.directExecutor())
 
         // register shutdownhook
         Runtime.getRuntime().addShutdownHook(Thread {

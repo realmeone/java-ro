@@ -1,4 +1,4 @@
-package one.realme.krot.common.config
+package one.realme.krot.common.appbase
 
 class ServiceManager {
     private val services = mutableMapOf<String, AbstractService>()
