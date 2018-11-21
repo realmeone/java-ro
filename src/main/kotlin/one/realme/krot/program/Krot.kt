@@ -17,10 +17,12 @@ object Krot {
     private val log: Logger = LoggerFactory.getLogger(Krot.javaClass)
     private val simpleName: String = javaClass.simpleName
     private val blockingWait = BlockingWait()
+    private val shutdownHook = KrotShutdownHook()
+
     val config = Configuration()
     val services = ServiceManager()
 
-    fun run() {
+    fun startup() {
         Banner.printBanner()
 
         val stopwatch: Stopwatch = Stopwatch.createStarted()
@@ -41,11 +43,7 @@ object Krot {
         services.initialize()
 
         // register shutdownhook
-        Runtime.getRuntime().addShutdownHook(Thread {
-            services.shutdown()
-            log.info("ByeBye")
-            blockingWait.stop()
-        })
+        Runtime.getRuntime().addShutdownHook(shutdownHook)
 
         // start services
         services.startup()
@@ -55,5 +53,25 @@ object Krot {
 
         // wait all service done
         blockingWait.run()
+    }
+
+
+    fun shutdown() {
+        // remove hook first
+        Runtime.getRuntime().removeShutdownHook(shutdownHook)
+
+        services.shutdown()
+        log.info("ByeBye")
+        blockingWait.stop()
+    }
+
+    internal class KrotShutdownHook : Thread() {
+        override fun run() {
+            try {
+                Krot.shutdown()
+            } catch (t: Throwable) {
+                // ignore
+            }
+        }
     }
 }

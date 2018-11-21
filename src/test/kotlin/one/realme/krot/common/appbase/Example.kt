@@ -9,14 +9,13 @@ import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.handler.logging.LoggingHandler
 import io.netty.handler.timeout.ReadTimeoutHandler
-import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.TimeUnit
 
 class ChainService : AbstractService() {
     override fun name(): String = "chainService"
 
-    override fun initialize(config: Configuration) {
+    override fun initialize() {
         println("[${Thread.currentThread().name}] init chain service")
     }
 
@@ -35,7 +34,7 @@ class NetService : AbstractService() {
 
     override fun name(): String = "NetService"
 
-    override fun initialize(config: Configuration) {
+    override fun initialize() {
         println("[${Thread.currentThread().name}] init net service")
     }
 
@@ -72,19 +71,15 @@ class NetService : AbstractService() {
 }
 
 fun main(args: Array<String>) = runBlocking {
-    val config = Configuration("testnet.conf")
-    ServiceManager.registerService(ChainService())
-    ServiceManager.registerService(NetService())
+    val serviceManager = ServiceManager()
+    serviceManager.registerService(ChainService())
+    serviceManager.registerService(NetService())
 
     Runtime.getRuntime().addShutdownHook(Thread {
         println("[${Thread.currentThread().name}] application stopped.")
-        ServiceManager.shutdown()
+        serviceManager.shutdown()
     })
 
-    ServiceManager.initialize(config)
-    val deferred = async {
-        ServiceManager.startup()
-    }
-    deferred.await()
-    println("[${Thread.currentThread().name}] application .")
+    serviceManager.initialize()
+    serviceManager.startup()
 }

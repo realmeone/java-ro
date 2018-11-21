@@ -9,7 +9,7 @@ import one.realme.krot.program.Krot
 object KrotCmd : CliktCommand(name = "krot", invokeWithoutSubcommand = true) {
     override fun run() {
         if (context.invokedSubcommand == null) { // no subcommand run this
-            Krot.run()
+            Krot.startup()
         }
     }
 }
