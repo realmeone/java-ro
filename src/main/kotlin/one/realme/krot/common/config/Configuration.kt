@@ -1,4 +1,4 @@
-package one.realme.krot.common.appbase
+package one.realme.krot.common.config
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory

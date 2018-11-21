@@ -1,4 +1,4 @@
-package one.realme.krot.common.appbase
+package one.realme.krot.common.config
 
 import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.ChannelInboundHandlerAdapter

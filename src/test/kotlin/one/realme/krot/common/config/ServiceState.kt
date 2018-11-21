@@ -1,4 +1,4 @@
-package one.realme.krot.common.appbase
+package one.realme.krot.common.config
 
 enum class ServiceState {
     Registered, // constructed but doesn't do anything

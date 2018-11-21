@@ -1,4 +1,4 @@
-package one.realme.krot.common.appbase
+package one.realme.krot.common.config
 
 class BlockingWait {
     private val monitor = java.lang.Object()

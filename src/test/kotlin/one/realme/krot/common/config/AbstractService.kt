@@ -1,6 +1,6 @@
-package one.realme.krot.common.appbase
+package one.realme.krot.common.config
 
-import one.realme.krot.common.appbase.ServiceState.*
+import one.realme.krot.common.config.ServiceState.*
 
 abstract class AbstractService {
     private var state = Registered
@@ -35,4 +35,5 @@ abstract class AbstractService {
     abstract fun initialize()
     abstract fun startup()
     abstract fun shutdown()
+    fun isAsync(): Boolean = false
 }
