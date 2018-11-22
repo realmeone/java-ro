@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory
  */
 class Application(vararg servs: AbstractService) {
     private val log: Logger = LoggerFactory.getLogger(Application::class.java)
+    private val defaultConfPath = "testnet.conf"
     private val startupShutdownMonitor = Any()
     private var shutdownHook: Thread? = null
 
@@ -45,6 +46,7 @@ class Application(vararg servs: AbstractService) {
         }
     }
 
+    // lifecycle
     fun start() {
         synchronized(this.startupShutdownMonitor) {
             val timeElapsed = measureTimeSeconds {
@@ -74,6 +76,7 @@ class Application(vararg servs: AbstractService) {
         }
     }
 
+    // private methods
     private fun doStop() {
         stopServices()
     }
@@ -94,7 +97,7 @@ class Application(vararg servs: AbstractService) {
     }
 
     private fun prepareConfiguration() {
-
+        config.load(defaultConfPath)
     }
 
     // services

@@ -45,12 +45,11 @@ class NetService(val chainService: ChainService) : AbstractExecutionThreadServic
                 ch.pipeline().addLast(ServerHandler(chainService))
             }
         })
-        val f = b.bind()
-        f.sync()
-        f.channel().closeFuture().sync()
+        b.bind()
     }
 
-    private fun createServerBootstrap(): ServerBootstrap = ServerBootstrap().option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+    private fun createServerBootstrap(): ServerBootstrap = ServerBootstrap()
+            .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
             .option(ChannelOption.SO_REUSEADDR, true)
             .option(ChannelOption.SO_BACKLOG, maxPeer)
             .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
