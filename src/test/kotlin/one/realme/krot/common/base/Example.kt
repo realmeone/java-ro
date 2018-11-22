@@ -1,4 +1,4 @@
-package one.realme.krot.common.support
+package one.realme.krot.common.base
 
 import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.ChannelInboundHandlerAdapter
@@ -9,12 +9,10 @@ import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.handler.logging.LoggingHandler
 import io.netty.handler.timeout.ReadTimeoutHandler
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 import java.util.concurrent.TimeUnit
 
 class ChainService : AbstractService() {
-    override fun initialize() {
+    override fun initialize(app: Application) {
         println("[${Thread.currentThread().name}] init ${name()}")
     }
 
@@ -28,7 +26,7 @@ class ChainService : AbstractService() {
 }
 
 class RpcService : AbstractService() {
-    override fun initialize() {
+    override fun initialize(app: Application) {
         println("[${Thread.currentThread().name}] init ${name()}")
     }
 
@@ -46,7 +44,7 @@ class NetService : AbstractService() {
     private val bossGroup = NioEventLoopGroup(1)
     private val workerGroup = NioEventLoopGroup()
 
-    override fun initialize() {
+    override fun initialize(app: Application) {
         println("[${Thread.currentThread().name}] init ${name()}")
     }
 
@@ -84,47 +82,7 @@ class NetService : AbstractService() {
     }
 }
 
-object Node : Lifecycle {
-    @Volatile
-    private var running = false
-
-    override fun isRunning(): Boolean = running
-
-    private val serviceManager = ServiceManager()
-    private val shutdownHook = ShutdownHook()
-
-    fun init() {
-        serviceManager.registerService(ChainService(), NetService(), RpcService())
-        serviceManager.initialize()
-
-        Runtime.getRuntime().addShutdownHook(shutdownHook)
-    }
-
-    class ShutdownHook : Thread() {
-        override fun run() {
-            Node.stop()
-        }
-    }
-
-    override fun start() {
-        if (running) return
-        serviceManager.start()
-        running = true
-        println("[${Thread.currentThread().name}] application started.")
-    }
-
-    override fun stop() {
-        if (!running) return
-        Runtime.getRuntime().removeShutdownHook(shutdownHook) // avoid twice
-        serviceManager.stop()
-        running = false
-        println("[${Thread.currentThread().name}] application stopped.")
-    }
-}
-
-fun main(args: Array<String>) = runBlocking {
-    Node.init()
-    Node.start()
-    delay(2000)
-    Node.stop()
+fun main(args: Array<String>) {
+    val app = Application(ChainService(), NetService(), RpcService())
+    app.start()
 }

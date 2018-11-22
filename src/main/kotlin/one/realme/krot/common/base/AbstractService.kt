@@ -1,16 +1,16 @@
-package one.realme.krot.common.support
+package one.realme.krot.common.base
 
-import one.realme.krot.common.support.ServiceState.*
+import one.realme.krot.common.base.ServiceState.*
 
 abstract class AbstractService : Lifecycle {
     private var state = Registered
 
     override fun isRunning() = Started == state
 
-    fun doInitialize() {
+    fun doInitialize(app: Application) {
         if (Registered == state) {
             state = Initialized
-            initialize()
+            initialize(app)
         }
         assert(Initialized == state)
     }
@@ -32,5 +32,5 @@ abstract class AbstractService : Lifecycle {
 
     fun state(): ServiceState = state
     open fun name(): String = this.javaClass.simpleName
-    abstract fun initialize()
+    abstract fun initialize(app: Application)
 }

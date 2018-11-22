@@ -1,4 +1,4 @@
-package one.realme.krot.common.support
+package one.realme.krot.common.base
 
 interface Lifecycle {
     fun start()
