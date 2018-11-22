@@ -1,4 +1,4 @@
-package one.realme.krot.common.appbase
+package one.realme.krot.common.support
 
 import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.ChannelInboundHandlerAdapter
@@ -9,19 +9,20 @@ import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.handler.logging.LoggingHandler
 import io.netty.handler.timeout.ReadTimeoutHandler
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import java.util.concurrent.TimeUnit
-import kotlin.concurrent.thread
 
 class ChainService : AbstractService() {
     override fun initialize() {
         println("[${Thread.currentThread().name}] init ${name()}")
     }
 
-    override fun startup() {
+    override fun start() {
         println("[${Thread.currentThread().name}] start ${name()}")
     }
 
-    override fun shutdown() {
+    override fun stop() {
         println("[${Thread.currentThread().name}] shutdown ${name()}")
     }
 }
@@ -31,57 +32,50 @@ class RpcService : AbstractService() {
         println("[${Thread.currentThread().name}] init ${name()}")
     }
 
-    override fun startup() {
+    override fun start() {
         println("[${Thread.currentThread().name}] start ${name()}")
     }
 
-    override fun shutdown() {
+    override fun stop() {
         println("[${Thread.currentThread().name}] shutdown ${name()}")
     }
 
 }
 
 class NetService : AbstractService() {
-    private val bossGroup = NioEventLoopGroup()
+    private val bossGroup = NioEventLoopGroup(1)
     private val workerGroup = NioEventLoopGroup()
 
     override fun initialize() {
         println("[${Thread.currentThread().name}] init ${name()}")
     }
 
-    override fun startup() {
+    override fun start() {
         println("[${Thread.currentThread().name}] start ${name()}")
         startServerAsync()
         println("[${Thread.currentThread().name}] started ${name()}")
     }
 
     private fun startServerAsync() {
-        thread {
-            ServerBootstrap()
-                    .group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel::class.java)
-                    .option(ChannelOption.SO_BACKLOG, 500)
-                    .handler(LoggingHandler())
-                    .childHandler(object : ChannelInitializer<SocketChannel>() {
-                        override fun initChannel(ch: SocketChannel) {
-                            ch.pipeline().addLast(ReadTimeoutHandler(60, TimeUnit.SECONDS))
-                            ch.pipeline().addLast(object : ChannelInboundHandlerAdapter() {
-                                // do nothing
-                            })
-                        }
-                    })
-                    .childOption(ChannelOption.SO_KEEPALIVE, true)
-                    .bind(50500).sync().addListener {
-                        if (it.isSuccess)
-                            println("[${Thread.currentThread().name}] NetService listen on port: 50500")
-                    }.channel().closeFuture().sync().addListener {
-                        if (it.isSuccess)
-                            println("[${Thread.currentThread().name}] NetService port closed")
+        ServerBootstrap()
+                .group(bossGroup, workerGroup)
+                .channel(NioServerSocketChannel::class.java)
+                .option(ChannelOption.SO_BACKLOG, 500)
+                .handler(LoggingHandler())
+                .childHandler(object : ChannelInitializer<SocketChannel>() {
+                    override fun initChannel(ch: SocketChannel) {
+                        ch.pipeline().addLast(ReadTimeoutHandler(60, TimeUnit.SECONDS))
+                        ch.pipeline().addLast(object : ChannelInboundHandlerAdapter() {
+                            // do nothing
+                        })
                     }
-        }
+                })
+                .childOption(ChannelOption.SO_KEEPALIVE, true)
+                .bind(50500)
+        println("[${Thread.currentThread().name}] NetService listen on port: 50500")
     }
 
-    override fun shutdown() {
+    override fun stop() {
         println("network shuting down now...")
         workerGroup.shutdownGracefully().await()
         bossGroup.shutdownGracefully().await()
@@ -90,31 +84,47 @@ class NetService : AbstractService() {
     }
 }
 
-class Node {
+object Node : Lifecycle {
+    @Volatile
+    private var running = false
+
+    override fun isRunning(): Boolean = running
+
     private val serviceManager = ServiceManager()
+    private val shutdownHook = ShutdownHook()
 
     fun init() {
         serviceManager.registerService(ChainService(), NetService(), RpcService())
         serviceManager.initialize()
 
-        Runtime.getRuntime().addShutdownHook(Thread {
-            stop()
-        })
+        Runtime.getRuntime().addShutdownHook(shutdownHook)
     }
 
-    fun start() {
-        serviceManager.startup()
+    class ShutdownHook : Thread() {
+        override fun run() {
+            Node.stop()
+        }
+    }
+
+    override fun start() {
+        if (running) return
+        serviceManager.start()
+        running = true
         println("[${Thread.currentThread().name}] application started.")
     }
 
-    fun stop() {
-        serviceManager.shutdown()
+    override fun stop() {
+        if (!running) return
+        Runtime.getRuntime().removeShutdownHook(shutdownHook) // avoid twice
+        serviceManager.stop()
+        running = false
         println("[${Thread.currentThread().name}] application stopped.")
     }
 }
 
-fun main(args: Array<String>) {
-    val node = Node()
-    node.init()
-    node.start()
+fun main(args: Array<String>) = runBlocking {
+    Node.init()
+    Node.start()
+    delay(2000)
+    Node.stop()
 }

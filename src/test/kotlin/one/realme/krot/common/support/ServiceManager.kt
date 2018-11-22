@@ -1,9 +1,13 @@
-package one.realme.krot.common.appbase
+package one.realme.krot.common.support
 
-class ServiceManager {
+
+class ServiceManager : Lifecycle {
     private val services = mutableMapOf<String, AbstractService>()
     private val initializedServices = mutableListOf<AbstractService>()
     private val runningServices = mutableListOf<AbstractService>()
+
+    @Volatile
+    private var running: Boolean = false
 
     fun registerService(vararg servs: AbstractService) {
         servs.forEach { service ->
@@ -20,23 +24,27 @@ class ServiceManager {
         }
     }
 
-    fun startup() {
+    override fun isRunning(): Boolean = true
+
+    override fun start() {
         try {
             initializedServices.forEach { service ->
-                service.doStartup()
+                service.doStart()
                 runningServices.add(service)
             }
+            this.running = true
         } catch (e: Exception) {
-            shutdown()
+            stop()
             throw e
         }
     }
 
-    fun shutdown() {
+    override fun stop() {
         try {
             runningServices.forEach { service ->
-                service.doShutdown()
+                service.doStop()
             }
+            this.running = false
         } finally {
             initializedServices.clear()
             runningServices.clear()

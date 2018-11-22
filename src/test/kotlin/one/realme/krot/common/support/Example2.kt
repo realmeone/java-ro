@@ -1,4 +1,4 @@
-package one.realme.krot.common.appbase
+package one.realme.krot.common.support
 
 import kotlin.concurrent.thread
 

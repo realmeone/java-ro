@@ -2,6 +2,7 @@ package one.realme.krot.service.net
 
 import com.google.common.util.concurrent.AbstractExecutionThreadService
 import io.netty.bootstrap.ServerBootstrap
+import io.netty.buffer.PooledByteBufAllocator
 import io.netty.channel.ChannelInitializer
 import io.netty.channel.ChannelOption
 import io.netty.channel.nio.NioEventLoopGroup
@@ -9,6 +10,7 @@ import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.handler.logging.LoggingHandler
 import io.netty.handler.timeout.ReadTimeoutHandler
+import io.netty.util.NetUtil
 import one.realme.krot.program.Krot
 import one.realme.krot.service.chain.ChainService
 import one.realme.krot.service.net.romtp.MessageDecoder
@@ -32,28 +34,33 @@ class NetService(val chainService: ChainService) : AbstractExecutionThreadServic
     }
 
     override fun run() {
-        ServerBootstrap()
-                .group(bossGroup, workerGroup)
-                .channel(NioServerSocketChannel::class.java)
-                .option(ChannelOption.SO_BACKLOG, maxPeer)
-                .handler(LoggingHandler())
-                .childHandler(object : ChannelInitializer<SocketChannel>() {
-                    override fun initChannel(ch: SocketChannel) {
-                        ch.pipeline().addLast(ReadTimeoutHandler(60, TimeUnit.SECONDS))
-                        ch.pipeline().addLast(MessageEncoder())
-                        ch.pipeline().addLast(MessageDecoder())
-                        ch.pipeline().addLast(ServerHandler(chainService))
-                    }
-                })
-                .childOption(ChannelOption.SO_KEEPALIVE, true)
-                .bind(port).sync().addListener {
-                    if (it.isSuccess)
-                        log.info("PeerService started on port: $port")
-                }.channel().closeFuture().sync().addListener {
-                    if (it.isSuccess)
-                        log.info("PeerService stopped")
-                }
+        val b = createServerBootstrap()
+        b.group(bossGroup, workerGroup)
+        b.channel(NioServerSocketChannel::class.java)
+        b.childHandler(object : ChannelInitializer<SocketChannel>() {
+            override fun initChannel(ch: SocketChannel) {
+                ch.pipeline().addLast(ReadTimeoutHandler(60, TimeUnit.SECONDS))
+                ch.pipeline().addLast(MessageEncoder())
+                ch.pipeline().addLast(MessageDecoder())
+                ch.pipeline().addLast(ServerHandler(chainService))
+            }
+        })
+        val f = b.bind()
+        f.sync()
+        f.channel().closeFuture().sync()
     }
+
+    private fun createServerBootstrap(): ServerBootstrap = ServerBootstrap().option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+            .option(ChannelOption.SO_REUSEADDR, true)
+            .option(ChannelOption.SO_BACKLOG, maxPeer)
+            .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+            .childOption(ChannelOption.SO_RCVBUF, 1024 * 1024)
+            .childOption(ChannelOption.SO_SNDBUF, 1024 * 1024)
+            .childOption(ChannelOption.AUTO_READ, false)
+            .childOption(ChannelOption.SO_KEEPALIVE, true)
+            .childOption(ChannelOption.TCP_NODELAY, true)
+            .childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30000)
+            .localAddress(port)
 
 
     override fun triggerShutdown() {

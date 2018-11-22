@@ -22,7 +22,6 @@ class Message(
         fun ping() = Message(type = MessageType.PING, content = Ping().toByteArray())
         fun pong() = Message(type = MessageType.PING, content = Pong().toByteArray())
         fun time() = Message(type = MessageType.TIME, content = UnixTime.now().toByteArray())
-        fun inv(inv: Inv) = Message(type = MessageType.INV, content = inv.toByteArray())
 //        fun version(height: Long) = Message(type = MessageType.VERSION,
 //                content = Ver(
 //                        Version.CURRENT,
