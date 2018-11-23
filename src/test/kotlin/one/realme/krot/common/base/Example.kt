@@ -97,6 +97,7 @@ class NetService : AbstractService() {
     }
 }
 
+
 fun main(args: Array<String>) {
     val app = Application(ChainService(), NetService(), RpcService())
     app.start()

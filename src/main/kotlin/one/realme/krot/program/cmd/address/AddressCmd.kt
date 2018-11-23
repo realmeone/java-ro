@@ -1,4 +1,4 @@
-package one.realme.krot.program.cmd
+package one.realme.krot.program.cmd.address
 
 import com.github.ajalt.clikt.core.NoRunCliktCommand
 

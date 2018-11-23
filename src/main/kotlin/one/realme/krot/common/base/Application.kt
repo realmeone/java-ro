@@ -4,6 +4,8 @@ import one.realme.krot.common.config.Configuration
 import one.realme.krot.common.lang.measureTimeSeconds
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.lang.management.ManagementFactory
+import java.net.InetAddress
 
 /**
  * Class that can be used to bootstrap and launch a application from a main
@@ -16,10 +18,7 @@ import org.slf4j.LoggerFactory
  *    // ... define service
  *
  *   fun run() {
- *     val app = Application(
- *         listOf(
- *             serviceA, serviceB, serviceC
- *         ))
+ *     val app = Application(serviceA, serviceB, serviceC)
  *     app.run();
  *   }
  *
@@ -30,26 +29,32 @@ import org.slf4j.LoggerFactory
  * }
  * </code>
  */
-class Application(vararg servs: AbstractService) {
-    private val log: Logger = LoggerFactory.getLogger(Application::class.java)
-    private val defaultConfPath = "testnet.conf"
+class Application(mainClass: Class<*>, servs: List<AbstractService>) {
+    // private fields
+    private val log: Logger = LoggerFactory.getLogger(mainClass)
     private val startupShutdownMonitor = Any()
     private var shutdownHook: Thread? = null
 
-    // service can get config and other services
+    // access able fields
     val config: Configuration = Configuration()
-    val services = mutableMapOf<String, AbstractService>()
-
-    init {
+    val services = mutableMapOf<String, AbstractService>().also { map ->
         servs.forEach {
-            services.putIfAbsent(it.name(), it)
+            map.putIfAbsent(it.name(), it)
         }
+    }
+    val name = mainClass.simpleName
+
+    constructor(vararg servs: AbstractService) : this(Application::class.java, servs.asList())
+
+    companion object {
+        private const val DEFAULT_CONF_PATH = "testnet.conf"
     }
 
     // lifecycle
     fun start() {
         synchronized(this.startupShutdownMonitor) {
             val timeElapsed = measureTimeSeconds {
+                log.info("Starting $name on ${InetAddress.getLocalHost().hostName} with PID ${ManagementFactory.getRuntimeMXBean().name.split("@")[0]} by ${System.getProperty("user.name")}")
                 // 1.prepare configuration
                 prepareConfiguration()
                 // 2. init all services with application instance
@@ -66,21 +71,11 @@ class Application(vararg servs: AbstractService) {
     fun stop() {
         synchronized(this.startupShutdownMonitor) {
             doStop()
-            if (this.shutdownHook != null) {
-                try {
-                    Runtime.getRuntime().removeShutdownHook(shutdownHook) // avoid shutdown twice
-                } catch (ignore: IllegalStateException) {
-                    // VM is already shutdown
-                }
-            }
+            unregisterShutdownHook()
         }
     }
 
-    // private methods
-    private fun doStop() {
-        stopServices()
-    }
-
+    // start flow
     private fun registerShutdownHook() {
         if (this.shutdownHook == null) {
             this.shutdownHook = Thread {
@@ -93,11 +88,11 @@ class Application(vararg servs: AbstractService) {
     }
 
     private fun logStartupInfo(elapsed: Long) {
-        log.info("Started ${Application::class.java.simpleName} in $elapsed seconds")
+        log.info("Started $name in $elapsed seconds")
     }
 
     private fun prepareConfiguration() {
-        config.load(defaultConfPath)
+        config.load(DEFAULT_CONF_PATH)
     }
 
     // services
@@ -110,6 +105,27 @@ class Application(vararg servs: AbstractService) {
     private fun startServices() {
         services.forEach { _, it ->
             it.doStart()
+        }
+    }
+
+
+    // stop flow
+    private fun doStop() {
+        stopServices()
+        logShutdownInfo()
+    }
+
+    private fun logShutdownInfo() {
+        log.info("ByeBye")
+    }
+
+    private fun unregisterShutdownHook() {
+        if (this.shutdownHook != null) {
+            try {
+                Runtime.getRuntime().removeShutdownHook(shutdownHook) // avoid shutdown twice
+            } catch (ignore: IllegalStateException) {
+                // VM is already shutdown
+            }
         }
     }
 

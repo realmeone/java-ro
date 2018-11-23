@@ -1,6 +1,7 @@
 package one.realme.krot.service.chain
 
-import com.google.common.util.concurrent.AbstractService
+import one.realme.krot.common.base.AbstractService
+import one.realme.krot.common.base.Application
 import one.realme.krot.common.lang.UnixTime
 import one.realme.krot.common.primitive.Block
 import org.slf4j.Logger
@@ -13,13 +14,14 @@ class ChainService : AbstractService() {
     private val log: Logger = LoggerFactory.getLogger(ChainService::class.java)
     private lateinit var chain: BlockChain
 
-    override fun doStop() {
-        notifyStopped()
+    override fun initialize(app: Application) {
     }
 
-    override fun doStart() {
+    override fun start() {
         createGenesisBlock()
-        notifyStarted()
+    }
+
+    override fun stop() {
     }
 
     private fun createGenesisBlock() {

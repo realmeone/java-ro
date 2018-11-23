@@ -1,6 +1,5 @@
 package one.realme.krot.service.net
 
-import com.google.common.util.concurrent.AbstractExecutionThreadService
 import io.netty.bootstrap.ServerBootstrap
 import io.netty.buffer.PooledByteBufAllocator
 import io.netty.channel.ChannelInitializer
@@ -8,10 +7,9 @@ import io.netty.channel.ChannelOption
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
-import io.netty.handler.logging.LoggingHandler
 import io.netty.handler.timeout.ReadTimeoutHandler
-import io.netty.util.NetUtil
-import one.realme.krot.program.Krot
+import one.realme.krot.common.base.AbstractService
+import one.realme.krot.common.base.Application
 import one.realme.krot.service.chain.ChainService
 import one.realme.krot.service.net.romtp.MessageDecoder
 import one.realme.krot.service.net.romtp.MessageEncoder
@@ -20,20 +18,25 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit
 
-class NetService(val chainService: ChainService) : AbstractExecutionThreadService() {
+class NetService : AbstractService() {
     private val log: Logger = LoggerFactory.getLogger(NetService::class.java)
     private val bossGroup = NioEventLoopGroup()
     private val workerGroup = NioEventLoopGroup()
 
     private var port: Int = 50505
     private var maxPeer: Int = 500
+    private var chainService: ChainService? = null
 
-    override fun startUp() {
-        port = Krot.config.net.port
-        maxPeer = Krot.config.net.maxPeer
+    override fun initialize(app: Application) {
+        port = app.config.net.port
+        maxPeer = app.config.net.maxPeer
+        chainService = app.services[ChainService::class.java.simpleName] as ChainService
+        requireNotNull(chainService) {
+            "must init chain service first"
+        }
     }
 
-    override fun run() {
+    override fun start() {
         val b = createServerBootstrap()
         b.group(bossGroup, workerGroup)
         b.channel(NioServerSocketChannel::class.java)
@@ -42,10 +45,11 @@ class NetService(val chainService: ChainService) : AbstractExecutionThreadServic
                 ch.pipeline().addLast(ReadTimeoutHandler(60, TimeUnit.SECONDS))
                 ch.pipeline().addLast(MessageEncoder())
                 ch.pipeline().addLast(MessageDecoder())
-                ch.pipeline().addLast(ServerHandler(chainService))
+                ch.pipeline().addLast(ServerHandler(chainService!!))
             }
         })
         b.bind()
+        log.info("${name()} listen on port: $port")
     }
 
     private fun createServerBootstrap(): ServerBootstrap = ServerBootstrap()
@@ -62,10 +66,10 @@ class NetService(val chainService: ChainService) : AbstractExecutionThreadServic
             .localAddress(port)
 
 
-    override fun triggerShutdown() {
+    override fun stop() {
         workerGroup.shutdownGracefully().await()
         bossGroup.shutdownGracefully().await()
-        log.info("PeerService stopped.")
+        log.info("${name()} stopped.")
     }
 
 }
