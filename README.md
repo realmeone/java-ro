@@ -7,12 +7,10 @@ It is named Krot, first word of kotlin & realme.one tech
 | Component | Version | Description |
 |:------------|:-------------|:-------------|
 | Java | 1.8+| Oracle Java |
-| Kotlin | 1.3.0+ | |
+| Kotlin | 1.3.10+ | |
 | Gradle | 4.10.2+ | |
-| Java | 1.8+ | |
-| Guava | 26.0-jre | |
+| Guava | 27.0-jre | |
 | Rocksdb | 5.15.10 | |
-| Protobuf-java | 3.6.1 | |
 | Netty | 4.1.30 | |
 | JUnit | 5.3.1 | |
 
@@ -30,13 +28,19 @@ Get into the project root folder
 ./gradlew clean build
 ```
 
-## Why not all in Kotlin?
-
-Because protobuf can't generate kt files.   :-)
-Use RLP replaced? Maybe. 
-I am very expect on native kotlin, when it release, we can use pure Kotlin to implements all.
-
 ## Cmd
+
+if run with no args, the default is running node cmd
+
+### node
+```shell
+$ krot node <command> [options...] [arguments...]
+```
+```shell
+COMMANDS:
+     full    Running full node
+     light   Running light node
+```
 
 ### address
 ```shell
@@ -47,6 +51,7 @@ COMMANDS:
      list    Print summary of existing addresses
      create  Create a new address
 ```
+
 ## Todo
 * [ ] add conf feature
 * [ ] add store blocks feature
