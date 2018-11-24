@@ -54,7 +54,7 @@ class Application(
     fun start() {
         synchronized(this.startupShutdownMonitor) {
             val timeElapsed = measureTimeSeconds {
-                logger.info("Starting $name on ${InetAddress.getLocalHost().hostName} with PID ${ManagementFactory.getRuntimeMXBean().name.split("@")[0]} by ${System.getProperty("user.name")}")
+                logEnvInfo()
                 // 1.prepare configuration
                 prepareConfiguration()
                 // 2. init all services with application instance
@@ -76,6 +76,10 @@ class Application(
     }
 
     // start flow
+    private fun logEnvInfo() {
+        logger.info("Starting $name on ${InetAddress.getLocalHost().hostName} with PID ${ManagementFactory.getRuntimeMXBean().name.split("@")[0]} by ${System.getProperty("user.name")}")
+    }
+
     private fun registerShutdownHook() {
         if (this.shutdownHook == null) {
             this.shutdownHook = Thread {
@@ -120,9 +124,10 @@ class Application(
     }
 
     private fun unregisterShutdownHook() {
-        if (this.shutdownHook != null) {
+        // let means shutdown hook non-null can invoke
+        this.shutdownHook?.let {
             try {
-                Runtime.getRuntime().removeShutdownHook(shutdownHook) // avoid shutdown twice
+                Runtime.getRuntime().removeShutdownHook(it) // avoid shutdown twice
             } catch (ignore: IllegalStateException) {
                 // VM is already shutdown
             }

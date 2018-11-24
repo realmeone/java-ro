@@ -17,17 +17,16 @@ class Block(
 //        val producer: Address
 ) {
     companion object {
-        fun fromByteArray(bytes: ByteArray): Block {
-            val merkleRootHash = Hash.fromBytes(bytes.copyOfRange(44, 76))
-            val block = Block(
-                    version = bytes.copyOfRange(0, 4).toInt(),
-                    height = bytes.copyOfRange(4, 12).toLong(),
-                    prevBlockHash = Hash.fromBytes(bytes.copyOfRange(12, 44)),
-                    timestamp = UnixTime.fromSeconds(bytes.copyOfRange(76, 80).toInt())
-            )
-            block.merkleRootHash = merkleRootHash
-            return block
+
+        fun fromByteArray(bytes: ByteArray): Block = Block(
+                bytes.copyOfRange(0, 4).toInt(),
+                bytes.copyOfRange(4, 12).toLong(),
+                Hash.fromBytes(bytes.copyOfRange(12, 44)),
+                UnixTime.fromSeconds(bytes.copyOfRange(76, 80).toInt())
+        ).also {
+            it.merkleRootHash = Hash.fromBytes(bytes.copyOfRange(44, 76))
         }
+
     }
 
     val transactions = Vector<Transaction>()
@@ -51,10 +50,10 @@ class Block(
 
     fun header(): BlockHeader =
             BlockHeader(
-                    version = version,
-                    prevBlockHash = prevBlockHash,
-                    merkleRootHash = merkleRootHash,
-                    time = timestamp
+                    version,
+                    prevBlockHash,
+                    merkleRootHash,
+                    timestamp
             )
 
     override fun toString(): String =
