@@ -13,25 +13,32 @@ import java.net.InetAddress
  * application.
  *
  * <code>
- * class Krot : CliktCommand(name = "krot", invokeWithoutSubcommand = true) {
+ * object MyApp {
  *
  *    // ... define service
  *
  *   fun run() {
- *     val app = Application(serviceA, serviceB, serviceC)
- *     app.run();
+ *     val app = Application(
+ *         javaClass,
+ *         listOf(serviceA, serviceB, serviceC)
+ *     )
+ *     app.run()
  *   }
  *
  *   @JvmStatic
  *   fun main(args : Array<String>){
- *       Krot().main(args)
+ *       MyApp().run()
  *   }
  * }
  * </code>
  */
-class Application(mainClass: Class<*>, servs: List<AbstractService>) {
+class Application(
+        val name: String = "Application",
+        private val confPath: String = "testnet.conf",
+        servs: List<AbstractService>,
+        private val logger: Logger = LoggerFactory.getLogger(Application::class.java)
+) {
     // private fields
-    private val log: Logger = LoggerFactory.getLogger(mainClass)
     private val startupShutdownMonitor = Any()
     private var shutdownHook: Thread? = null
 
@@ -42,19 +49,12 @@ class Application(mainClass: Class<*>, servs: List<AbstractService>) {
             map.putIfAbsent(it.name(), it)
         }
     }
-    val name = mainClass.simpleName
-
-    constructor(vararg servs: AbstractService) : this(Application::class.java, servs.asList())
-
-    companion object {
-        private const val DEFAULT_CONF_PATH = "testnet.conf"
-    }
 
     // lifecycle
     fun start() {
         synchronized(this.startupShutdownMonitor) {
             val timeElapsed = measureTimeSeconds {
-                log.info("Starting $name on ${InetAddress.getLocalHost().hostName} with PID ${ManagementFactory.getRuntimeMXBean().name.split("@")[0]} by ${System.getProperty("user.name")}")
+                logger.info("Starting $name on ${InetAddress.getLocalHost().hostName} with PID ${ManagementFactory.getRuntimeMXBean().name.split("@")[0]} by ${System.getProperty("user.name")}")
                 // 1.prepare configuration
                 prepareConfiguration()
                 // 2. init all services with application instance
@@ -88,11 +88,11 @@ class Application(mainClass: Class<*>, servs: List<AbstractService>) {
     }
 
     private fun logStartupInfo(elapsed: Long) {
-        log.info("Started $name in $elapsed seconds")
+        logger.info("Started $name in $elapsed seconds")
     }
 
     private fun prepareConfiguration() {
-        config.load(DEFAULT_CONF_PATH)
+        config.load(confPath)
     }
 
     // services
@@ -116,7 +116,7 @@ class Application(mainClass: Class<*>, servs: List<AbstractService>) {
     }
 
     private fun logShutdownInfo() {
-        log.info("ByeBye")
+        logger.info("ByeBye")
     }
 
     private fun unregisterShutdownHook() {

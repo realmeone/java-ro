@@ -1,8 +1,6 @@
 package one.realme.krot.program
 
 
-import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.NoRunCliktCommand
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.options.versionOption
 import one.realme.krot.common.Version
@@ -21,7 +19,7 @@ object Krot {
             krot
                 -- help
                 -- ui
-                -- fullnode
+                -- node -- full
                 -- account --create [n]
                                 --list
                 -- version

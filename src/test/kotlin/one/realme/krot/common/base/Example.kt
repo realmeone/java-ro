@@ -10,9 +10,6 @@ import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.handler.logging.LoggingHandler
 import io.netty.handler.timeout.ReadTimeoutHandler
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
-import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 class ChainService : AbstractService() {
@@ -99,7 +96,7 @@ class NetService : AbstractService() {
 
 
 fun main(args: Array<String>) {
-    val app = Application(ChainService(), NetService(), RpcService())
+    val app = Application(servs = listOf(ChainService(), NetService(), RpcService()))
     app.start()
     val osVersion = System.getProperty("os.name")
     if (osVersion.contains("Win")) {
