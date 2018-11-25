@@ -6,6 +6,9 @@ import one.realme.krot.common.primitive.BlockHeader
 import one.realme.krot.common.primitive.Transaction
 import java.util.*
 
+/**
+ * TODO Database should inject in?
+ */
 class BlockChain(
         val genesisBlock: Block,
         var tailBlock: Block = genesisBlock

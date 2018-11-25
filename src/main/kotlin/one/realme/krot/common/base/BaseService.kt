@@ -2,7 +2,7 @@ package one.realme.krot.common.base
 
 import one.realme.krot.common.base.ServiceState.*
 
-abstract class AbstractService : Lifecycle {
+abstract class BaseService : Lifecycle {
     private var state = Registered
 
     override fun isRunning() = Started == state

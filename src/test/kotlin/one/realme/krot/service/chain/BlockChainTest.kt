@@ -3,7 +3,6 @@ package one.realme.krot.service.chain
 import one.realme.krot.common.primitive.Block
 import one.realme.krot.common.primitive.Transaction
 import one.realme.krot.genesis
-import one.realme.krot.service.chain.BlockChain
 import one.realme.krot.service.wallet.Wallet
 import org.junit.jupiter.api.Test
 

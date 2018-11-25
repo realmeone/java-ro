@@ -1,6 +1,6 @@
 package one.realme.krot.service.discover
 
-import one.realme.krot.common.base.AbstractService
+import one.realme.krot.common.base.BaseService
 import one.realme.krot.common.base.Application
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
 /**
  * Discover a peer, add peer to peers and start peer
  */
-class DiscoverService : AbstractService() {
+class DiscoverService : BaseService() {
     private val log: Logger = LoggerFactory.getLogger(DiscoverService::class.java)
     private var port = 50506
 

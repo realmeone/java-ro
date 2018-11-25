@@ -1,6 +1,6 @@
 package one.realme.krot.service.chain
 
-import one.realme.krot.common.base.AbstractService
+import one.realme.krot.common.base.BaseService
 import one.realme.krot.common.base.Application
 import one.realme.krot.common.lang.UnixTime
 import one.realme.krot.common.primitive.Block
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory
 /**
  * chain service (facade)
  */
-class ChainService : AbstractService() {
+class ChainService : BaseService() {
     private val log: Logger = LoggerFactory.getLogger(ChainService::class.java)
     private lateinit var chain: BlockChain
 

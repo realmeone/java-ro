@@ -4,7 +4,6 @@ import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
-import one.realme.krot.service.chain.BlockChain
 import one.realme.krot.service.chain.ChainService
 import one.realme.krot.service.net.romtp.Message
 import one.realme.krot.service.net.romtp.MessageType

@@ -36,7 +36,7 @@ class Transaction(
                 false
             }
 
-    fun isCoinbase(): Boolean = Address.empty() == to
+    fun isCoinbase(): Boolean = Address.empty() == from
 
 
     fun toByteArray(): ByteArray =

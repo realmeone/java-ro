@@ -10,9 +10,27 @@ import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.handler.logging.LoggingHandler
 import io.netty.handler.timeout.ReadTimeoutHandler
+import org.slf4j.Logger
 import java.util.concurrent.TimeUnit
 
-class ChainService : AbstractService() {
+class ChainService : BaseService() {
+    private lateinit var logger: Logger
+
+    override fun initialize(app: Application) {
+        logger = app.logger
+        logger.info("init ${name()}")
+    }
+
+    override fun start() {
+        logger.info("start ${name()}")
+    }
+
+    override fun stop() {
+        logger.info("shutdown ${name()}")
+    }
+}
+
+class RpcService : BaseService() {
     override fun initialize(app: Application) {
         println("[${Thread.currentThread().name}] init ${name()}")
     }
@@ -24,24 +42,10 @@ class ChainService : AbstractService() {
     override fun stop() {
         println("[${Thread.currentThread().name}] shutdown ${name()}")
     }
-}
-
-class RpcService : AbstractService() {
-    override fun initialize(app: Application) {
-        println("[${Thread.currentThread().name}] init ${name()}")
-    }
-
-    override fun start() {
-        println("[${Thread.currentThread().name}] start ${name()}")
-    }
-
-    override fun stop() {
-        println("[${Thread.currentThread().name}] shutdown ${name()}")
-    }
 
 }
 
-class NetService : AbstractService() {
+class NetService : BaseService() {
     private val bossGroup = NioEventLoopGroup(1)
     private val workerGroup = NioEventLoopGroup()
 

@@ -1,6 +1,5 @@
 package one.realme.krot.common.base
 
-import one.realme.krot.common.config.Configuration
 import one.realme.krot.common.lang.measureTimeSeconds
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -35,8 +34,8 @@ import java.net.InetAddress
 class Application(
         val name: String = "Application",
         private val confPath: String = "testnet.conf",
-        servs: List<AbstractService>,
-        private val logger: Logger = LoggerFactory.getLogger(Application::class.java)
+        servs: List<BaseService>,
+        val logger: Logger = LoggerFactory.getLogger(Application::class.java)
 ) {
     // private fields
     private val startupShutdownMonitor = Any()
@@ -49,8 +48,8 @@ class Application(
     }
 
     // access able fields
-    val config: Configuration = Configuration()
-    val services = mutableMapOf<String, AbstractService>().also { map ->
+    val config: ApplicationConfig = ApplicationConfig()
+    val services = mutableMapOf<String, BaseService>().also { map ->
         servs.forEach {
             map.putIfAbsent(it.name(), it)
         }

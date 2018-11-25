@@ -32,7 +32,8 @@ class Block(
     val transactions = Vector<Transaction>()
     var merkleRootHash: Hash = Hash.empty()
         get() {
-            if (Hash.empty() == field) merkleRootHash = Merkle.merkleTreeRoot(transactions.map { it.hash }.toList())
+            if (Hash.empty() == field)
+                field = Merkle.merkleTreeRoot(transactions.map { it.hash }.toList())
             return field
         }
 
