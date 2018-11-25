@@ -10,13 +10,12 @@ import org.slf4j.LoggerFactory
 object FullNode {
     private val logger = LoggerFactory.getLogger(FullNode.javaClass)
     private val name = FullNode.javaClass.simpleName
-    private const val confPath = "testnet.conf"
 
-    fun exec() {
+    fun exec(conf: String) {
         Banner.printBanner()
         val app = Application(
                 name,
-                confPath,
+                conf,
                 listOf(
                         ChainService(),
                         NetService(),

@@ -7,11 +7,13 @@ import com.typesafe.config.ConfigFactory
  * TODO simple wrap of hocon config
  */
 class Configuration {
-    private val defaultConfFile = "testnet.conf"
-
     lateinit var genesis: Genesis
     lateinit var net: Net
     lateinit var application: Application
+    private val properties = mutableMapOf<String, Any>()
+
+    fun getOrDefault(key: String, default: Any): Any = properties[key] ?: default
+
 
     data class Application(
             val name: String
@@ -29,12 +31,7 @@ class Configuration {
             val timestamp: Int
     )
 
-    fun load(cfgPath: String) {
-        val conf = when (cfgPath) {
-            "mainnet.conf", "testnet.conf" -> cfgPath
-            else -> defaultConfFile
-        }
-
+    fun load(conf: String) {
         val config = ConfigFactory.load(conf)
 
         application = Application(

@@ -40,7 +40,13 @@ class Application(
 ) {
     // private fields
     private val startupShutdownMonitor = Any()
-    private var shutdownHook: Thread? = null
+    private val shutdownHook: Thread by lazy {
+        Thread {
+            synchronized(startupShutdownMonitor) {
+                doStop()
+            }
+        }
+    }
 
     // access able fields
     val config: Configuration = Configuration()
@@ -81,14 +87,7 @@ class Application(
     }
 
     private fun registerShutdownHook() {
-        if (this.shutdownHook == null) {
-            this.shutdownHook = Thread {
-                synchronized(startupShutdownMonitor) {
-                    doStop()
-                }
-            }
-            Runtime.getRuntime().addShutdownHook(this.shutdownHook)
-        }
+        Runtime.getRuntime().addShutdownHook(this.shutdownHook)
     }
 
     private fun logStartupInfo(elapsed: Long) {
@@ -124,13 +123,10 @@ class Application(
     }
 
     private fun unregisterShutdownHook() {
-        // let means shutdown hook non-null can invoke
-        this.shutdownHook?.let {
-            try {
-                Runtime.getRuntime().removeShutdownHook(it) // avoid shutdown twice
-            } catch (ignore: IllegalStateException) {
-                // VM is already shutdown
-            }
+        try {
+            Runtime.getRuntime().removeShutdownHook(shutdownHook) // avoid shutdown twice
+        } catch (ignore: IllegalStateException) {
+            // VM is already shutdown
         }
     }
 
