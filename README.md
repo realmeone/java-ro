@@ -28,6 +28,25 @@ Get into the project root folder
 ./gradlew clean build
 ```
 
+## Source structure
+
+### common
+
+Common libraries required for all services, including application frameworks, codecs, network protocols, 
+primitive objects, database framework, crypto algorithms, digest algorithms.
+
+### service
+
+Independent or dependent services that handle business processes and business rules, while providing an 
+exposed facade class to provide the interface to the service
+
+### program
+
+Execute the app according to the command. 
+
+Different app contain different services, such as "FullNode" that contains all the services, 
+and "LightNode" only contains some services.
+
 ## Cmd
 
 if run with no args, the default is running node cmd
