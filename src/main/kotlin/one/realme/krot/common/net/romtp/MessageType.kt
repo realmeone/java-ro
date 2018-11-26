@@ -1,4 +1,4 @@
-package one.realme.krot.service.net.romtp
+package one.realme.krot.common.net.romtp
 
 import one.realme.krot.common.lang.toByteArray
 

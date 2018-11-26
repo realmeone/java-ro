@@ -1,7 +1,5 @@
-package one.realme.krot.service.net.message
+package one.realme.krot.common.net.romtp
 
-import one.realme.krot.service.net.romtp.Message
-import one.realme.krot.service.net.romtp.MessageType
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals

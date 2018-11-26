@@ -4,11 +4,11 @@ import io.netty.channel.ChannelInitializer
 import io.netty.channel.socket.SocketChannel
 import io.netty.handler.timeout.ReadTimeoutHandler
 import one.realme.krot.service.chain.ChainService
-import one.realme.krot.service.net.romtp.MessageDecoder
-import one.realme.krot.service.net.romtp.MessageEncoder
+import one.realme.krot.service.net.codec.MessageDecoder
+import one.realme.krot.service.net.codec.MessageEncoder
 import java.util.concurrent.TimeUnit
 
-class ServerChannelInitializer(
+internal class ServerChannelInitializer(
         private val chainService: ChainService
 ) : ChannelInitializer<SocketChannel>() {
 

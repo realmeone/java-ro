@@ -1,4 +1,4 @@
-package one.realme.krot.service.net.romtp.content
+package one.realme.krot.common.net.romtp.content
 
 import one.realme.krot.common.lang.toByteArray
 import kotlin.random.Random

@@ -1,9 +1,11 @@
-package one.realme.krot.service.net.romtp
+package one.realme.krot.service.net.codec
 
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
 import one.realme.krot.common.lang.toInt
+import one.realme.krot.common.net.romtp.Message
+import one.realme.krot.common.net.romtp.MessageType
 
 class MessageDecoder : ByteToMessageDecoder() {
 

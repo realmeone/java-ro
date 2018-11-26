@@ -5,11 +5,11 @@ import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
 import one.realme.krot.service.chain.ChainService
-import one.realme.krot.service.net.romtp.Message
-import one.realme.krot.service.net.romtp.MessageType
+import one.realme.krot.common.net.romtp.Message
+import one.realme.krot.common.net.romtp.MessageType
 import org.slf4j.LoggerFactory
 
-class ServerHandler(val bc: ChainService) : SimpleChannelInboundHandler<Message>() {
+internal class ServerHandler(val bc: ChainService) : SimpleChannelInboundHandler<Message>() {
     private val log = LoggerFactory.getLogger(ServerHandler::class.java)
 
     override fun channelRead0(ctx: ChannelHandlerContext, msg: Message) {

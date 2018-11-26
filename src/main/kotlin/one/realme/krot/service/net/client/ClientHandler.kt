@@ -6,8 +6,8 @@ import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
 import one.realme.krot.common.lang.UnixTime
 import one.realme.krot.service.chain.BlockChain
-import one.realme.krot.service.net.romtp.Message
-import one.realme.krot.service.net.romtp.MessageType
+import one.realme.krot.common.net.romtp.Message
+import one.realme.krot.common.net.romtp.MessageType
 import org.slf4j.LoggerFactory
 
 class ClientHandler(val chain: BlockChain) : SimpleChannelInboundHandler<Message>() {

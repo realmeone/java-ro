@@ -1,9 +1,8 @@
-package one.realme.krot.service.net.romtp
+package one.realme.krot.common.net.romtp
 
 import one.realme.krot.common.lang.UnixTime
-import one.realme.krot.service.net.romtp.content.Inv
-import one.realme.krot.service.net.romtp.content.Ping
-import one.realme.krot.service.net.romtp.content.Pong
+import one.realme.krot.common.net.romtp.content.Ping
+import one.realme.krot.common.net.romtp.content.Pong
 
 /**
  * Message Structure

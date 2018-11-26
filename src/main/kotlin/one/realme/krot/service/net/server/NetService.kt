@@ -1,17 +1,20 @@
-package one.realme.krot.service.net
+package one.realme.krot.service.net.server
 
 import io.netty.bootstrap.ServerBootstrap
 import io.netty.buffer.PooledByteBufAllocator
+import io.netty.channel.Channel
 import io.netty.channel.ChannelOption
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import one.realme.krot.common.base.Application
 import one.realme.krot.common.base.BaseService
 import one.realme.krot.service.chain.ChainService
-import one.realme.krot.service.net.server.ServerChannelInitializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+/**
+ * netty based
+ */
 class NetService : BaseService() {
 
     internal class Configuration {
@@ -29,6 +32,8 @@ class NetService : BaseService() {
     private lateinit var chainService: ChainService
     private lateinit var connectionGroup: NioEventLoopGroup
     private lateinit var workerGroup: NioEventLoopGroup
+    private lateinit var serverBootstrap: ServerBootstrap
+    private lateinit var channel: Channel
 
     override fun initialize(app: Application) {
         // set config
@@ -45,34 +50,40 @@ class NetService : BaseService() {
 
         connectionGroup = NioEventLoopGroup(configuration.connectionGroupSize)
         workerGroup = NioEventLoopGroup(configuration.workerGroupSize)
+
+        serverBootstrap = ServerBootstrap().apply {
+            option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+            option(ChannelOption.SO_REUSEADDR, true)
+            option(ChannelOption.SO_BACKLOG, configuration.maxPeer)
+            childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+            childOption(ChannelOption.SO_RCVBUF, 1024 * 1024)
+            childOption(ChannelOption.SO_SNDBUF, 1024 * 1024)
+            childOption(ChannelOption.AUTO_READ, false)
+            childOption(ChannelOption.SO_KEEPALIVE, true)
+            childOption(ChannelOption.TCP_NODELAY, true)
+            childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, configuration.connectTimeoutMillis)
+            localAddress(configuration.port)
+            group(connectionGroup, workerGroup)
+            channel(NioServerSocketChannel::class.java)
+            childHandler(ServerChannelInitializer(chainService))
+        }
     }
 
     override fun start() {
-        createServerBootstrap().bind()
+        channel = serverBootstrap.bind().sync().channel()
         log.info("${name()} listen on port: ${configuration.port}")
-    }
-
-    private fun createServerBootstrap(): ServerBootstrap = ServerBootstrap().apply {
-        option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-        option(ChannelOption.SO_REUSEADDR, true)
-        option(ChannelOption.SO_BACKLOG, configuration.maxPeer)
-        childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-        childOption(ChannelOption.SO_RCVBUF, 1024 * 1024)
-        childOption(ChannelOption.SO_SNDBUF, 1024 * 1024)
-        childOption(ChannelOption.AUTO_READ, false)
-        childOption(ChannelOption.SO_KEEPALIVE, true)
-        childOption(ChannelOption.TCP_NODELAY, true)
-        childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, configuration.connectTimeoutMillis)
-        localAddress(configuration.port)
-        group(connectionGroup, workerGroup)
-        channel(NioServerSocketChannel::class.java)
-        childHandler(ServerChannelInitializer(chainService))
     }
 
 
     override fun stop() {
-        workerGroup.shutdownGracefully().await()
-        connectionGroup.shutdownGracefully().await()
+        val closeFuture = if (channel.isOpen) channel.close() else null
+        try {
+            workerGroup.shutdownGracefully().await()
+            connectionGroup.shutdownGracefully().await()
+        } finally {
+            closeFuture?.sync()
+        }
+
         log.info("${name()} stopped.")
     }
 
