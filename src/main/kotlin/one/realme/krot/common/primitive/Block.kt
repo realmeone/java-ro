@@ -18,14 +18,17 @@ class Block(
 ) {
     companion object {
 
-        fun fromByteArray(bytes: ByteArray): Block = Block(
-                bytes.copyOfRange(0, 4).toInt(),
-                bytes.copyOfRange(4, 12).toLong(),
-                Hash.fromBytes(bytes.copyOfRange(12, 44)),
-                UnixTime.fromSeconds(bytes.copyOfRange(76, 80).toInt())
-        ).also {
-            it.merkleRootHash = Hash.fromBytes(bytes.copyOfRange(44, 76))
-        }
+        fun fromByteArray(bytes: ByteArray): Block =
+                with(bytes) {
+                    Block(
+                            copyOfRange(0, 4).toInt(),
+                            copyOfRange(4, 12).toLong(),
+                            Hash.fromBytes(copyOfRange(12, 44)),
+                            UnixTime.fromSeconds(copyOfRange(76, 80).toInt())
+                    ).also {
+                        it.merkleRootHash = Hash.fromBytes(copyOfRange(44, 76))
+                    }
+                }
 
     }
 
@@ -39,6 +42,10 @@ class Block(
 
     val hash by lazy {
         Hash.fromBytes(toByteArray().sha256Twice())
+    }
+
+    fun isValid(): Boolean {
+        TODO("not implement")
     }
 
     fun toByteArray(): ByteArray = ByteBuffer.allocate(80)

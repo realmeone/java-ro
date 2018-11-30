@@ -16,7 +16,7 @@ class ClientHandler(val chain: BlockChain) : SimpleChannelInboundHandler<Message
     override fun channelRead0(ctx: ChannelHandlerContext, msg: Message) {
         log.info("received from ${ctx.channel().remoteAddress()} : [$msg]")
         when (msg.type) {
-            MessageType.VERSION -> {
+            MessageType.HANDSHAKE -> {
             }
             MessageType.PONG -> {
             }

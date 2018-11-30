@@ -3,17 +3,10 @@ package one.realme.krot.service.net.codec
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToByteEncoder
-import one.realme.krot.common.lang.toByteArray
 import one.realme.krot.common.net.romtp.Message
 
-class MessageEncoder : MessageToByteEncoder<Message>() {
+internal class MessageEncoder : MessageToByteEncoder<Message>() {
     override fun encode(ctx: ChannelHandlerContext, msg: Message, out: ByteBuf) {
-        if (0 == msg.length)
-            out.writeBytes(msg.version.toByteArray() + msg.type.toByteArray())
-        else
-            out.writeBytes(msg.version.toByteArray() +
-                    msg.type.toByteArray() +
-                    msg.length.toByteArray() +
-                    msg.content)
+        out.writeBytes(msg.toByteArray())
     }
 }

@@ -4,25 +4,29 @@ import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
-import one.realme.krot.service.chain.ChainService
 import one.realme.krot.common.net.romtp.Message
-import one.realme.krot.common.net.romtp.MessageType
+import one.realme.krot.common.net.romtp.MessageType.Companion.GET_TIME
+import one.realme.krot.common.net.romtp.MessageType.Companion.HANDSHAKE
+import one.realme.krot.common.net.romtp.MessageType.Companion.PING
+import one.realme.krot.service.chain.ChainService
 import org.slf4j.LoggerFactory
 
-internal class ServerHandler(val bc: ChainService) : SimpleChannelInboundHandler<Message>() {
+internal class ServerHandler(val chain: ChainService) : SimpleChannelInboundHandler<Message>() {
     private val log = LoggerFactory.getLogger(ServerHandler::class.java)
 
     override fun channelRead0(ctx: ChannelHandlerContext, msg: Message) {
         log.info("received from ${ctx.channel().remoteAddress()} : [$msg]")
+        // messages from peer client
         when (msg.type) {
-            MessageType.VERSION -> {
+            HANDSHAKE -> {
+
 //                val recvIp = ctx.channel().remoteAddress().toString()
 //                Message.version(chain.tailBlock.height, recvIp)
             }
-            MessageType.PING -> {
+            PING -> {
                 ctx.writeAndFlush(Message.pong())
             }
-            MessageType.GET_TIME -> {
+            GET_TIME -> {
                 ctx.writeAndFlush(Message.time())
             }
             else -> ctx.close()

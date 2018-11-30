@@ -7,7 +7,7 @@ abstract class BaseService : Lifecycle {
 
     override fun isRunning() = Started == state
 
-    fun doInitialize(app: Application) {
+    internal fun doInitialize(app: Application) {
         if (Registered == state) {
             state = Initialized
             initialize(app)
@@ -15,7 +15,7 @@ abstract class BaseService : Lifecycle {
         assert(Initialized == state)
     }
 
-    fun doStart() {
+    internal fun doStart() {
         if (Initialized == state) {
             state = Started
             start()
@@ -23,7 +23,7 @@ abstract class BaseService : Lifecycle {
         assert(Started == state)
     }
 
-    fun doStop() {
+    internal fun doStop() {
         if (Started == state) {
             state = Stopped
             stop()

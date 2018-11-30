@@ -25,10 +25,13 @@ class ChainService : BaseService() {
 
     override fun initialize(app: Application) {
         with(configuration) {
-            app.config.getIntOrNull("genesis.version")?.let { genesisVersion = it }
-            app.config.getLongOrNull("genesis.height")?.let { genesisHeight = it }
-            app.config.getStringOrNull("genesis.prevBlockHash")?.let { genesisPrevBlockHash = it }
-            app.config.getIntOrNull("genesis.timestamp")?.let { genesisTimestamp = it }
+            with(app.config) {
+                getIntOrNull("genesis.version")?.let { genesisVersion = it }
+                getIntOrNull("genesis.version")?.let { genesisVersion = it }
+                getLongOrNull("genesis.height")?.let { genesisHeight = it }
+                getStringOrNull("genesis.prevBlockHash")?.let { genesisPrevBlockHash = it }
+                getIntOrNull("genesis.timestamp")?.let { genesisTimestamp = it }
+            }
         }
 
     }

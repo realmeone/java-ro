@@ -38,8 +38,10 @@ class NetService : BaseService() {
     override fun initialize(app: Application) {
         // set config
         with(configuration) {
-            app.config.getIntOrNull("net.prot")?.let { port = it }
-            app.config.getIntOrNull("net.maxPeer")?.let { maxPeer = it }
+            with(app.config) {
+                getIntOrNull("net.prot")?.let { port = it }
+                getIntOrNull("net.maxPeer")?.let { maxPeer = it }
+            }
         }
 
         chainService = app.services[ChainService::class.java.simpleName] as ChainService
