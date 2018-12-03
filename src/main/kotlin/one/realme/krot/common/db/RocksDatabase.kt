@@ -3,15 +3,8 @@ package one.realme.krot.common.db
 import org.rocksdb.*
 import java.io.File
 
-class RocksDatabase(private val dbPath: String) : Database {
+open class RocksDatabase(private val dbPath: String) : Database {
     private val db: RocksDB
-
-    companion object {
-        val nodesDbPath = "data/nodes"
-        // it will auto create db files
-//        val blocksDb: RocksDatabase = RocksDatabase("data/blocks")
-//        val nodesDb: RocksDatabase = RocksDatabase("data/nodes")
-    }
 
     init {
         File(dbPath).mkdirs()

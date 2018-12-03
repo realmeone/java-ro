@@ -3,6 +3,7 @@ package one.realme.krot.common.primitive
 import com.google.common.primitives.Ints
 import one.realme.krot.common.codec.Hex
 import one.realme.krot.common.codec.toHexString
+import kotlin.random.Random
 
 /**
  * maybe hash32 is the right name?
@@ -26,11 +27,13 @@ class Hash private constructor(private val bytes: ByteArray) {
         return true
     }
 
-    fun isEmpty(): Boolean = ByteArray(32).contentEquals(bytes)
+    fun isEmpty(): Boolean = ByteArray(SIZE).contentEquals(bytes)
 
     companion object {
-        fun empty() = fromBytes(ByteArray(32))
+        const val SIZE = 32
+        fun empty() = fromBytes(ByteArray(SIZE))
         fun fromBytes(bytes: ByteArray): Hash = Hash(bytes)
         fun fromString(hex: String): Hash = Hash(Hex.decode(hex))
+        fun random(): Hash = Hash.fromBytes(Random(System.currentTimeMillis()).nextBytes(SIZE))
     }
 }

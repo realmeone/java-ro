@@ -1,6 +1,5 @@
 package one.realme.krot.service.chain
 
-import one.realme.krot.common.db.RocksDatabase
 import one.realme.krot.common.primitive.Block
 import one.realme.krot.common.primitive.BlockHeader
 import one.realme.krot.common.primitive.Transaction
@@ -14,7 +13,7 @@ class BlockChain(
         var tailBlock: Block = genesisBlock
 ) {
     private val txPool = Vector<Transaction>()
-    private val blockDb = BlockDb(RocksDatabase("data/blocks"))
+    private val blockDb = BlockDb()
 
     fun addTransaction(tx: Transaction) {
         if (tx.isValid() && !txPool.contains(tx)) txPool.add(tx)

@@ -9,7 +9,8 @@ import one.realme.krot.service.net.codec.MessageEncoder
 import java.util.concurrent.TimeUnit
 
 internal class ServerChannelInitializer(
-        private val chainService: ChainService
+        private val chainService: ChainService,
+        private val conf: NetService.Configuration
 ) : ChannelInitializer<SocketChannel>() {
 
     override fun initChannel(ch: SocketChannel) {
@@ -17,7 +18,7 @@ internal class ServerChannelInitializer(
             addLast(ReadTimeoutHandler(60, TimeUnit.SECONDS))
             addLast(MessageEncoder())
             addLast(MessageDecoder())
-            addLast(ServerHandler(chainService))
+            addLast(ServerHandler(chainService, conf))
         }
     }
 

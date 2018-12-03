@@ -8,9 +8,12 @@ import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import one.realme.krot.common.base.Application
 import one.realme.krot.common.base.BaseService
+import one.realme.krot.common.primitive.Hash
 import one.realme.krot.service.chain.ChainService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.net.InetAddress
+import java.net.NetworkInterface
 
 /**
  * netty based
@@ -21,9 +24,13 @@ class NetService : BaseService() {
         private val parallelism: Int = Runtime.getRuntime().availableProcessors()
         var connectionGroupSize = parallelism / 2 + 1
         var workerGroupSize = parallelism / 2 + 1
-        var port: Int = 50505
-        var maxPeer: Int = 500
-        var connectTimeoutMillis: Int = 30000
+        var port = 50505
+        var maxPeer = 500
+        var connectTimeoutMillis = 30000
+        val nodeId = Hash.random()
+        val ip: ByteArray = InetAddress.getLocalHost().address
+        val os: String = System.getProperty("os.name")
+        val agent: String = "krot"
     }
 
     private val log: Logger = LoggerFactory.getLogger(NetService::class.java)
@@ -39,7 +46,7 @@ class NetService : BaseService() {
         // set config
         with(configuration) {
             with(app.config) {
-                getIntOrNull("net.prot")?.let { port = it }
+                getIntOrNull("net.port")?.let { port = it }
                 getIntOrNull("net.maxPeer")?.let { maxPeer = it }
             }
         }
@@ -67,7 +74,7 @@ class NetService : BaseService() {
             localAddress(configuration.port)
             group(connectionGroup, workerGroup)
             channel(NioServerSocketChannel::class.java)
-            childHandler(ServerChannelInitializer(chainService))
+            childHandler(ServerChannelInitializer(chainService, configuration))
         }
     }
 

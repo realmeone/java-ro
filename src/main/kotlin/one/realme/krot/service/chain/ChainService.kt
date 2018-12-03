@@ -51,4 +51,6 @@ class ChainService : BaseService() {
                 UnixTime.fromSeconds(1540166400)
         ))
     }
+
+    fun getHeight(): Long = chain.tailBlock.height
 }
