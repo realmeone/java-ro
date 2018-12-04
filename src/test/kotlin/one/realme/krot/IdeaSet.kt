@@ -25,8 +25,16 @@ class IdeaSet {
     fun testNetAddr() {
         val a1 = getIpString(InetAddress.getLocalHost().address)
         val a2 = InetAddress.getLocalHost().hostAddress
+        val a3 = getIpString2(InetAddress.getLocalHost().address)
         assertEquals(a1, a2)
+        assertEquals(a2, a3)
+        assertEquals(a1, a3)
     }
+
+    private fun getIpString2(address: ByteArray): String =
+            address.joinToString(".") {
+                (it.toInt() and 0xff).toString()
+            }
 
     private fun getIpString(address: ByteArray): String =
             with(StringBuilder()) {
