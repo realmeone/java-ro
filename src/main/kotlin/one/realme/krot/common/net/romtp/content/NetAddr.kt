@@ -2,24 +2,19 @@ package one.realme.krot.common.net.romtp.content
 
 import one.realme.krot.common.lang.toByteArray
 import one.realme.krot.common.lang.toInt
+import java.net.InetAddress
 
 /**
  * 20 bytes(16 bytes + 4 bytes)
  *
- * 16 bytes 10 bytes zero, 2 bytes ff 4bytes ipv4, e.g. 000000000000
- * 00 00 00 00 00 00 00 00 00 00 FF FF + IPV4
+ * 16 bytes 10 bytes zero, 2 bytes ff 4bytes ipv4,
+ * e.g. 00 00 00 00 00 00 00 00 00 00 FF FF + IPV4
  */
 class NetAddr {
     private val data: ByteArray = ByteArray(20)
     val isIpv4: Boolean
     val port: Int
-
-    // TODO support ipv6
-    val ip: String by lazy {
-        data.copyOfRange(12, 16).joinToString(".") {
-            (it.toInt() and 0xff).toString()
-        }
-    }
+    val ip: String
 
     constructor(
             ip: ByteArray,
@@ -34,10 +29,12 @@ class NetAddr {
             ip.forEachIndexed { i, b ->
                 data[12 + i] = b
             }
+            this.ip = InetAddress.getByAddress(data.copyOfRange(12, 16)).hostAddress
         } else {
             ip.forEachIndexed { i, b ->
                 data[i] = b
             }
+            this.ip = InetAddress.getByAddress(data.copyOfRange(0, 16)).hostAddress.toUpperCase()
         }
         port.toByteArray().forEachIndexed { i, b ->
             data[16 + i] = b
@@ -46,7 +43,11 @@ class NetAddr {
 
     constructor(raw: ByteArray) {
         raw.copyInto(data)
-        isIpv4 = data[10] == 0xff.toByte() && data[11] == 0xff.toByte()
+        isIpv4 = ByteArray(10).contentEquals(data.copyOf(10)) &&
+                data[10] == 0xff.toByte() &&
+                data[11] == 0xff.toByte()
+        if (isIpv4) this.ip = InetAddress.getByAddress(data.copyOfRange(12, 16)).hostAddress
+        else this.ip = InetAddress.getByAddress(data.copyOfRange(0, 16)).hostAddress.toUpperCase()
         port = data.copyOfRange(16, 20).toInt()
     }
 

@@ -14,9 +14,8 @@ class NetAddrTest {
     fun testToByteArrayIpv6() {
         val rawIpv61 = "1080:0:0:0:8:800:200C:417A"
         val ipv6 = InetAddress.getByName(rawIpv61)
-        println(ipv6.hostAddress)
         val na = NetAddr(ipv6.address, port)
-        println(na.toByteArray().toHexString())
+
         assertFalse(na.isIpv4)
         assertEquals(rawIpv61, na.ip)
         assertEquals(port, na.port)
