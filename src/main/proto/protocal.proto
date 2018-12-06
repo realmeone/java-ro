@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package one.realme.krot.net;
+
+option java_package = "one.realme.krot.net"; //Specify the name of the package that generated the Java file
+option java_outer_classname = "Protocol"; //Specify the class name of the generated Java file
+
+message Ping {
+    int64 nonce = 1;
+}
+
+message Pong {
+    int64 nonce = 1;
+}
+
+message NetAddr {
+    string ip = 1;
+    int32 port = 2;
+}
+
+message HandShake {
+    int32 version = 1; //
+    int32 timestamp = 2; //
+    bytes nodeId = 3; // The node identity
+    NetAddr addr = 4; // The network address from this message sender
+    int64 height = 5; // The last block received by the emitting node
+    string os = 6; // runtime os
+    string agent = 7; // runtime instance name
+}
