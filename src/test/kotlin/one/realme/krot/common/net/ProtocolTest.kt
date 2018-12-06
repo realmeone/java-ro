@@ -1,5 +1,18 @@
 package one.realme.krot.common.net
 
-class ProtocolTest {
+import one.realme.krot.common.codec.Hex
+import one.realme.krot.net.Protocol
+import org.junit.jupiter.api.Test
 
+class ProtocolTest {
+    @Test
+    fun testProto() {
+        val handshakeMsg = Protocol.Message.newBuilder().apply {
+            type = Protocol.MessageType.PING
+            content = Protocol.Ping.newBuilder().apply {
+                nonce = 100000000
+            }.build().toByteString()
+        }.build()
+        println(Hex.encode(handshakeMsg.toByteArray()))
+    }
 }

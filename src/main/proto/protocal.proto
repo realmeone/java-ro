@@ -5,6 +5,23 @@ package one.realme.krot.net;
 option java_package = "one.realme.krot.net"; //Specify the name of the package that generated the Java file
 option java_outer_classname = "Protocol"; //Specify the class name of the generated Java file
 
+enum MessageType {
+    HANDSHAKE = 0;
+    PING = 1;
+    PONG = 2;
+    GET_TIME = 3;
+    TIME = 4;
+    GET_BLOCKS = 5;
+    BLOCK = 6;
+    TX = 7;
+}
+
+message Message {
+    int32 version = 1;
+    MessageType type = 2;
+    bytes content = 3;
+}
+
 message Ping {
     int64 nonce = 1;
 }
