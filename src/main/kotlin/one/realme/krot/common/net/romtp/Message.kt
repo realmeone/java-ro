@@ -5,6 +5,8 @@ import one.realme.krot.common.lang.toByteArray
 import one.realme.krot.common.lang.toInt
 import one.realme.krot.common.net.romtp.content.Ping
 import one.realme.krot.common.net.romtp.content.Pong
+import one.realme.krot.net.Protocol
+import kotlin.random.Random
 
 /**
  * Message Structure
@@ -25,8 +27,8 @@ class Message(
         private const val CONTENT_RANGE_START = 12
 
         fun getTime() = Message(type = MessageType.GET_TIME)
-        fun ping() = Message(type = MessageType.PING, content = Ping().toByteArray())
-        fun pong() = Message(type = MessageType.PING, content = Pong().toByteArray())
+        fun ping() = Message(type = MessageType.PING, content = Protocol.Ping.newBuilder().apply { nonce = Random.nextLong() }.build().toByteArray())
+        fun pong() = Message(type = MessageType.PONG, content = Protocol.Pong.newBuilder().apply { nonce = Random.nextLong() }.build().toByteArray())
         fun time() = Message(type = MessageType.TIME, content = UnixTime.now().toByteArray())
 
         fun fromByteArray(data: ByteArray): Message = with(data) {

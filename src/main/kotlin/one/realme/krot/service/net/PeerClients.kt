@@ -1,4 +1,4 @@
-package one.realme.krot.service.net.client
+package one.realme.krot.service.net
 
 /**
  * PeerClients managed all client's lifecycle

@@ -1,47 +1,39 @@
-package one.realme.krot.service.net.server
+package one.realme.krot.service.net
 
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
-import one.realme.krot.common.lang.UnixTime
-import one.realme.krot.common.net.romtp.Message
-import one.realme.krot.common.net.romtp.MessageType.Companion.GET_TIME
-import one.realme.krot.common.net.romtp.MessageType.Companion.HANDSHAKE
-import one.realme.krot.common.net.romtp.MessageType.Companion.PING
-import one.realme.krot.common.net.romtp.content.HandShake
-import one.realme.krot.common.net.romtp.content.NetAddr
-import one.realme.krot.common.primitive.Hash
+import one.realme.krot.net.Protocol
 import one.realme.krot.service.chain.ChainService
 import org.slf4j.LoggerFactory
+import kotlin.random.Random
 
 internal class ServerHandler(
         private val chain: ChainService,
         private val conf: NetService.Configuration
-) : SimpleChannelInboundHandler<Message>() {
+) : SimpleChannelInboundHandler<Protocol.Message>() {
     private val log = LoggerFactory.getLogger(ServerHandler::class.java)
 
-    override fun channelRead0(ctx: ChannelHandlerContext, msg: Message) {
+    override fun channelRead0(ctx: ChannelHandlerContext, msg: Protocol.Message) {
         log.info("received from ${ctx.channel().remoteAddress()} : [$msg]")
         // messages from peer client
         when (msg.type) {
-            HANDSHAKE -> {
-                val handshake = Message(
-                        type = HANDSHAKE,
-                        content = HandShake(0x01,
-                                UnixTime.now().toInt(),
-                                conf.nodeId,
-                                NetAddr(conf.ip, conf.port),
-                                chain.getHeight(),
-                                conf.os,
-                                conf.agent).toByteArray())
-                ctx.writeAndFlush(handshake)
+            Protocol.MessageType.HANDSHAKE -> {
+//                val handshake = Message(
+//                        type = HANDSHAKE,
+//                        content = HandShake(0x01,
+//                                UnixTime.now().toInt(),
+//                                conf.nodeId,
+//                                NetAddr(conf.ip, conf.port),
+//                                chain.getHeight(),
+//                                conf.os,
+//                                conf.agent).toByteArray())
+//                ctx.writeAndFlush(handshake)
             }
-            PING -> {
-                ctx.writeAndFlush(Message.pong())
-            }
-            GET_TIME -> {
-                ctx.writeAndFlush(Message.time())
+            Protocol.MessageType.PING -> {
+                log.info("receive ping from ${ctx.channel().remoteAddress()}")
+                ctx.writeAndFlush(Protocol.Pong.newBuilder().apply { nonce = Random.nextLong() }.build().toByteArray())
             }
             else -> ctx.close()
         }

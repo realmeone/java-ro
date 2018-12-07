@@ -9,9 +9,9 @@ class ProtocolTest {
     fun testProto() {
         val handshakeMsg = Protocol.Message.newBuilder().apply {
             type = Protocol.MessageType.PING
-            content = Protocol.Ping.newBuilder().apply {
+            ping = Protocol.Ping.newBuilder().apply {
                 nonce = 100000000
-            }.build().toByteString()
+            }.build()
         }.build()
         println(Hex.encode(handshakeMsg.toByteArray()))
     }

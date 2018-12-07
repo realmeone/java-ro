@@ -19,7 +19,10 @@ enum MessageType {
 message Message {
     int32 version = 1;
     MessageType type = 2;
-    bytes content = 3;
+
+    Ping ping = 3;
+    Pong pong = 4;
+    HandShake handShake = 5;
 }
 
 message Ping {

@@ -1,4 +1,4 @@
-package one.realme.krot.service.net.codec
+package one.realme.krot.service.net
 
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext

@@ -4,7 +4,7 @@ import one.realme.krot.common.base.Application
 import one.realme.krot.program.Banner
 import one.realme.krot.service.chain.ChainService
 import one.realme.krot.service.discover.DiscoverService
-import one.realme.krot.service.net.server.NetService
+import one.realme.krot.service.net.NetService
 import org.slf4j.LoggerFactory
 
 object FullNode {

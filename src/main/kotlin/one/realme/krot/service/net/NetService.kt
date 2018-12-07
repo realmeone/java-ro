@@ -1,19 +1,27 @@
-package one.realme.krot.service.net.server
+package one.realme.krot.service.net
 
 import io.netty.bootstrap.ServerBootstrap
 import io.netty.buffer.PooledByteBufAllocator
 import io.netty.channel.Channel
+import io.netty.channel.ChannelInitializer
 import io.netty.channel.ChannelOption
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioServerSocketChannel
+import io.netty.channel.socket.nio.NioSocketChannel
+import io.netty.handler.codec.protobuf.ProtobufDecoder
+import io.netty.handler.codec.protobuf.ProtobufEncoder
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender
+import io.netty.handler.timeout.ReadTimeoutHandler
 import one.realme.krot.common.base.Application
 import one.realme.krot.common.base.BaseService
 import one.realme.krot.common.primitive.Hash
+import one.realme.krot.net.Protocol
 import one.realme.krot.service.chain.ChainService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.net.InetAddress
-import java.net.NetworkInterface
+import java.util.concurrent.TimeUnit
 
 /**
  * netty based
@@ -74,7 +82,21 @@ class NetService : BaseService() {
             localAddress(configuration.port)
             group(connectionGroup, workerGroup)
             channel(NioServerSocketChannel::class.java)
-            childHandler(ServerChannelInitializer(chainService, configuration))
+            childHandler(object : ChannelInitializer<NioSocketChannel>() {
+                override fun initChannel(ch: NioSocketChannel) {
+                    with(ch.pipeline()) {
+                        addLast(ReadTimeoutHandler(60, TimeUnit.SECONDS))
+                        addLast(ProtobufVarint32FrameDecoder())
+                        addLast(ProtobufDecoder(Protocol.Message.getDefaultInstance()))
+                        addLast(ProtobufVarint32LengthFieldPrepender())
+                        addLast(ProtobufEncoder())
+//            addLast(MessageEncoder())
+//            addLast(MessageDecoder())
+                        addLast(ServerHandler(chainService, configuration))
+
+                    }
+                }
+            })
         }
     }
 

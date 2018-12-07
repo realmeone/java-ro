@@ -1,27 +1,30 @@
-package one.realme.krot.service.net.client
+package one.realme.krot.service.net
 
 
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
 import one.realme.krot.common.lang.UnixTime
-import one.realme.krot.service.chain.BlockChain
 import one.realme.krot.common.net.romtp.Message
 import one.realme.krot.common.net.romtp.MessageType
+import one.realme.krot.net.Protocol
 import org.slf4j.LoggerFactory
 
-class ClientHandler(val chain: BlockChain) : SimpleChannelInboundHandler<Message>() {
+class ClientHandler : SimpleChannelInboundHandler<Protocol.Message>() {
     private val log = LoggerFactory.getLogger(ClientHandler::class.java)
 
-    override fun channelRead0(ctx: ChannelHandlerContext, msg: Message) {
+    override fun channelRead0(ctx: ChannelHandlerContext, msg: Protocol.Message) {
         log.info("received from ${ctx.channel().remoteAddress()} : [$msg]")
         when (msg.type) {
-            MessageType.HANDSHAKE -> {
+            Protocol.MessageType.HANDSHAKE -> {
             }
-            MessageType.PONG -> {
+            Protocol.MessageType.PONG -> {
+                log.info("receive from server pong.")
+                ctx.disconnect()
+                ctx.close()
             }
-            MessageType.TIME -> {
-                log.info(UnixTime.fromBytes(msg.content).toString())
+            Protocol.MessageType.TIME -> {
+
             }
             else -> ctx.close()
         }
