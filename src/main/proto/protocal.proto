@@ -7,22 +7,31 @@ option java_outer_classname = "Protocol"; //Specify the class name of the genera
 
 enum MessageType {
     HANDSHAKE = 0;
-    PING = 1;
-    PONG = 2;
-    GET_TIME = 3;
-    TIME = 4;
-    GET_BLOCKS = 5;
-    BLOCK = 6;
-    TX = 7;
+    GO_AWAY = 1;
+    PING = 2;
+    PONG = 3;
+    GET_TIME = 4;
+    TIME = 5;
+    GET_BLOCKS = 6;
+    BLOCK = 7;
+    TX = 8;
+}
+
+enum Reason {
+    NO_REASON = 0;
+    NO_HANDSHAKE = 1;
+    DUPLICATE = 2;
+    WRONG_VERSION = 3;
 }
 
 message Message {
     int32 version = 1;
     MessageType type = 2;
 
-    Ping ping = 3;
-    Pong pong = 4;
-    HandShake handShake = 5;
+    HandShake handShake = 3;
+    GoAway goAway = 4;
+    Ping ping = 5;
+    Pong pong = 6;
 }
 
 message Ping {
@@ -46,4 +55,9 @@ message HandShake {
     int64 height = 5; // The last block received by the emitting node
     string os = 6; // runtime os
     string agent = 7; // runtime instance name
+}
+
+message GoAway {
+    Reason reason = 1;
+    bytes nodeId = 2;
 }

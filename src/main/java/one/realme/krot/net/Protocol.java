@@ -24,33 +24,37 @@ public final class Protocol {
      */
     HANDSHAKE(0),
     /**
-     * <code>PING = 1;</code>
+     * <code>GO_AWAY = 1;</code>
      */
-    PING(1),
+    GO_AWAY(1),
     /**
-     * <code>PONG = 2;</code>
+     * <code>PING = 2;</code>
      */
-    PONG(2),
+    PING(2),
     /**
-     * <code>GET_TIME = 3;</code>
+     * <code>PONG = 3;</code>
      */
-    GET_TIME(3),
+    PONG(3),
     /**
-     * <code>TIME = 4;</code>
+     * <code>GET_TIME = 4;</code>
      */
-    TIME(4),
+    GET_TIME(4),
     /**
-     * <code>GET_BLOCKS = 5;</code>
+     * <code>TIME = 5;</code>
      */
-    GET_BLOCKS(5),
+    TIME(5),
     /**
-     * <code>BLOCK = 6;</code>
+     * <code>GET_BLOCKS = 6;</code>
      */
-    BLOCK(6),
+    GET_BLOCKS(6),
     /**
-     * <code>TX = 7;</code>
+     * <code>BLOCK = 7;</code>
      */
-    TX(7),
+    BLOCK(7),
+    /**
+     * <code>TX = 8;</code>
+     */
+    TX(8),
     UNRECOGNIZED(-1),
     ;
 
@@ -59,33 +63,37 @@ public final class Protocol {
      */
     public static final int HANDSHAKE_VALUE = 0;
     /**
-     * <code>PING = 1;</code>
+     * <code>GO_AWAY = 1;</code>
      */
-    public static final int PING_VALUE = 1;
+    public static final int GO_AWAY_VALUE = 1;
     /**
-     * <code>PONG = 2;</code>
+     * <code>PING = 2;</code>
      */
-    public static final int PONG_VALUE = 2;
+    public static final int PING_VALUE = 2;
     /**
-     * <code>GET_TIME = 3;</code>
+     * <code>PONG = 3;</code>
      */
-    public static final int GET_TIME_VALUE = 3;
+    public static final int PONG_VALUE = 3;
     /**
-     * <code>TIME = 4;</code>
+     * <code>GET_TIME = 4;</code>
      */
-    public static final int TIME_VALUE = 4;
+    public static final int GET_TIME_VALUE = 4;
     /**
-     * <code>GET_BLOCKS = 5;</code>
+     * <code>TIME = 5;</code>
      */
-    public static final int GET_BLOCKS_VALUE = 5;
+    public static final int TIME_VALUE = 5;
     /**
-     * <code>BLOCK = 6;</code>
+     * <code>GET_BLOCKS = 6;</code>
      */
-    public static final int BLOCK_VALUE = 6;
+    public static final int GET_BLOCKS_VALUE = 6;
     /**
-     * <code>TX = 7;</code>
+     * <code>BLOCK = 7;</code>
      */
-    public static final int TX_VALUE = 7;
+    public static final int BLOCK_VALUE = 7;
+    /**
+     * <code>TX = 8;</code>
+     */
+    public static final int TX_VALUE = 8;
 
 
     public final int getNumber() {
@@ -107,13 +115,14 @@ public final class Protocol {
     public static MessageType forNumber(int value) {
       switch (value) {
         case 0: return HANDSHAKE;
-        case 1: return PING;
-        case 2: return PONG;
-        case 3: return GET_TIME;
-        case 4: return TIME;
-        case 5: return GET_BLOCKS;
-        case 6: return BLOCK;
-        case 7: return TX;
+        case 1: return GO_AWAY;
+        case 2: return PING;
+        case 3: return PONG;
+        case 4: return GET_TIME;
+        case 5: return TIME;
+        case 6: return GET_BLOCKS;
+        case 7: return BLOCK;
+        case 8: return TX;
         default: return null;
       }
     }
@@ -166,6 +175,122 @@ public final class Protocol {
     // @@protoc_insertion_point(enum_scope:one.realme.krot.net.MessageType)
   }
 
+  /**
+   * Protobuf enum {@code one.realme.krot.net.Reason}
+   */
+  public enum Reason
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>NO_REASON = 0;</code>
+     */
+    NO_REASON(0),
+    /**
+     * <code>NO_HANDSHAKE = 1;</code>
+     */
+    NO_HANDSHAKE(1),
+    /**
+     * <code>DUPLICATE = 2;</code>
+     */
+    DUPLICATE(2),
+    /**
+     * <code>WRONG_VERSION = 3;</code>
+     */
+    WRONG_VERSION(3),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <code>NO_REASON = 0;</code>
+     */
+    public static final int NO_REASON_VALUE = 0;
+    /**
+     * <code>NO_HANDSHAKE = 1;</code>
+     */
+    public static final int NO_HANDSHAKE_VALUE = 1;
+    /**
+     * <code>DUPLICATE = 2;</code>
+     */
+    public static final int DUPLICATE_VALUE = 2;
+    /**
+     * <code>WRONG_VERSION = 3;</code>
+     */
+    public static final int WRONG_VERSION_VALUE = 3;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static Reason valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static Reason forNumber(int value) {
+      switch (value) {
+        case 0: return NO_REASON;
+        case 1: return NO_HANDSHAKE;
+        case 2: return DUPLICATE;
+        case 3: return WRONG_VERSION;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<Reason>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        Reason> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<Reason>() {
+            public Reason findValueByNumber(int number) {
+              return Reason.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return one.realme.krot.net.Protocol.getDescriptor().getEnumTypes().get(1);
+    }
+
+    private static final Reason[] VALUES = values();
+
+    public static Reason valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private Reason(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:one.realme.krot.net.Reason)
+  }
+
   public interface MessageOrBuilder extends
       // @@protoc_insertion_point(interface_extends:one.realme.krot.net.Message)
       com.google.protobuf.MessageOrBuilder {
@@ -185,43 +310,56 @@ public final class Protocol {
     one.realme.krot.net.Protocol.MessageType getType();
 
     /**
-     * <code>.one.realme.krot.net.Ping ping = 3;</code>
+     * <code>.one.realme.krot.net.HandShake handShake = 3;</code>
+     */
+    boolean hasHandShake();
+    /**
+     * <code>.one.realme.krot.net.HandShake handShake = 3;</code>
+     */
+    one.realme.krot.net.Protocol.HandShake getHandShake();
+    /**
+     * <code>.one.realme.krot.net.HandShake handShake = 3;</code>
+     */
+    one.realme.krot.net.Protocol.HandShakeOrBuilder getHandShakeOrBuilder();
+
+    /**
+     * <code>.one.realme.krot.net.GoAway goAway = 4;</code>
+     */
+    boolean hasGoAway();
+    /**
+     * <code>.one.realme.krot.net.GoAway goAway = 4;</code>
+     */
+    one.realme.krot.net.Protocol.GoAway getGoAway();
+    /**
+     * <code>.one.realme.krot.net.GoAway goAway = 4;</code>
+     */
+    one.realme.krot.net.Protocol.GoAwayOrBuilder getGoAwayOrBuilder();
+
+    /**
+     * <code>.one.realme.krot.net.Ping ping = 5;</code>
      */
     boolean hasPing();
     /**
-     * <code>.one.realme.krot.net.Ping ping = 3;</code>
+     * <code>.one.realme.krot.net.Ping ping = 5;</code>
      */
     one.realme.krot.net.Protocol.Ping getPing();
     /**
-     * <code>.one.realme.krot.net.Ping ping = 3;</code>
+     * <code>.one.realme.krot.net.Ping ping = 5;</code>
      */
     one.realme.krot.net.Protocol.PingOrBuilder getPingOrBuilder();
 
     /**
-     * <code>.one.realme.krot.net.Pong pong = 4;</code>
+     * <code>.one.realme.krot.net.Pong pong = 6;</code>
      */
     boolean hasPong();
     /**
-     * <code>.one.realme.krot.net.Pong pong = 4;</code>
+     * <code>.one.realme.krot.net.Pong pong = 6;</code>
      */
     one.realme.krot.net.Protocol.Pong getPong();
     /**
-     * <code>.one.realme.krot.net.Pong pong = 4;</code>
+     * <code>.one.realme.krot.net.Pong pong = 6;</code>
      */
     one.realme.krot.net.Protocol.PongOrBuilder getPongOrBuilder();
-
-    /**
-     * <code>.one.realme.krot.net.HandShake handShake = 5;</code>
-     */
-    boolean hasHandShake();
-    /**
-     * <code>.one.realme.krot.net.HandShake handShake = 5;</code>
-     */
-    one.realme.krot.net.Protocol.HandShake getHandShake();
-    /**
-     * <code>.one.realme.krot.net.HandShake handShake = 5;</code>
-     */
-    one.realme.krot.net.Protocol.HandShakeOrBuilder getHandShakeOrBuilder();
   }
   /**
    * Protobuf type {@code one.realme.krot.net.Message}
@@ -276,6 +414,32 @@ public final class Protocol {
               break;
             }
             case 26: {
+              one.realme.krot.net.Protocol.HandShake.Builder subBuilder = null;
+              if (handShake_ != null) {
+                subBuilder = handShake_.toBuilder();
+              }
+              handShake_ = input.readMessage(one.realme.krot.net.Protocol.HandShake.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(handShake_);
+                handShake_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 34: {
+              one.realme.krot.net.Protocol.GoAway.Builder subBuilder = null;
+              if (goAway_ != null) {
+                subBuilder = goAway_.toBuilder();
+              }
+              goAway_ = input.readMessage(one.realme.krot.net.Protocol.GoAway.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(goAway_);
+                goAway_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 42: {
               one.realme.krot.net.Protocol.Ping.Builder subBuilder = null;
               if (ping_ != null) {
                 subBuilder = ping_.toBuilder();
@@ -288,7 +452,7 @@ public final class Protocol {
 
               break;
             }
-            case 34: {
+            case 50: {
               one.realme.krot.net.Protocol.Pong.Builder subBuilder = null;
               if (pong_ != null) {
                 subBuilder = pong_.toBuilder();
@@ -297,19 +461,6 @@ public final class Protocol {
               if (subBuilder != null) {
                 subBuilder.mergeFrom(pong_);
                 pong_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 42: {
-              one.realme.krot.net.Protocol.HandShake.Builder subBuilder = null;
-              if (handShake_ != null) {
-                subBuilder = handShake_.toBuilder();
-              }
-              handShake_ = input.readMessage(one.realme.krot.net.Protocol.HandShake.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(handShake_);
-                handShake_ = subBuilder.buildPartial();
               }
 
               break;
@@ -372,67 +523,88 @@ public final class Protocol {
       return result == null ? one.realme.krot.net.Protocol.MessageType.UNRECOGNIZED : result;
     }
 
-    public static final int PING_FIELD_NUMBER = 3;
-    private one.realme.krot.net.Protocol.Ping ping_;
-    /**
-     * <code>.one.realme.krot.net.Ping ping = 3;</code>
-     */
-    public boolean hasPing() {
-      return ping_ != null;
-    }
-    /**
-     * <code>.one.realme.krot.net.Ping ping = 3;</code>
-     */
-    public one.realme.krot.net.Protocol.Ping getPing() {
-      return ping_ == null ? one.realme.krot.net.Protocol.Ping.getDefaultInstance() : ping_;
-    }
-    /**
-     * <code>.one.realme.krot.net.Ping ping = 3;</code>
-     */
-    public one.realme.krot.net.Protocol.PingOrBuilder getPingOrBuilder() {
-      return getPing();
-    }
-
-    public static final int PONG_FIELD_NUMBER = 4;
-    private one.realme.krot.net.Protocol.Pong pong_;
-    /**
-     * <code>.one.realme.krot.net.Pong pong = 4;</code>
-     */
-    public boolean hasPong() {
-      return pong_ != null;
-    }
-    /**
-     * <code>.one.realme.krot.net.Pong pong = 4;</code>
-     */
-    public one.realme.krot.net.Protocol.Pong getPong() {
-      return pong_ == null ? one.realme.krot.net.Protocol.Pong.getDefaultInstance() : pong_;
-    }
-    /**
-     * <code>.one.realme.krot.net.Pong pong = 4;</code>
-     */
-    public one.realme.krot.net.Protocol.PongOrBuilder getPongOrBuilder() {
-      return getPong();
-    }
-
-    public static final int HANDSHAKE_FIELD_NUMBER = 5;
+    public static final int HANDSHAKE_FIELD_NUMBER = 3;
     private one.realme.krot.net.Protocol.HandShake handShake_;
     /**
-     * <code>.one.realme.krot.net.HandShake handShake = 5;</code>
+     * <code>.one.realme.krot.net.HandShake handShake = 3;</code>
      */
     public boolean hasHandShake() {
       return handShake_ != null;
     }
     /**
-     * <code>.one.realme.krot.net.HandShake handShake = 5;</code>
+     * <code>.one.realme.krot.net.HandShake handShake = 3;</code>
      */
     public one.realme.krot.net.Protocol.HandShake getHandShake() {
       return handShake_ == null ? one.realme.krot.net.Protocol.HandShake.getDefaultInstance() : handShake_;
     }
     /**
-     * <code>.one.realme.krot.net.HandShake handShake = 5;</code>
+     * <code>.one.realme.krot.net.HandShake handShake = 3;</code>
      */
     public one.realme.krot.net.Protocol.HandShakeOrBuilder getHandShakeOrBuilder() {
       return getHandShake();
+    }
+
+    public static final int GOAWAY_FIELD_NUMBER = 4;
+    private one.realme.krot.net.Protocol.GoAway goAway_;
+    /**
+     * <code>.one.realme.krot.net.GoAway goAway = 4;</code>
+     */
+    public boolean hasGoAway() {
+      return goAway_ != null;
+    }
+    /**
+     * <code>.one.realme.krot.net.GoAway goAway = 4;</code>
+     */
+    public one.realme.krot.net.Protocol.GoAway getGoAway() {
+      return goAway_ == null ? one.realme.krot.net.Protocol.GoAway.getDefaultInstance() : goAway_;
+    }
+    /**
+     * <code>.one.realme.krot.net.GoAway goAway = 4;</code>
+     */
+    public one.realme.krot.net.Protocol.GoAwayOrBuilder getGoAwayOrBuilder() {
+      return getGoAway();
+    }
+
+    public static final int PING_FIELD_NUMBER = 5;
+    private one.realme.krot.net.Protocol.Ping ping_;
+    /**
+     * <code>.one.realme.krot.net.Ping ping = 5;</code>
+     */
+    public boolean hasPing() {
+      return ping_ != null;
+    }
+    /**
+     * <code>.one.realme.krot.net.Ping ping = 5;</code>
+     */
+    public one.realme.krot.net.Protocol.Ping getPing() {
+      return ping_ == null ? one.realme.krot.net.Protocol.Ping.getDefaultInstance() : ping_;
+    }
+    /**
+     * <code>.one.realme.krot.net.Ping ping = 5;</code>
+     */
+    public one.realme.krot.net.Protocol.PingOrBuilder getPingOrBuilder() {
+      return getPing();
+    }
+
+    public static final int PONG_FIELD_NUMBER = 6;
+    private one.realme.krot.net.Protocol.Pong pong_;
+    /**
+     * <code>.one.realme.krot.net.Pong pong = 6;</code>
+     */
+    public boolean hasPong() {
+      return pong_ != null;
+    }
+    /**
+     * <code>.one.realme.krot.net.Pong pong = 6;</code>
+     */
+    public one.realme.krot.net.Protocol.Pong getPong() {
+      return pong_ == null ? one.realme.krot.net.Protocol.Pong.getDefaultInstance() : pong_;
+    }
+    /**
+     * <code>.one.realme.krot.net.Pong pong = 6;</code>
+     */
+    public one.realme.krot.net.Protocol.PongOrBuilder getPongOrBuilder() {
+      return getPong();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -455,14 +627,17 @@ public final class Protocol {
       if (type_ != one.realme.krot.net.Protocol.MessageType.HANDSHAKE.getNumber()) {
         output.writeEnum(2, type_);
       }
+      if (handShake_ != null) {
+        output.writeMessage(3, getHandShake());
+      }
+      if (goAway_ != null) {
+        output.writeMessage(4, getGoAway());
+      }
       if (ping_ != null) {
-        output.writeMessage(3, getPing());
+        output.writeMessage(5, getPing());
       }
       if (pong_ != null) {
-        output.writeMessage(4, getPong());
-      }
-      if (handShake_ != null) {
-        output.writeMessage(5, getHandShake());
+        output.writeMessage(6, getPong());
       }
       unknownFields.writeTo(output);
     }
@@ -481,17 +656,21 @@ public final class Protocol {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(2, type_);
       }
+      if (handShake_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, getHandShake());
+      }
+      if (goAway_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, getGoAway());
+      }
       if (ping_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, getPing());
+          .computeMessageSize(5, getPing());
       }
       if (pong_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, getPong());
-      }
-      if (handShake_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, getHandShake());
+          .computeMessageSize(6, getPong());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -512,6 +691,16 @@ public final class Protocol {
       result = result && (getVersion()
           == other.getVersion());
       result = result && type_ == other.type_;
+      result = result && (hasHandShake() == other.hasHandShake());
+      if (hasHandShake()) {
+        result = result && getHandShake()
+            .equals(other.getHandShake());
+      }
+      result = result && (hasGoAway() == other.hasGoAway());
+      if (hasGoAway()) {
+        result = result && getGoAway()
+            .equals(other.getGoAway());
+      }
       result = result && (hasPing() == other.hasPing());
       if (hasPing()) {
         result = result && getPing()
@@ -521,11 +710,6 @@ public final class Protocol {
       if (hasPong()) {
         result = result && getPong()
             .equals(other.getPong());
-      }
-      result = result && (hasHandShake() == other.hasHandShake());
-      if (hasHandShake()) {
-        result = result && getHandShake()
-            .equals(other.getHandShake());
       }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
@@ -542,6 +726,14 @@ public final class Protocol {
       hash = (53 * hash) + getVersion();
       hash = (37 * hash) + TYPE_FIELD_NUMBER;
       hash = (53 * hash) + type_;
+      if (hasHandShake()) {
+        hash = (37 * hash) + HANDSHAKE_FIELD_NUMBER;
+        hash = (53 * hash) + getHandShake().hashCode();
+      }
+      if (hasGoAway()) {
+        hash = (37 * hash) + GOAWAY_FIELD_NUMBER;
+        hash = (53 * hash) + getGoAway().hashCode();
+      }
       if (hasPing()) {
         hash = (37 * hash) + PING_FIELD_NUMBER;
         hash = (53 * hash) + getPing().hashCode();
@@ -549,10 +741,6 @@ public final class Protocol {
       if (hasPong()) {
         hash = (37 * hash) + PONG_FIELD_NUMBER;
         hash = (53 * hash) + getPong().hashCode();
-      }
-      if (hasHandShake()) {
-        hash = (37 * hash) + HANDSHAKE_FIELD_NUMBER;
-        hash = (53 * hash) + getHandShake().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -691,6 +879,18 @@ public final class Protocol {
 
         type_ = 0;
 
+        if (handShakeBuilder_ == null) {
+          handShake_ = null;
+        } else {
+          handShake_ = null;
+          handShakeBuilder_ = null;
+        }
+        if (goAwayBuilder_ == null) {
+          goAway_ = null;
+        } else {
+          goAway_ = null;
+          goAwayBuilder_ = null;
+        }
         if (pingBuilder_ == null) {
           ping_ = null;
         } else {
@@ -702,12 +902,6 @@ public final class Protocol {
         } else {
           pong_ = null;
           pongBuilder_ = null;
-        }
-        if (handShakeBuilder_ == null) {
-          handShake_ = null;
-        } else {
-          handShake_ = null;
-          handShakeBuilder_ = null;
         }
         return this;
       }
@@ -737,6 +931,16 @@ public final class Protocol {
         one.realme.krot.net.Protocol.Message result = new one.realme.krot.net.Protocol.Message(this);
         result.version_ = version_;
         result.type_ = type_;
+        if (handShakeBuilder_ == null) {
+          result.handShake_ = handShake_;
+        } else {
+          result.handShake_ = handShakeBuilder_.build();
+        }
+        if (goAwayBuilder_ == null) {
+          result.goAway_ = goAway_;
+        } else {
+          result.goAway_ = goAwayBuilder_.build();
+        }
         if (pingBuilder_ == null) {
           result.ping_ = ping_;
         } else {
@@ -746,11 +950,6 @@ public final class Protocol {
           result.pong_ = pong_;
         } else {
           result.pong_ = pongBuilder_.build();
-        }
-        if (handShakeBuilder_ == null) {
-          result.handShake_ = handShake_;
-        } else {
-          result.handShake_ = handShakeBuilder_.build();
         }
         onBuilt();
         return result;
@@ -806,14 +1005,17 @@ public final class Protocol {
         if (other.type_ != 0) {
           setTypeValue(other.getTypeValue());
         }
+        if (other.hasHandShake()) {
+          mergeHandShake(other.getHandShake());
+        }
+        if (other.hasGoAway()) {
+          mergeGoAway(other.getGoAway());
+        }
         if (other.hasPing()) {
           mergePing(other.getPing());
         }
         if (other.hasPong()) {
           mergePong(other.getPong());
-        }
-        if (other.hasHandShake()) {
-          mergeHandShake(other.getHandShake());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -915,17 +1117,251 @@ public final class Protocol {
         return this;
       }
 
+      private one.realme.krot.net.Protocol.HandShake handShake_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          one.realme.krot.net.Protocol.HandShake, one.realme.krot.net.Protocol.HandShake.Builder, one.realme.krot.net.Protocol.HandShakeOrBuilder> handShakeBuilder_;
+      /**
+       * <code>.one.realme.krot.net.HandShake handShake = 3;</code>
+       */
+      public boolean hasHandShake() {
+        return handShakeBuilder_ != null || handShake_ != null;
+      }
+      /**
+       * <code>.one.realme.krot.net.HandShake handShake = 3;</code>
+       */
+      public one.realme.krot.net.Protocol.HandShake getHandShake() {
+        if (handShakeBuilder_ == null) {
+          return handShake_ == null ? one.realme.krot.net.Protocol.HandShake.getDefaultInstance() : handShake_;
+        } else {
+          return handShakeBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.one.realme.krot.net.HandShake handShake = 3;</code>
+       */
+      public Builder setHandShake(one.realme.krot.net.Protocol.HandShake value) {
+        if (handShakeBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          handShake_ = value;
+          onChanged();
+        } else {
+          handShakeBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.one.realme.krot.net.HandShake handShake = 3;</code>
+       */
+      public Builder setHandShake(
+          one.realme.krot.net.Protocol.HandShake.Builder builderForValue) {
+        if (handShakeBuilder_ == null) {
+          handShake_ = builderForValue.build();
+          onChanged();
+        } else {
+          handShakeBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.one.realme.krot.net.HandShake handShake = 3;</code>
+       */
+      public Builder mergeHandShake(one.realme.krot.net.Protocol.HandShake value) {
+        if (handShakeBuilder_ == null) {
+          if (handShake_ != null) {
+            handShake_ =
+              one.realme.krot.net.Protocol.HandShake.newBuilder(handShake_).mergeFrom(value).buildPartial();
+          } else {
+            handShake_ = value;
+          }
+          onChanged();
+        } else {
+          handShakeBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.one.realme.krot.net.HandShake handShake = 3;</code>
+       */
+      public Builder clearHandShake() {
+        if (handShakeBuilder_ == null) {
+          handShake_ = null;
+          onChanged();
+        } else {
+          handShake_ = null;
+          handShakeBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.one.realme.krot.net.HandShake handShake = 3;</code>
+       */
+      public one.realme.krot.net.Protocol.HandShake.Builder getHandShakeBuilder() {
+        
+        onChanged();
+        return getHandShakeFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.one.realme.krot.net.HandShake handShake = 3;</code>
+       */
+      public one.realme.krot.net.Protocol.HandShakeOrBuilder getHandShakeOrBuilder() {
+        if (handShakeBuilder_ != null) {
+          return handShakeBuilder_.getMessageOrBuilder();
+        } else {
+          return handShake_ == null ?
+              one.realme.krot.net.Protocol.HandShake.getDefaultInstance() : handShake_;
+        }
+      }
+      /**
+       * <code>.one.realme.krot.net.HandShake handShake = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          one.realme.krot.net.Protocol.HandShake, one.realme.krot.net.Protocol.HandShake.Builder, one.realme.krot.net.Protocol.HandShakeOrBuilder> 
+          getHandShakeFieldBuilder() {
+        if (handShakeBuilder_ == null) {
+          handShakeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              one.realme.krot.net.Protocol.HandShake, one.realme.krot.net.Protocol.HandShake.Builder, one.realme.krot.net.Protocol.HandShakeOrBuilder>(
+                  getHandShake(),
+                  getParentForChildren(),
+                  isClean());
+          handShake_ = null;
+        }
+        return handShakeBuilder_;
+      }
+
+      private one.realme.krot.net.Protocol.GoAway goAway_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          one.realme.krot.net.Protocol.GoAway, one.realme.krot.net.Protocol.GoAway.Builder, one.realme.krot.net.Protocol.GoAwayOrBuilder> goAwayBuilder_;
+      /**
+       * <code>.one.realme.krot.net.GoAway goAway = 4;</code>
+       */
+      public boolean hasGoAway() {
+        return goAwayBuilder_ != null || goAway_ != null;
+      }
+      /**
+       * <code>.one.realme.krot.net.GoAway goAway = 4;</code>
+       */
+      public one.realme.krot.net.Protocol.GoAway getGoAway() {
+        if (goAwayBuilder_ == null) {
+          return goAway_ == null ? one.realme.krot.net.Protocol.GoAway.getDefaultInstance() : goAway_;
+        } else {
+          return goAwayBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.one.realme.krot.net.GoAway goAway = 4;</code>
+       */
+      public Builder setGoAway(one.realme.krot.net.Protocol.GoAway value) {
+        if (goAwayBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          goAway_ = value;
+          onChanged();
+        } else {
+          goAwayBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.one.realme.krot.net.GoAway goAway = 4;</code>
+       */
+      public Builder setGoAway(
+          one.realme.krot.net.Protocol.GoAway.Builder builderForValue) {
+        if (goAwayBuilder_ == null) {
+          goAway_ = builderForValue.build();
+          onChanged();
+        } else {
+          goAwayBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.one.realme.krot.net.GoAway goAway = 4;</code>
+       */
+      public Builder mergeGoAway(one.realme.krot.net.Protocol.GoAway value) {
+        if (goAwayBuilder_ == null) {
+          if (goAway_ != null) {
+            goAway_ =
+              one.realme.krot.net.Protocol.GoAway.newBuilder(goAway_).mergeFrom(value).buildPartial();
+          } else {
+            goAway_ = value;
+          }
+          onChanged();
+        } else {
+          goAwayBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.one.realme.krot.net.GoAway goAway = 4;</code>
+       */
+      public Builder clearGoAway() {
+        if (goAwayBuilder_ == null) {
+          goAway_ = null;
+          onChanged();
+        } else {
+          goAway_ = null;
+          goAwayBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.one.realme.krot.net.GoAway goAway = 4;</code>
+       */
+      public one.realme.krot.net.Protocol.GoAway.Builder getGoAwayBuilder() {
+        
+        onChanged();
+        return getGoAwayFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.one.realme.krot.net.GoAway goAway = 4;</code>
+       */
+      public one.realme.krot.net.Protocol.GoAwayOrBuilder getGoAwayOrBuilder() {
+        if (goAwayBuilder_ != null) {
+          return goAwayBuilder_.getMessageOrBuilder();
+        } else {
+          return goAway_ == null ?
+              one.realme.krot.net.Protocol.GoAway.getDefaultInstance() : goAway_;
+        }
+      }
+      /**
+       * <code>.one.realme.krot.net.GoAway goAway = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          one.realme.krot.net.Protocol.GoAway, one.realme.krot.net.Protocol.GoAway.Builder, one.realme.krot.net.Protocol.GoAwayOrBuilder> 
+          getGoAwayFieldBuilder() {
+        if (goAwayBuilder_ == null) {
+          goAwayBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              one.realme.krot.net.Protocol.GoAway, one.realme.krot.net.Protocol.GoAway.Builder, one.realme.krot.net.Protocol.GoAwayOrBuilder>(
+                  getGoAway(),
+                  getParentForChildren(),
+                  isClean());
+          goAway_ = null;
+        }
+        return goAwayBuilder_;
+      }
+
       private one.realme.krot.net.Protocol.Ping ping_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
           one.realme.krot.net.Protocol.Ping, one.realme.krot.net.Protocol.Ping.Builder, one.realme.krot.net.Protocol.PingOrBuilder> pingBuilder_;
       /**
-       * <code>.one.realme.krot.net.Ping ping = 3;</code>
+       * <code>.one.realme.krot.net.Ping ping = 5;</code>
        */
       public boolean hasPing() {
         return pingBuilder_ != null || ping_ != null;
       }
       /**
-       * <code>.one.realme.krot.net.Ping ping = 3;</code>
+       * <code>.one.realme.krot.net.Ping ping = 5;</code>
        */
       public one.realme.krot.net.Protocol.Ping getPing() {
         if (pingBuilder_ == null) {
@@ -935,7 +1371,7 @@ public final class Protocol {
         }
       }
       /**
-       * <code>.one.realme.krot.net.Ping ping = 3;</code>
+       * <code>.one.realme.krot.net.Ping ping = 5;</code>
        */
       public Builder setPing(one.realme.krot.net.Protocol.Ping value) {
         if (pingBuilder_ == null) {
@@ -951,7 +1387,7 @@ public final class Protocol {
         return this;
       }
       /**
-       * <code>.one.realme.krot.net.Ping ping = 3;</code>
+       * <code>.one.realme.krot.net.Ping ping = 5;</code>
        */
       public Builder setPing(
           one.realme.krot.net.Protocol.Ping.Builder builderForValue) {
@@ -965,7 +1401,7 @@ public final class Protocol {
         return this;
       }
       /**
-       * <code>.one.realme.krot.net.Ping ping = 3;</code>
+       * <code>.one.realme.krot.net.Ping ping = 5;</code>
        */
       public Builder mergePing(one.realme.krot.net.Protocol.Ping value) {
         if (pingBuilder_ == null) {
@@ -983,7 +1419,7 @@ public final class Protocol {
         return this;
       }
       /**
-       * <code>.one.realme.krot.net.Ping ping = 3;</code>
+       * <code>.one.realme.krot.net.Ping ping = 5;</code>
        */
       public Builder clearPing() {
         if (pingBuilder_ == null) {
@@ -997,7 +1433,7 @@ public final class Protocol {
         return this;
       }
       /**
-       * <code>.one.realme.krot.net.Ping ping = 3;</code>
+       * <code>.one.realme.krot.net.Ping ping = 5;</code>
        */
       public one.realme.krot.net.Protocol.Ping.Builder getPingBuilder() {
         
@@ -1005,7 +1441,7 @@ public final class Protocol {
         return getPingFieldBuilder().getBuilder();
       }
       /**
-       * <code>.one.realme.krot.net.Ping ping = 3;</code>
+       * <code>.one.realme.krot.net.Ping ping = 5;</code>
        */
       public one.realme.krot.net.Protocol.PingOrBuilder getPingOrBuilder() {
         if (pingBuilder_ != null) {
@@ -1016,7 +1452,7 @@ public final class Protocol {
         }
       }
       /**
-       * <code>.one.realme.krot.net.Ping ping = 3;</code>
+       * <code>.one.realme.krot.net.Ping ping = 5;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           one.realme.krot.net.Protocol.Ping, one.realme.krot.net.Protocol.Ping.Builder, one.realme.krot.net.Protocol.PingOrBuilder> 
@@ -1036,13 +1472,13 @@ public final class Protocol {
       private com.google.protobuf.SingleFieldBuilderV3<
           one.realme.krot.net.Protocol.Pong, one.realme.krot.net.Protocol.Pong.Builder, one.realme.krot.net.Protocol.PongOrBuilder> pongBuilder_;
       /**
-       * <code>.one.realme.krot.net.Pong pong = 4;</code>
+       * <code>.one.realme.krot.net.Pong pong = 6;</code>
        */
       public boolean hasPong() {
         return pongBuilder_ != null || pong_ != null;
       }
       /**
-       * <code>.one.realme.krot.net.Pong pong = 4;</code>
+       * <code>.one.realme.krot.net.Pong pong = 6;</code>
        */
       public one.realme.krot.net.Protocol.Pong getPong() {
         if (pongBuilder_ == null) {
@@ -1052,7 +1488,7 @@ public final class Protocol {
         }
       }
       /**
-       * <code>.one.realme.krot.net.Pong pong = 4;</code>
+       * <code>.one.realme.krot.net.Pong pong = 6;</code>
        */
       public Builder setPong(one.realme.krot.net.Protocol.Pong value) {
         if (pongBuilder_ == null) {
@@ -1068,7 +1504,7 @@ public final class Protocol {
         return this;
       }
       /**
-       * <code>.one.realme.krot.net.Pong pong = 4;</code>
+       * <code>.one.realme.krot.net.Pong pong = 6;</code>
        */
       public Builder setPong(
           one.realme.krot.net.Protocol.Pong.Builder builderForValue) {
@@ -1082,7 +1518,7 @@ public final class Protocol {
         return this;
       }
       /**
-       * <code>.one.realme.krot.net.Pong pong = 4;</code>
+       * <code>.one.realme.krot.net.Pong pong = 6;</code>
        */
       public Builder mergePong(one.realme.krot.net.Protocol.Pong value) {
         if (pongBuilder_ == null) {
@@ -1100,7 +1536,7 @@ public final class Protocol {
         return this;
       }
       /**
-       * <code>.one.realme.krot.net.Pong pong = 4;</code>
+       * <code>.one.realme.krot.net.Pong pong = 6;</code>
        */
       public Builder clearPong() {
         if (pongBuilder_ == null) {
@@ -1114,7 +1550,7 @@ public final class Protocol {
         return this;
       }
       /**
-       * <code>.one.realme.krot.net.Pong pong = 4;</code>
+       * <code>.one.realme.krot.net.Pong pong = 6;</code>
        */
       public one.realme.krot.net.Protocol.Pong.Builder getPongBuilder() {
         
@@ -1122,7 +1558,7 @@ public final class Protocol {
         return getPongFieldBuilder().getBuilder();
       }
       /**
-       * <code>.one.realme.krot.net.Pong pong = 4;</code>
+       * <code>.one.realme.krot.net.Pong pong = 6;</code>
        */
       public one.realme.krot.net.Protocol.PongOrBuilder getPongOrBuilder() {
         if (pongBuilder_ != null) {
@@ -1133,7 +1569,7 @@ public final class Protocol {
         }
       }
       /**
-       * <code>.one.realme.krot.net.Pong pong = 4;</code>
+       * <code>.one.realme.krot.net.Pong pong = 6;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           one.realme.krot.net.Protocol.Pong, one.realme.krot.net.Protocol.Pong.Builder, one.realme.krot.net.Protocol.PongOrBuilder> 
@@ -1147,123 +1583,6 @@ public final class Protocol {
           pong_ = null;
         }
         return pongBuilder_;
-      }
-
-      private one.realme.krot.net.Protocol.HandShake handShake_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          one.realme.krot.net.Protocol.HandShake, one.realme.krot.net.Protocol.HandShake.Builder, one.realme.krot.net.Protocol.HandShakeOrBuilder> handShakeBuilder_;
-      /**
-       * <code>.one.realme.krot.net.HandShake handShake = 5;</code>
-       */
-      public boolean hasHandShake() {
-        return handShakeBuilder_ != null || handShake_ != null;
-      }
-      /**
-       * <code>.one.realme.krot.net.HandShake handShake = 5;</code>
-       */
-      public one.realme.krot.net.Protocol.HandShake getHandShake() {
-        if (handShakeBuilder_ == null) {
-          return handShake_ == null ? one.realme.krot.net.Protocol.HandShake.getDefaultInstance() : handShake_;
-        } else {
-          return handShakeBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>.one.realme.krot.net.HandShake handShake = 5;</code>
-       */
-      public Builder setHandShake(one.realme.krot.net.Protocol.HandShake value) {
-        if (handShakeBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          handShake_ = value;
-          onChanged();
-        } else {
-          handShakeBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.one.realme.krot.net.HandShake handShake = 5;</code>
-       */
-      public Builder setHandShake(
-          one.realme.krot.net.Protocol.HandShake.Builder builderForValue) {
-        if (handShakeBuilder_ == null) {
-          handShake_ = builderForValue.build();
-          onChanged();
-        } else {
-          handShakeBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <code>.one.realme.krot.net.HandShake handShake = 5;</code>
-       */
-      public Builder mergeHandShake(one.realme.krot.net.Protocol.HandShake value) {
-        if (handShakeBuilder_ == null) {
-          if (handShake_ != null) {
-            handShake_ =
-              one.realme.krot.net.Protocol.HandShake.newBuilder(handShake_).mergeFrom(value).buildPartial();
-          } else {
-            handShake_ = value;
-          }
-          onChanged();
-        } else {
-          handShakeBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.one.realme.krot.net.HandShake handShake = 5;</code>
-       */
-      public Builder clearHandShake() {
-        if (handShakeBuilder_ == null) {
-          handShake_ = null;
-          onChanged();
-        } else {
-          handShake_ = null;
-          handShakeBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <code>.one.realme.krot.net.HandShake handShake = 5;</code>
-       */
-      public one.realme.krot.net.Protocol.HandShake.Builder getHandShakeBuilder() {
-        
-        onChanged();
-        return getHandShakeFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.one.realme.krot.net.HandShake handShake = 5;</code>
-       */
-      public one.realme.krot.net.Protocol.HandShakeOrBuilder getHandShakeOrBuilder() {
-        if (handShakeBuilder_ != null) {
-          return handShakeBuilder_.getMessageOrBuilder();
-        } else {
-          return handShake_ == null ?
-              one.realme.krot.net.Protocol.HandShake.getDefaultInstance() : handShake_;
-        }
-      }
-      /**
-       * <code>.one.realme.krot.net.HandShake handShake = 5;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          one.realme.krot.net.Protocol.HandShake, one.realme.krot.net.Protocol.HandShake.Builder, one.realme.krot.net.Protocol.HandShakeOrBuilder> 
-          getHandShakeFieldBuilder() {
-        if (handShakeBuilder_ == null) {
-          handShakeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              one.realme.krot.net.Protocol.HandShake, one.realme.krot.net.Protocol.HandShake.Builder, one.realme.krot.net.Protocol.HandShakeOrBuilder>(
-                  getHandShake(),
-                  getParentForChildren(),
-                  isClean());
-          handShake_ = null;
-        }
-        return handShakeBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -4224,6 +4543,579 @@ public final class Protocol {
 
   }
 
+  public interface GoAwayOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:one.realme.krot.net.GoAway)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.one.realme.krot.net.Reason reason = 1;</code>
+     */
+    int getReasonValue();
+    /**
+     * <code>.one.realme.krot.net.Reason reason = 1;</code>
+     */
+    one.realme.krot.net.Protocol.Reason getReason();
+
+    /**
+     * <code>bytes nodeId = 2;</code>
+     */
+    com.google.protobuf.ByteString getNodeId();
+  }
+  /**
+   * Protobuf type {@code one.realme.krot.net.GoAway}
+   */
+  public  static final class GoAway extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:one.realme.krot.net.GoAway)
+      GoAwayOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use GoAway.newBuilder() to construct.
+    private GoAway(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private GoAway() {
+      reason_ = 0;
+      nodeId_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GoAway(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              int rawValue = input.readEnum();
+
+              reason_ = rawValue;
+              break;
+            }
+            case 18: {
+
+              nodeId_ = input.readBytes();
+              break;
+            }
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return one.realme.krot.net.Protocol.internal_static_one_realme_krot_net_GoAway_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return one.realme.krot.net.Protocol.internal_static_one_realme_krot_net_GoAway_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              one.realme.krot.net.Protocol.GoAway.class, one.realme.krot.net.Protocol.GoAway.Builder.class);
+    }
+
+    public static final int REASON_FIELD_NUMBER = 1;
+    private int reason_;
+    /**
+     * <code>.one.realme.krot.net.Reason reason = 1;</code>
+     */
+    public int getReasonValue() {
+      return reason_;
+    }
+    /**
+     * <code>.one.realme.krot.net.Reason reason = 1;</code>
+     */
+    public one.realme.krot.net.Protocol.Reason getReason() {
+      @SuppressWarnings("deprecation")
+      one.realme.krot.net.Protocol.Reason result = one.realme.krot.net.Protocol.Reason.valueOf(reason_);
+      return result == null ? one.realme.krot.net.Protocol.Reason.UNRECOGNIZED : result;
+    }
+
+    public static final int NODEID_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString nodeId_;
+    /**
+     * <code>bytes nodeId = 2;</code>
+     */
+    public com.google.protobuf.ByteString getNodeId() {
+      return nodeId_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (reason_ != one.realme.krot.net.Protocol.Reason.NO_REASON.getNumber()) {
+        output.writeEnum(1, reason_);
+      }
+      if (!nodeId_.isEmpty()) {
+        output.writeBytes(2, nodeId_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (reason_ != one.realme.krot.net.Protocol.Reason.NO_REASON.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, reason_);
+      }
+      if (!nodeId_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, nodeId_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof one.realme.krot.net.Protocol.GoAway)) {
+        return super.equals(obj);
+      }
+      one.realme.krot.net.Protocol.GoAway other = (one.realme.krot.net.Protocol.GoAway) obj;
+
+      boolean result = true;
+      result = result && reason_ == other.reason_;
+      result = result && getNodeId()
+          .equals(other.getNodeId());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + REASON_FIELD_NUMBER;
+      hash = (53 * hash) + reason_;
+      hash = (37 * hash) + NODEID_FIELD_NUMBER;
+      hash = (53 * hash) + getNodeId().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static one.realme.krot.net.Protocol.GoAway parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static one.realme.krot.net.Protocol.GoAway parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static one.realme.krot.net.Protocol.GoAway parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static one.realme.krot.net.Protocol.GoAway parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static one.realme.krot.net.Protocol.GoAway parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static one.realme.krot.net.Protocol.GoAway parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static one.realme.krot.net.Protocol.GoAway parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static one.realme.krot.net.Protocol.GoAway parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static one.realme.krot.net.Protocol.GoAway parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static one.realme.krot.net.Protocol.GoAway parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static one.realme.krot.net.Protocol.GoAway parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static one.realme.krot.net.Protocol.GoAway parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(one.realme.krot.net.Protocol.GoAway prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code one.realme.krot.net.GoAway}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:one.realme.krot.net.GoAway)
+        one.realme.krot.net.Protocol.GoAwayOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return one.realme.krot.net.Protocol.internal_static_one_realme_krot_net_GoAway_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return one.realme.krot.net.Protocol.internal_static_one_realme_krot_net_GoAway_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                one.realme.krot.net.Protocol.GoAway.class, one.realme.krot.net.Protocol.GoAway.Builder.class);
+      }
+
+      // Construct using one.realme.krot.net.Protocol.GoAway.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        reason_ = 0;
+
+        nodeId_ = com.google.protobuf.ByteString.EMPTY;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return one.realme.krot.net.Protocol.internal_static_one_realme_krot_net_GoAway_descriptor;
+      }
+
+      @java.lang.Override
+      public one.realme.krot.net.Protocol.GoAway getDefaultInstanceForType() {
+        return one.realme.krot.net.Protocol.GoAway.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public one.realme.krot.net.Protocol.GoAway build() {
+        one.realme.krot.net.Protocol.GoAway result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public one.realme.krot.net.Protocol.GoAway buildPartial() {
+        one.realme.krot.net.Protocol.GoAway result = new one.realme.krot.net.Protocol.GoAway(this);
+        result.reason_ = reason_;
+        result.nodeId_ = nodeId_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof one.realme.krot.net.Protocol.GoAway) {
+          return mergeFrom((one.realme.krot.net.Protocol.GoAway)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(one.realme.krot.net.Protocol.GoAway other) {
+        if (other == one.realme.krot.net.Protocol.GoAway.getDefaultInstance()) return this;
+        if (other.reason_ != 0) {
+          setReasonValue(other.getReasonValue());
+        }
+        if (other.getNodeId() != com.google.protobuf.ByteString.EMPTY) {
+          setNodeId(other.getNodeId());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        one.realme.krot.net.Protocol.GoAway parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (one.realme.krot.net.Protocol.GoAway) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int reason_ = 0;
+      /**
+       * <code>.one.realme.krot.net.Reason reason = 1;</code>
+       */
+      public int getReasonValue() {
+        return reason_;
+      }
+      /**
+       * <code>.one.realme.krot.net.Reason reason = 1;</code>
+       */
+      public Builder setReasonValue(int value) {
+        reason_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.one.realme.krot.net.Reason reason = 1;</code>
+       */
+      public one.realme.krot.net.Protocol.Reason getReason() {
+        @SuppressWarnings("deprecation")
+        one.realme.krot.net.Protocol.Reason result = one.realme.krot.net.Protocol.Reason.valueOf(reason_);
+        return result == null ? one.realme.krot.net.Protocol.Reason.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.one.realme.krot.net.Reason reason = 1;</code>
+       */
+      public Builder setReason(one.realme.krot.net.Protocol.Reason value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        reason_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.one.realme.krot.net.Reason reason = 1;</code>
+       */
+      public Builder clearReason() {
+        
+        reason_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString nodeId_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>bytes nodeId = 2;</code>
+       */
+      public com.google.protobuf.ByteString getNodeId() {
+        return nodeId_;
+      }
+      /**
+       * <code>bytes nodeId = 2;</code>
+       */
+      public Builder setNodeId(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        nodeId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bytes nodeId = 2;</code>
+       */
+      public Builder clearNodeId() {
+        
+        nodeId_ = getDefaultInstance().getNodeId();
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:one.realme.krot.net.GoAway)
+    }
+
+    // @@protoc_insertion_point(class_scope:one.realme.krot.net.GoAway)
+    private static final one.realme.krot.net.Protocol.GoAway DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new one.realme.krot.net.Protocol.GoAway();
+    }
+
+    public static one.realme.krot.net.Protocol.GoAway getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<GoAway>
+        PARSER = new com.google.protobuf.AbstractParser<GoAway>() {
+      @java.lang.Override
+      public GoAway parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GoAway(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<GoAway> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GoAway> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public one.realme.krot.net.Protocol.GoAway getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_one_realme_krot_net_Message_descriptor;
   private static final 
@@ -4249,6 +5141,11 @@ public final class Protocol {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_one_realme_krot_net_HandShake_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_one_realme_krot_net_GoAway_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_one_realme_krot_net_GoAway_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -4258,22 +5155,27 @@ public final class Protocol {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016protocal.proto\022\023one.realme.krot.net\"\317\001" +
+      "\n\016protocal.proto\022\023one.realme.krot.net\"\374\001" +
       "\n\007Message\022\017\n\007version\030\001 \001(\005\022.\n\004type\030\002 \001(\016" +
-      "2 .one.realme.krot.net.MessageType\022\'\n\004pi" +
-      "ng\030\003 \001(\0132\031.one.realme.krot.net.Ping\022\'\n\004p" +
-      "ong\030\004 \001(\0132\031.one.realme.krot.net.Pong\0221\n\t" +
-      "handShake\030\005 \001(\0132\036.one.realme.krot.net.Ha" +
-      "ndShake\"\025\n\004Ping\022\r\n\005nonce\030\001 \001(\003\"\025\n\004Pong\022\r" +
-      "\n\005nonce\030\001 \001(\003\"#\n\007NetAddr\022\n\n\002ip\030\001 \001(\t\022\014\n\004" +
-      "port\030\002 \001(\005\"\226\001\n\tHandShake\022\017\n\007version\030\001 \001(" +
-      "\005\022\021\n\ttimestamp\030\002 \001(\005\022\016\n\006nodeId\030\003 \001(\014\022*\n\004" +
-      "addr\030\004 \001(\0132\034.one.realme.krot.net.NetAddr" +
-      "\022\016\n\006height\030\005 \001(\003\022\n\n\002os\030\006 \001(\t\022\r\n\005agent\030\007 " +
-      "\001(\t*k\n\013MessageType\022\r\n\tHANDSHAKE\020\000\022\010\n\004PIN" +
-      "G\020\001\022\010\n\004PONG\020\002\022\014\n\010GET_TIME\020\003\022\010\n\004TIME\020\004\022\016\n" +
-      "\nGET_BLOCKS\020\005\022\t\n\005BLOCK\020\006\022\006\n\002TX\020\007B\037\n\023one." +
-      "realme.krot.netB\010Protocolb\006proto3"
+      "2 .one.realme.krot.net.MessageType\0221\n\tha" +
+      "ndShake\030\003 \001(\0132\036.one.realme.krot.net.Hand" +
+      "Shake\022+\n\006goAway\030\004 \001(\0132\033.one.realme.krot." +
+      "net.GoAway\022\'\n\004ping\030\005 \001(\0132\031.one.realme.kr" +
+      "ot.net.Ping\022\'\n\004pong\030\006 \001(\0132\031.one.realme.k" +
+      "rot.net.Pong\"\025\n\004Ping\022\r\n\005nonce\030\001 \001(\003\"\025\n\004P" +
+      "ong\022\r\n\005nonce\030\001 \001(\003\"#\n\007NetAddr\022\n\n\002ip\030\001 \001(" +
+      "\t\022\014\n\004port\030\002 \001(\005\"\226\001\n\tHandShake\022\017\n\007version" +
+      "\030\001 \001(\005\022\021\n\ttimestamp\030\002 \001(\005\022\016\n\006nodeId\030\003 \001(" +
+      "\014\022*\n\004addr\030\004 \001(\0132\034.one.realme.krot.net.Ne" +
+      "tAddr\022\016\n\006height\030\005 \001(\003\022\n\n\002os\030\006 \001(\t\022\r\n\005age" +
+      "nt\030\007 \001(\t\"E\n\006GoAway\022+\n\006reason\030\001 \001(\0162\033.one" +
+      ".realme.krot.net.Reason\022\016\n\006nodeId\030\002 \001(\014*" +
+      "x\n\013MessageType\022\r\n\tHANDSHAKE\020\000\022\013\n\007GO_AWAY" +
+      "\020\001\022\010\n\004PING\020\002\022\010\n\004PONG\020\003\022\014\n\010GET_TIME\020\004\022\010\n\004" +
+      "TIME\020\005\022\016\n\nGET_BLOCKS\020\006\022\t\n\005BLOCK\020\007\022\006\n\002TX\020" +
+      "\010*K\n\006Reason\022\r\n\tNO_REASON\020\000\022\020\n\014NO_HANDSHA" +
+      "KE\020\001\022\r\n\tDUPLICATE\020\002\022\021\n\rWRONG_VERSION\020\003B\037" +
+      "\n\023one.realme.krot.netB\010Protocolb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -4292,7 +5194,7 @@ public final class Protocol {
     internal_static_one_realme_krot_net_Message_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_one_realme_krot_net_Message_descriptor,
-        new java.lang.String[] { "Version", "Type", "Ping", "Pong", "HandShake", });
+        new java.lang.String[] { "Version", "Type", "HandShake", "GoAway", "Ping", "Pong", });
     internal_static_one_realme_krot_net_Ping_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_one_realme_krot_net_Ping_fieldAccessorTable = new
@@ -4317,6 +5219,12 @@ public final class Protocol {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_one_realme_krot_net_HandShake_descriptor,
         new java.lang.String[] { "Version", "Timestamp", "NodeId", "Addr", "Height", "Os", "Agent", });
+    internal_static_one_realme_krot_net_GoAway_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_one_realme_krot_net_GoAway_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_one_realme_krot_net_GoAway_descriptor,
+        new java.lang.String[] { "Reason", "NodeId", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

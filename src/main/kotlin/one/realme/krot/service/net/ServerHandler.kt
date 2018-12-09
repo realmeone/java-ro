@@ -1,5 +1,6 @@
 package one.realme.krot.service.net
 
+import com.google.protobuf.ByteString
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
@@ -14,6 +15,7 @@ internal class ServerHandler(
         private val conf: NetService.Configuration
 ) : SimpleChannelInboundHandler<Protocol.Message>() {
     private val log = LoggerFactory.getLogger(ServerHandler::class.java)
+    private var handshakeCount = 0
 
     override fun channelRead0(ctx: ChannelHandlerContext, msg: Protocol.Message) {
         log.info("received from ${ctx.channel().remoteAddress()} : [$msg]")
@@ -30,14 +32,28 @@ internal class ServerHandler(
 //                                conf.os,
 //                                conf.agent).toByteArray())
 //                ctx.writeAndFlush(handshake)
+                handshakeCount++
             }
             Protocol.MessageType.PING -> {
-                log.info("receive ping from ${ctx.channel().remoteAddress()}")
-                val pong = Protocol.Message.newBuilder().apply {
-                    type = Protocol.MessageType.PONG
-                    pong = Protocol.Pong.newBuilder().setNonce(Random.nextLong()).build()
-                }.build()
-                ctx.writeAndFlush(pong)
+                if (handshakeCount == 0) {
+                    val goAway = Protocol.Message.newBuilder().apply {
+                        version = 0x01
+                        type = Protocol.MessageType.GO_AWAY
+                        goAway = Protocol.GoAway.newBuilder().apply {
+                            reason = Protocol.Reason.NO_HANDSHAKE
+                            nodeId = ByteString.copyFrom(conf.nodeId.toByteArray())
+                        }.build()
+                    }
+                    ctx.writeAndFlush(goAway)
+                    ctx.close()
+                } else {
+                    log.info("receive ping from ${ctx.channel().remoteAddress()}")
+                    val pong = Protocol.Message.newBuilder().apply {
+                        type = Protocol.MessageType.PONG
+                        pong = Protocol.Pong.newBuilder().setNonce(Random.nextLong()).build()
+                    }.build()
+                    ctx.writeAndFlush(pong)
+                }
             }
             else -> ctx.close()
         }

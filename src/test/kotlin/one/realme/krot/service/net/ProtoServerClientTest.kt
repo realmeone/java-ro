@@ -25,13 +25,6 @@ object ProtoClient {
             Worker().run()
         }.join()
 //        }
-//        val stopwatch = Stopwatch.createStarted()
-//        val chain = BlockChain(Block.genesis())
-//        val client = PeerClient(chain = chain)
-//        client.connect()
-//        client.close()
-//        stopwatch.stop()
-//        println("all are done in ${stopwatch.elapsed(TimeUnit.MILLISECONDS) / 1000.0} seconds")
     }
 
     class Worker {
@@ -46,9 +39,6 @@ object ProtoClient {
                 }.build()
             }.build()
             client.write(message)
-//            client.write(Protocol.Ping.newBuilder().apply {
-//                nonce = Random.nextLong()
-//            }.build())
         }
     }
 }

@@ -82,7 +82,6 @@ class NetService : BaseService() {
                         addLast(ProtobufVarint32LengthFieldPrepender())
                         addLast(ProtobufEncoder())
                         addLast(ServerHandler(chainService, configuration))
-
                     }
                 }
             })
