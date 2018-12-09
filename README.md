@@ -10,6 +10,7 @@ It is named Krot, first word of kotlin & realme.one tech
 | Kotlin | 1.3.10+ | |
 | Gradle | 4.10.2+ | |
 | Guava | 27.0-jre | |
+| Protobuf | 3.6.1 | |
 | Rocksdb | 5.15.10 | |
 | Netty | 4.1.30 | |
 | JUnit | 5.3.1 | |
