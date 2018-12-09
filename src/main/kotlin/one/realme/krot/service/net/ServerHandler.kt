@@ -33,7 +33,11 @@ internal class ServerHandler(
             }
             Protocol.MessageType.PING -> {
                 log.info("receive ping from ${ctx.channel().remoteAddress()}")
-                ctx.writeAndFlush(Protocol.Pong.newBuilder().apply { nonce = Random.nextLong() }.build().toByteArray())
+                val pong = Protocol.Message.newBuilder().apply {
+                    type = Protocol.MessageType.PONG
+                    pong = Protocol.Pong.newBuilder().setNonce(Random.nextLong()).build()
+                }.build()
+                ctx.writeAndFlush(pong)
             }
             else -> ctx.close()
         }

@@ -49,7 +49,6 @@ object ProtoClient {
 //            client.write(Protocol.Ping.newBuilder().apply {
 //                nonce = Random.nextLong()
 //            }.build())
-            client.close()
         }
     }
 }

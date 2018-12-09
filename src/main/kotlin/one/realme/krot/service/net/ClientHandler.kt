@@ -20,13 +20,12 @@ class ClientHandler : SimpleChannelInboundHandler<Protocol.Message>() {
             }
             Protocol.MessageType.PONG -> {
                 log.info("receive from server pong.")
-                ctx.disconnect()
-                ctx.close()
+                ctx.channel().close()
             }
             Protocol.MessageType.TIME -> {
 
             }
-            else -> ctx.close()
+            else -> ctx.channel().close()
         }
     }
 

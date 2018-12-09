@@ -12,6 +12,7 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender
 import io.netty.handler.timeout.ReadTimeoutHandler
+import kotlinx.coroutines.awaitAll
 import one.realme.krot.common.net.romtp.Message
 import one.realme.krot.net.Protocol
 import org.slf4j.LoggerFactory

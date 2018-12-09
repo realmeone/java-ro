@@ -2,10 +2,9 @@ package one.realme.krot.service.net
 
 import io.netty.bootstrap.ServerBootstrap
 import io.netty.buffer.PooledByteBufAllocator
-import io.netty.channel.Channel
-import io.netty.channel.ChannelInitializer
-import io.netty.channel.ChannelOption
+import io.netty.channel.*
 import io.netty.channel.nio.NioEventLoopGroup
+import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.channel.socket.nio.NioSocketChannel
 import io.netty.handler.codec.protobuf.ProtobufDecoder
@@ -34,7 +33,6 @@ class NetService : BaseService() {
         var workerGroupSize = parallelism / 2 + 1
         var port = 50505
         var maxPeer = 500
-        var connectTimeoutMillis = 30000
         val nodeId = Hash.random()
         val ip: ByteArray = InetAddress.getLocalHost().address
         val os: String = System.getProperty("os.name")
@@ -69,29 +67,20 @@ class NetService : BaseService() {
         workerGroup = NioEventLoopGroup(configuration.workerGroupSize)
 
         serverBootstrap = ServerBootstrap().apply {
-            option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-            option(ChannelOption.SO_REUSEADDR, true)
             option(ChannelOption.SO_BACKLOG, configuration.maxPeer)
-            childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-            childOption(ChannelOption.SO_RCVBUF, 1024 * 1024)
-            childOption(ChannelOption.SO_SNDBUF, 1024 * 1024)
-            childOption(ChannelOption.AUTO_READ, false)
             childOption(ChannelOption.SO_KEEPALIVE, true)
             childOption(ChannelOption.TCP_NODELAY, true)
-            childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, configuration.connectTimeoutMillis)
             localAddress(configuration.port)
             group(connectionGroup, workerGroup)
             channel(NioServerSocketChannel::class.java)
-            childHandler(object : ChannelInitializer<NioSocketChannel>() {
-                override fun initChannel(ch: NioSocketChannel) {
+            childHandler(object : ChannelInitializer<SocketChannel>() {
+                override fun initChannel(ch: SocketChannel) {
                     with(ch.pipeline()) {
                         addLast(ReadTimeoutHandler(60, TimeUnit.SECONDS))
                         addLast(ProtobufVarint32FrameDecoder())
                         addLast(ProtobufDecoder(Protocol.Message.getDefaultInstance()))
                         addLast(ProtobufVarint32LengthFieldPrepender())
                         addLast(ProtobufEncoder())
-//            addLast(MessageEncoder())
-//            addLast(MessageDecoder())
                         addLast(ServerHandler(chainService, configuration))
 
                     }
@@ -102,6 +91,7 @@ class NetService : BaseService() {
 
     override fun start() {
         channel = serverBootstrap.bind().sync().channel()
+        log.info("NodeId: ${configuration.nodeId}")
         log.info("${name()} listen on port: ${configuration.port}")
     }
 
