@@ -24,6 +24,8 @@ import java.util.concurrent.TimeUnit
 
 /**
  * netty based
+ *
+ * 
  */
 class NetService : BaseService() {
 
@@ -34,7 +36,7 @@ class NetService : BaseService() {
         var port = 50505
         var maxPeer = 500
         val nodeId = Hash.random()
-        val ip: ByteArray = InetAddress.getLocalHost().address
+        val ip: String = InetAddress.getLocalHost().hostAddress
         val os: String = System.getProperty("os.name")
         val agent: String = "krot"
     }

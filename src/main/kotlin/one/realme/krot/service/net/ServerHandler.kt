@@ -5,6 +5,7 @@ import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
+import one.realme.krot.common.lang.UnixTime
 import one.realme.krot.net.Protocol
 import one.realme.krot.service.chain.ChainService
 import org.slf4j.LoggerFactory
@@ -15,31 +16,45 @@ internal class ServerHandler(
         private val conf: NetService.Configuration
 ) : SimpleChannelInboundHandler<Protocol.Message>() {
     private val log = LoggerFactory.getLogger(ServerHandler::class.java)
-    private var handshakeCount = 0
+    private val peers = mutableMapOf<String, Peer>()
 
     override fun channelRead0(ctx: ChannelHandlerContext, msg: Protocol.Message) {
         log.info("received from ${ctx.channel().remoteAddress()} : [$msg]")
         // messages from peer client
+
         when (msg.type) {
             Protocol.MessageType.HANDSHAKE -> {
-//                val handshake = Message(
-//                        type = HANDSHAKE,
-//                        content = HandShake(0x01,
-//                                UnixTime.now().toInt(),
-//                                conf.nodeId,
-//                                NetAddr(conf.ip, conf.port),
-//                                chain.getHeight(),
-//                                conf.os,
-//                                conf.agent).toByteArray())
-//                ctx.writeAndFlush(handshake)
-                handshakeCount++
+                // get handshake from remote peer
+                // create peer if no this peer
+                // check if remote peer height is higher
+                //     start sync
+
+                val remoteHandshake = msg.handShake
+
+                val handshake = Protocol.Message.newBuilder().apply {
+                    version = 0x01
+                    type = Protocol.MessageType.HANDSHAKE
+                    handShake = Protocol.HandShake.newBuilder().apply {
+                        timestamp = UnixTime.now().toInt()
+                        nodeId = ByteString.copyFrom(conf.nodeId.toByteArray())
+                        addr = Protocol.NetAddr.newBuilder().apply {
+                            ip = conf.ip
+                            port = conf.port
+                        }.build()
+                        height = chain.getHeight()
+                        os = conf.os
+                        agent = conf.agent
+                    }.build()
+                }
+                ctx.writeAndFlush(handshake)
             }
             Protocol.MessageType.PING -> {
-                if (handshakeCount == 0) {
+                if (true) {
+//                if (!handshakeCount.containsKey(ctx.channel().id().asLongText())) {
                     val goAway = Protocol.Message.newBuilder().apply {
                         version = 0x01
-                        type = Protocol.MessageType.GO_AWAY
-                        goAway = Protocol.GoAway.newBuilder().apply {
+                        type = Protocol.MessageType.DISCONNECT
+                        disconnect = Protocol.Disconnect.newBuilder().apply {
                             reason = Protocol.Reason.NO_HANDSHAKE
                             nodeId = ByteString.copyFrom(conf.nodeId.toByteArray())
                         }.build()
@@ -54,6 +69,9 @@ internal class ServerHandler(
                     }.build()
                     ctx.writeAndFlush(pong)
                 }
+            }
+            Protocol.MessageType.GET_BLOCKS -> {
+
             }
             else -> ctx.close()
         }

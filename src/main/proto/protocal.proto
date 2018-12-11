@@ -7,7 +7,7 @@ option java_outer_classname = "Protocol"; //Specify the class name of the genera
 
 enum MessageType {
     HANDSHAKE = 0;
-    GO_AWAY = 1;
+    DISCONNECT = 1;
     PING = 2;
     PONG = 3;
     GET_TIME = 4;
@@ -29,7 +29,7 @@ message Message {
     MessageType type = 2;
 
     HandShake handShake = 3;
-    GoAway goAway = 4;
+    Disconnect disconnect = 4;
     Ping ping = 5;
     Pong pong = 6;
 }
@@ -57,7 +57,11 @@ message HandShake {
     string agent = 7; // runtime instance name
 }
 
-message GoAway {
-    Reason reason = 1;
-    bytes nodeId = 2;
+message Disconnect {
+    bytes nodeId = 1;
+    Reason reason = 2;
+}
+
+message GetBlock {
+
 }
