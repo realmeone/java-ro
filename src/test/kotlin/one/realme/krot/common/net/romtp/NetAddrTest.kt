@@ -23,11 +23,12 @@ class NetAddrTest {
 
     @Test
     fun testFromByteArrayIpv6() {
+        val rawIpv61 = "1080:0:0:0:8:800:200C:417A"
         val rawIpv6Hex = "108000000000000000080800200c417a00001b59"
         val bytes = Hex.decode(rawIpv6Hex)
         val na = NetAddr(bytes)
         assertFalse(na.isIpv4)
-        assertEquals(rawIpv6Hex, na.ip)
+        assertEquals(rawIpv61, na.ip)
         assertEquals(port, na.port)
     }
 

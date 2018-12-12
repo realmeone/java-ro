@@ -10,11 +10,8 @@ enum MessageType {
     DISCONNECT = 1;
     PING = 2;
     PONG = 3;
-    GET_TIME = 4;
-    TIME = 5;
-    GET_BLOCKS = 6;
-    BLOCK = 7;
-    TX = 8;
+    GET_DATA = 4;
+    DATA = 5;
 }
 
 enum Reason {
@@ -32,6 +29,8 @@ message Message {
     Disconnect disconnect = 4;
     Ping ping = 5;
     Pong pong = 6;
+    GetData getData = 7;
+    Data data = 8;
 }
 
 message Ping {
@@ -42,19 +41,12 @@ message Pong {
     int64 nonce = 1;
 }
 
-message NetAddr {
-    string ip = 1;
-    int32 port = 2;
-}
-
 message HandShake {
-    int32 version = 1; //
+    bytes nodeId = 1; // The node identity
     int32 timestamp = 2; //
-    bytes nodeId = 3; // The node identity
-    NetAddr addr = 4; // The network address from this message sender
-    int64 height = 5; // The last block received by the emitting node
-    string os = 6; // runtime os
-    string agent = 7; // runtime instance name
+    int64 height = 3; // The last block received by the emitting node
+    string os = 4; // runtime os
+    string agent = 5; // runtime instance name
 }
 
 message Disconnect {
@@ -62,6 +54,36 @@ message Disconnect {
     Reason reason = 2;
 }
 
-message GetBlock {
+enum DataType {
+    BLK = 0;  // avoid block in proto
+    TRX = 1;  // avoid tx in proto
+}
 
+message GetData {
+    DataType type = 1;
+    int64 skip = 2;
+    int64 limit = 3; // max is 500
+}
+
+message Block {
+    int64 height = 1;
+    bytes prevBlockHash = 2;
+    int32 timestamp = 3;
+    bytes merkleRootHash = 4;
+    bytes hash = 5;
+}
+
+message Tx {
+    bytes from = 1;
+    bytes to = 2;
+    int64 amount = 3;
+    string signature = 4;
+    int32 timestamp = 5;
+    bytes payload = 6;
+}
+
+message Data {
+    DataType type = 1;
+    repeated Block blocks = 2;
+    repeated Tx txs = 3;
 }

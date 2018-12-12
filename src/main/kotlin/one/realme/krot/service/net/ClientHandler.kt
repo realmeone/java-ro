@@ -22,7 +22,7 @@ class ClientHandler : SimpleChannelInboundHandler<Protocol.Message>() {
                 log.info("receive from server pong.")
                 ctx.channel().close()
             }
-            Protocol.MessageType.TIME -> {
+            Protocol.MessageType.DATA -> {
 
             }
             else -> ctx.channel().close()

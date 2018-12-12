@@ -37,10 +37,6 @@ internal class ServerHandler(
                     handShake = Protocol.HandShake.newBuilder().apply {
                         timestamp = UnixTime.now().toInt()
                         nodeId = ByteString.copyFrom(conf.nodeId.toByteArray())
-                        addr = Protocol.NetAddr.newBuilder().apply {
-                            ip = conf.ip
-                            port = conf.port
-                        }.build()
                         height = chain.getHeight()
                         os = conf.os
                         agent = conf.agent
@@ -70,7 +66,7 @@ internal class ServerHandler(
                     ctx.writeAndFlush(pong)
                 }
             }
-            Protocol.MessageType.GET_BLOCKS -> {
+            Protocol.MessageType.GET_DATA -> {
 
             }
             else -> ctx.close()
