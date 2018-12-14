@@ -33,7 +33,7 @@ object ProtoClient {
             val client = PeerClient()
             client.connect()
             val message = Protocol.Message.newBuilder().apply {
-                type = Protocol.MessageType.PING
+                type = Protocol.Message.Type.PING
                 ping = Protocol.Ping.newBuilder().apply {
                     nonce = Random.nextLong()
                 }.build()

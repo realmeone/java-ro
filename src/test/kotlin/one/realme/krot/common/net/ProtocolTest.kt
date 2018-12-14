@@ -8,7 +8,7 @@ class ProtocolTest {
     @Test
     fun testProto() {
         val handshakeMsg = Protocol.Message.newBuilder().apply {
-            type = Protocol.MessageType.PING
+            type = Protocol.Message.Type.PING
             ping = Protocol.Ping.newBuilder().apply {
                 nonce = 100000000
             }.build()

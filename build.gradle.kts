@@ -12,7 +12,7 @@ plugins {
     application
     idea
     id("com.google.protobuf") version "0.8.6"
-    kotlin("jvm") version "1.3.10"
+    kotlin("jvm") version "1.3.11"
 }
 
 java {

@@ -7,6 +7,10 @@ import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
 import one.realme.krot.common.lang.UnixTime
 import one.realme.krot.net.Protocol
+import one.realme.krot.net.Protocol.*
+import one.realme.krot.net.Protocol.DataType.BLK
+import one.realme.krot.net.Protocol.DataType.TRX
+import one.realme.krot.net.Protocol.Message.Type.*
 import one.realme.krot.service.chain.ChainService
 import org.slf4j.LoggerFactory
 import kotlin.random.Random
@@ -14,16 +18,16 @@ import kotlin.random.Random
 internal class ServerHandler(
         private val chain: ChainService,
         private val conf: NetService.Configuration
-) : SimpleChannelInboundHandler<Protocol.Message>() {
+) : SimpleChannelInboundHandler<Message>() {
     private val log = LoggerFactory.getLogger(ServerHandler::class.java)
     private val peers = mutableMapOf<String, Peer>()
 
-    override fun channelRead0(ctx: ChannelHandlerContext, msg: Protocol.Message) {
+    override fun channelRead0(ctx: ChannelHandlerContext, msg: Message) {
         log.info("received from ${ctx.channel().remoteAddress()} : [$msg]")
         // messages from peer client
 
         when (msg.type) {
-            Protocol.MessageType.HANDSHAKE -> {
+            HANDSHAKE -> {
                 // get handshake from remote peer
                 // create peer if no this peer
                 // check if remote peer height is higher
@@ -31,10 +35,11 @@ internal class ServerHandler(
 
                 val remoteHandshake = msg.handShake
 
-                val handshake = Protocol.Message.newBuilder().apply {
+                val handshake = Message.newBuilder().apply {
                     version = 0x01
-                    type = Protocol.MessageType.HANDSHAKE
-                    handShake = Protocol.HandShake.newBuilder().apply {
+                    type = Message.Type.HANDSHAKE
+
+                    handShake = HandShake.newBuilder().apply {
                         timestamp = UnixTime.now().toInt()
                         nodeId = ByteString.copyFrom(conf.nodeId.toByteArray())
                         height = chain.getHeight()
@@ -44,14 +49,14 @@ internal class ServerHandler(
                 }
                 ctx.writeAndFlush(handshake)
             }
-            Protocol.MessageType.PING -> {
+            PING -> {
                 if (true) {
 //                if (!handshakeCount.containsKey(ctx.channel().id().asLongText())) {
-                    val goAway = Protocol.Message.newBuilder().apply {
+                    val goAway = Message.newBuilder().apply {
                         version = 0x01
-                        type = Protocol.MessageType.DISCONNECT
-                        disconnect = Protocol.Disconnect.newBuilder().apply {
-                            reason = Protocol.Reason.NO_HANDSHAKE
+                        type = Protocol.Message.Type.DISCONNECT
+                        disconnect = Disconnect.newBuilder().apply {
+                            reason = Disconnect.Reason.NO_HANDSHAKE
                             nodeId = ByteString.copyFrom(conf.nodeId.toByteArray())
                         }.build()
                     }
@@ -59,15 +64,29 @@ internal class ServerHandler(
                     ctx.close()
                 } else {
                     log.info("receive ping from ${ctx.channel().remoteAddress()}")
-                    val pong = Protocol.Message.newBuilder().apply {
-                        type = Protocol.MessageType.PONG
-                        pong = Protocol.Pong.newBuilder().setNonce(Random.nextLong()).build()
+                    val pong = Message.newBuilder().apply {
+                        type = PONG
+                        pong = Pong.newBuilder().setNonce(Random.nextLong()).build()
                     }.build()
                     ctx.writeAndFlush(pong)
                 }
             }
-            Protocol.MessageType.GET_DATA -> {
-
+            FETCH_DATA -> {
+                val type = msg.fetchData.type
+                val data = msg.fetchData
+                val skip = msg.fetchData.skip
+                val limit = if (msg.fetchData.limit > 500) 500 else msg.fetchData.limit
+                when (type) {
+                    BLK -> {
+//                        chain.fetchBlocks(skip, limit)
+                    }
+                    TRX -> {
+//                        chain.fetchTransactions(skip, limit)
+                    }
+                    else -> {
+                        // wrong type , disconnected
+                    }
+                }
             }
             else -> ctx.close()
         }

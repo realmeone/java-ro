@@ -5,32 +5,31 @@ package one.realme.krot.net;
 option java_package = "one.realme.krot.net"; //Specify the name of the package that generated the Java file
 option java_outer_classname = "Protocol"; //Specify the class name of the generated Java file
 
-enum MessageType {
-    HANDSHAKE = 0;
-    DISCONNECT = 1;
-    PING = 2;
-    PONG = 3;
-    GET_DATA = 4;
-    DATA = 5;
-}
-
-enum Reason {
-    NO_REASON = 0;
-    NO_HANDSHAKE = 1;
-    DUPLICATE = 2;
-    WRONG_VERSION = 3;
-}
-
 message Message {
-    int32 version = 1;
-    MessageType type = 2;
+    enum Type {
+        HANDSHAKE = 0;
+        DISCONNECT = 1;
+        PING = 2;
+        PONG = 3;
+        FETCH_DATA = 4;
+        DATA = 5;
+    }
 
-    HandShake handShake = 3;
-    Disconnect disconnect = 4;
-    Ping ping = 5;
-    Pong pong = 6;
-    GetData getData = 7;
-    Data data = 8;
+    enum Network {
+        MAIN_NET = 0;
+        TEST_NET = 1;
+    }
+
+    Network network = 1;
+    int32 version = 2;
+    Type type = 3;
+
+    HandShake handShake = 4;
+    Disconnect disconnect = 5;
+    Ping ping = 6;
+    Pong pong = 7;
+    FetchData fetchData = 8;
+    Data data = 9;
 }
 
 message Ping {
@@ -50,19 +49,32 @@ message HandShake {
 }
 
 message Disconnect {
+    enum Reason {
+        NO_REASON = 0;
+        NO_HANDSHAKE = 1;
+        DUPLICATE = 2;
+        WRONG_VERSION = 3;
+    }
+
     bytes nodeId = 1;
     Reason reason = 2;
 }
 
 enum DataType {
-    BLK = 0;  // avoid block in proto
-    TRX = 1;  // avoid tx in proto
+    BLK = 0; // avoid block in proto
+    TRX = 1; // avoid tx in proto
 }
 
-message GetData {
+message FetchData {
     DataType type = 1;
     int64 skip = 2;
     int64 limit = 3; // max is 500
+}
+
+message Data {
+    DataType type = 1;
+    repeated Block blocks = 2;
+    repeated Tx txs = 3;
 }
 
 message Block {
@@ -80,10 +92,4 @@ message Tx {
     string signature = 4;
     int32 timestamp = 5;
     bytes payload = 6;
-}
-
-message Data {
-    DataType type = 1;
-    repeated Block blocks = 2;
-    repeated Tx txs = 3;
 }
