@@ -13,6 +13,5 @@ class Peer(
     var lastSentHandshake: Protocol.HandShake? = null
 
     fun sendHandshake() {
-
     }
 }

@@ -5,6 +5,7 @@ import one.realme.krot.common.base.BaseService
 import one.realme.krot.common.lang.UnixTime
 import one.realme.krot.common.primitive.Block
 import one.realme.krot.common.primitive.Hash
+import one.realme.krot.common.primitive.Transaction
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -53,4 +54,6 @@ class ChainService : BaseService() {
     }
 
     fun getHeight(): Long = chain.tailBlock.height
+    fun fetchBlocks(skip: Long, limit: Long) = chain.slice(LongRange(skip, skip + limit))
+    fun fetchTransactions(skip: Long, limit: Long) = listOf<Transaction>() // todo implement it
 }

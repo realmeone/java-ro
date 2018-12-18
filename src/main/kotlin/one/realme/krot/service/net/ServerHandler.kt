@@ -6,7 +6,6 @@ import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
 import one.realme.krot.common.lang.UnixTime
-import one.realme.krot.net.Protocol
 import one.realme.krot.net.Protocol.*
 import one.realme.krot.net.Protocol.DataType.BLK
 import one.realme.krot.net.Protocol.DataType.TRX
@@ -54,7 +53,7 @@ internal class ServerHandler(
 //                if (!handshakeCount.containsKey(ctx.channel().id().asLongText())) {
                     val goAway = Message.newBuilder().apply {
                         version = 0x01
-                        type = Protocol.Message.Type.DISCONNECT
+                        type = Message.Type.DISCONNECT
                         disconnect = Disconnect.newBuilder().apply {
                             reason = Disconnect.Reason.NO_HANDSHAKE
                             nodeId = ByteString.copyFrom(conf.nodeId.toByteArray())
@@ -72,21 +71,43 @@ internal class ServerHandler(
                 }
             }
             FETCH_DATA -> {
-                val type = msg.fetchData.type
-                val data = msg.fetchData
                 val skip = msg.fetchData.skip
                 val limit = if (msg.fetchData.limit > 500) 500 else msg.fetchData.limit
-                when (type) {
+                val responseData: Data
+
+                when (msg.fetchData.type) {
                     BLK -> {
-//                        chain.fetchBlocks(skip, limit)
+                        val blocks = mutableListOf<Block>()
+                        chain.fetchBlocks(skip, limit).forEach {
+                        }
+                        responseData = Data.newBuilder()
+                                .setType(BLK)
+                                .addAllBlocks(blocks)
+                                .build()
                     }
                     TRX -> {
-//                        chain.fetchTransactions(skip, limit)
+                        val trxs = mutableListOf<Tx>()
+                        chain.fetchTransactions(skip, limit).forEach {
+
+                        }
+                        responseData = Data.newBuilder()
+                                .setType(TRX)
+                                .addAllTxs(trxs)
+                                .build()
                     }
                     else -> {
-                        // wrong type , disconnected
+                        // wrong type ,todo return error msg or just disconnect
+                        responseData = Data.newBuilder().build()
                     }
                 }
+
+                val dataMsg = Message.newBuilder().apply {
+                    version = 0x01
+                    type = Message.Type.DATA
+                    data = responseData
+                }.build()
+
+                ctx.writeAndFlush(dataMsg)
             }
             else -> ctx.close()
         }
