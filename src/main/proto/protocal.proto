@@ -67,8 +67,12 @@ enum DataType {
 
 message FetchData {
     DataType type = 1;
-    int64 skip = 2;
-    int64 limit = 3; // max is 500
+    int64 skip = 2; // skip block
+    int64 limit = 3; // limit block, max is 500
+}
+
+message NoticeData {
+    repeated Data data = 1;
 }
 
 message Data {

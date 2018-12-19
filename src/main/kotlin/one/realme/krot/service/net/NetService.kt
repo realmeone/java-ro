@@ -24,8 +24,6 @@ import java.util.concurrent.TimeUnit
 
 /**
  * netty based
- *
- * 
  */
 class NetService : BaseService() {
 

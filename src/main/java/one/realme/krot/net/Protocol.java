@@ -4852,13 +4852,17 @@ public final class Protocol {
     one.realme.krot.net.Protocol.DataType getType();
 
     /**
+     * <pre>
+     * skip block
+     * </pre>
+     *
      * <code>int64 skip = 2;</code>
      */
     long getSkip();
 
     /**
      * <pre>
-     * max is 500
+     * limit block, max is 500
      * </pre>
      *
      * <code>int64 limit = 3;</code>
@@ -4975,6 +4979,10 @@ public final class Protocol {
     public static final int SKIP_FIELD_NUMBER = 2;
     private long skip_;
     /**
+     * <pre>
+     * skip block
+     * </pre>
+     *
      * <code>int64 skip = 2;</code>
      */
     public long getSkip() {
@@ -4985,7 +4993,7 @@ public final class Protocol {
     private long limit_;
     /**
      * <pre>
-     * max is 500
+     * limit block, max is 500
      * </pre>
      *
      * <code>int64 limit = 3;</code>
@@ -5379,12 +5387,20 @@ public final class Protocol {
 
       private long skip_ ;
       /**
+       * <pre>
+       * skip block
+       * </pre>
+       *
        * <code>int64 skip = 2;</code>
        */
       public long getSkip() {
         return skip_;
       }
       /**
+       * <pre>
+       * skip block
+       * </pre>
+       *
        * <code>int64 skip = 2;</code>
        */
       public Builder setSkip(long value) {
@@ -5394,6 +5410,10 @@ public final class Protocol {
         return this;
       }
       /**
+       * <pre>
+       * skip block
+       * </pre>
+       *
        * <code>int64 skip = 2;</code>
        */
       public Builder clearSkip() {
@@ -5406,7 +5426,7 @@ public final class Protocol {
       private long limit_ ;
       /**
        * <pre>
-       * max is 500
+       * limit block, max is 500
        * </pre>
        *
        * <code>int64 limit = 3;</code>
@@ -5416,7 +5436,7 @@ public final class Protocol {
       }
       /**
        * <pre>
-       * max is 500
+       * limit block, max is 500
        * </pre>
        *
        * <code>int64 limit = 3;</code>
@@ -5429,7 +5449,7 @@ public final class Protocol {
       }
       /**
        * <pre>
-       * max is 500
+       * limit block, max is 500
        * </pre>
        *
        * <code>int64 limit = 3;</code>
@@ -5488,6 +5508,788 @@ public final class Protocol {
 
     @java.lang.Override
     public one.realme.krot.net.Protocol.FetchData getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface NoticeDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:one.realme.krot.net.NoticeData)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+     */
+    java.util.List<one.realme.krot.net.Protocol.Data> 
+        getDataList();
+    /**
+     * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+     */
+    one.realme.krot.net.Protocol.Data getData(int index);
+    /**
+     * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+     */
+    int getDataCount();
+    /**
+     * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+     */
+    java.util.List<? extends one.realme.krot.net.Protocol.DataOrBuilder> 
+        getDataOrBuilderList();
+    /**
+     * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+     */
+    one.realme.krot.net.Protocol.DataOrBuilder getDataOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code one.realme.krot.net.NoticeData}
+   */
+  public  static final class NoticeData extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:one.realme.krot.net.NoticeData)
+      NoticeDataOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use NoticeData.newBuilder() to construct.
+    private NoticeData(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private NoticeData() {
+      data_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private NoticeData(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                data_ = new java.util.ArrayList<one.realme.krot.net.Protocol.Data>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              data_.add(
+                  input.readMessage(one.realme.krot.net.Protocol.Data.parser(), extensionRegistry));
+              break;
+            }
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          data_ = java.util.Collections.unmodifiableList(data_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return one.realme.krot.net.Protocol.internal_static_one_realme_krot_net_NoticeData_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return one.realme.krot.net.Protocol.internal_static_one_realme_krot_net_NoticeData_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              one.realme.krot.net.Protocol.NoticeData.class, one.realme.krot.net.Protocol.NoticeData.Builder.class);
+    }
+
+    public static final int DATA_FIELD_NUMBER = 1;
+    private java.util.List<one.realme.krot.net.Protocol.Data> data_;
+    /**
+     * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+     */
+    public java.util.List<one.realme.krot.net.Protocol.Data> getDataList() {
+      return data_;
+    }
+    /**
+     * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+     */
+    public java.util.List<? extends one.realme.krot.net.Protocol.DataOrBuilder> 
+        getDataOrBuilderList() {
+      return data_;
+    }
+    /**
+     * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+     */
+    public int getDataCount() {
+      return data_.size();
+    }
+    /**
+     * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+     */
+    public one.realme.krot.net.Protocol.Data getData(int index) {
+      return data_.get(index);
+    }
+    /**
+     * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+     */
+    public one.realme.krot.net.Protocol.DataOrBuilder getDataOrBuilder(
+        int index) {
+      return data_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      for (int i = 0; i < data_.size(); i++) {
+        output.writeMessage(1, data_.get(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < data_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, data_.get(i));
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof one.realme.krot.net.Protocol.NoticeData)) {
+        return super.equals(obj);
+      }
+      one.realme.krot.net.Protocol.NoticeData other = (one.realme.krot.net.Protocol.NoticeData) obj;
+
+      boolean result = true;
+      result = result && getDataList()
+          .equals(other.getDataList());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (getDataCount() > 0) {
+        hash = (37 * hash) + DATA_FIELD_NUMBER;
+        hash = (53 * hash) + getDataList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static one.realme.krot.net.Protocol.NoticeData parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static one.realme.krot.net.Protocol.NoticeData parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static one.realme.krot.net.Protocol.NoticeData parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static one.realme.krot.net.Protocol.NoticeData parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static one.realme.krot.net.Protocol.NoticeData parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static one.realme.krot.net.Protocol.NoticeData parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static one.realme.krot.net.Protocol.NoticeData parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static one.realme.krot.net.Protocol.NoticeData parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static one.realme.krot.net.Protocol.NoticeData parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static one.realme.krot.net.Protocol.NoticeData parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static one.realme.krot.net.Protocol.NoticeData parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static one.realme.krot.net.Protocol.NoticeData parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(one.realme.krot.net.Protocol.NoticeData prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code one.realme.krot.net.NoticeData}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:one.realme.krot.net.NoticeData)
+        one.realme.krot.net.Protocol.NoticeDataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return one.realme.krot.net.Protocol.internal_static_one_realme_krot_net_NoticeData_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return one.realme.krot.net.Protocol.internal_static_one_realme_krot_net_NoticeData_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                one.realme.krot.net.Protocol.NoticeData.class, one.realme.krot.net.Protocol.NoticeData.Builder.class);
+      }
+
+      // Construct using one.realme.krot.net.Protocol.NoticeData.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getDataFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (dataBuilder_ == null) {
+          data_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          dataBuilder_.clear();
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return one.realme.krot.net.Protocol.internal_static_one_realme_krot_net_NoticeData_descriptor;
+      }
+
+      @java.lang.Override
+      public one.realme.krot.net.Protocol.NoticeData getDefaultInstanceForType() {
+        return one.realme.krot.net.Protocol.NoticeData.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public one.realme.krot.net.Protocol.NoticeData build() {
+        one.realme.krot.net.Protocol.NoticeData result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public one.realme.krot.net.Protocol.NoticeData buildPartial() {
+        one.realme.krot.net.Protocol.NoticeData result = new one.realme.krot.net.Protocol.NoticeData(this);
+        int from_bitField0_ = bitField0_;
+        if (dataBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            data_ = java.util.Collections.unmodifiableList(data_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.data_ = data_;
+        } else {
+          result.data_ = dataBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof one.realme.krot.net.Protocol.NoticeData) {
+          return mergeFrom((one.realme.krot.net.Protocol.NoticeData)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(one.realme.krot.net.Protocol.NoticeData other) {
+        if (other == one.realme.krot.net.Protocol.NoticeData.getDefaultInstance()) return this;
+        if (dataBuilder_ == null) {
+          if (!other.data_.isEmpty()) {
+            if (data_.isEmpty()) {
+              data_ = other.data_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureDataIsMutable();
+              data_.addAll(other.data_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.data_.isEmpty()) {
+            if (dataBuilder_.isEmpty()) {
+              dataBuilder_.dispose();
+              dataBuilder_ = null;
+              data_ = other.data_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              dataBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getDataFieldBuilder() : null;
+            } else {
+              dataBuilder_.addAllMessages(other.data_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        one.realme.krot.net.Protocol.NoticeData parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (one.realme.krot.net.Protocol.NoticeData) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<one.realme.krot.net.Protocol.Data> data_ =
+        java.util.Collections.emptyList();
+      private void ensureDataIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          data_ = new java.util.ArrayList<one.realme.krot.net.Protocol.Data>(data_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          one.realme.krot.net.Protocol.Data, one.realme.krot.net.Protocol.Data.Builder, one.realme.krot.net.Protocol.DataOrBuilder> dataBuilder_;
+
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public java.util.List<one.realme.krot.net.Protocol.Data> getDataList() {
+        if (dataBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(data_);
+        } else {
+          return dataBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public int getDataCount() {
+        if (dataBuilder_ == null) {
+          return data_.size();
+        } else {
+          return dataBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public one.realme.krot.net.Protocol.Data getData(int index) {
+        if (dataBuilder_ == null) {
+          return data_.get(index);
+        } else {
+          return dataBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public Builder setData(
+          int index, one.realme.krot.net.Protocol.Data value) {
+        if (dataBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureDataIsMutable();
+          data_.set(index, value);
+          onChanged();
+        } else {
+          dataBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public Builder setData(
+          int index, one.realme.krot.net.Protocol.Data.Builder builderForValue) {
+        if (dataBuilder_ == null) {
+          ensureDataIsMutable();
+          data_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          dataBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public Builder addData(one.realme.krot.net.Protocol.Data value) {
+        if (dataBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureDataIsMutable();
+          data_.add(value);
+          onChanged();
+        } else {
+          dataBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public Builder addData(
+          int index, one.realme.krot.net.Protocol.Data value) {
+        if (dataBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureDataIsMutable();
+          data_.add(index, value);
+          onChanged();
+        } else {
+          dataBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public Builder addData(
+          one.realme.krot.net.Protocol.Data.Builder builderForValue) {
+        if (dataBuilder_ == null) {
+          ensureDataIsMutable();
+          data_.add(builderForValue.build());
+          onChanged();
+        } else {
+          dataBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public Builder addData(
+          int index, one.realme.krot.net.Protocol.Data.Builder builderForValue) {
+        if (dataBuilder_ == null) {
+          ensureDataIsMutable();
+          data_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          dataBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public Builder addAllData(
+          java.lang.Iterable<? extends one.realme.krot.net.Protocol.Data> values) {
+        if (dataBuilder_ == null) {
+          ensureDataIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, data_);
+          onChanged();
+        } else {
+          dataBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public Builder clearData() {
+        if (dataBuilder_ == null) {
+          data_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          dataBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public Builder removeData(int index) {
+        if (dataBuilder_ == null) {
+          ensureDataIsMutable();
+          data_.remove(index);
+          onChanged();
+        } else {
+          dataBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public one.realme.krot.net.Protocol.Data.Builder getDataBuilder(
+          int index) {
+        return getDataFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public one.realme.krot.net.Protocol.DataOrBuilder getDataOrBuilder(
+          int index) {
+        if (dataBuilder_ == null) {
+          return data_.get(index);  } else {
+          return dataBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public java.util.List<? extends one.realme.krot.net.Protocol.DataOrBuilder> 
+           getDataOrBuilderList() {
+        if (dataBuilder_ != null) {
+          return dataBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(data_);
+        }
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public one.realme.krot.net.Protocol.Data.Builder addDataBuilder() {
+        return getDataFieldBuilder().addBuilder(
+            one.realme.krot.net.Protocol.Data.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public one.realme.krot.net.Protocol.Data.Builder addDataBuilder(
+          int index) {
+        return getDataFieldBuilder().addBuilder(
+            index, one.realme.krot.net.Protocol.Data.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .one.realme.krot.net.Data data = 1;</code>
+       */
+      public java.util.List<one.realme.krot.net.Protocol.Data.Builder> 
+           getDataBuilderList() {
+        return getDataFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          one.realme.krot.net.Protocol.Data, one.realme.krot.net.Protocol.Data.Builder, one.realme.krot.net.Protocol.DataOrBuilder> 
+          getDataFieldBuilder() {
+        if (dataBuilder_ == null) {
+          dataBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              one.realme.krot.net.Protocol.Data, one.realme.krot.net.Protocol.Data.Builder, one.realme.krot.net.Protocol.DataOrBuilder>(
+                  data_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          data_ = null;
+        }
+        return dataBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:one.realme.krot.net.NoticeData)
+    }
+
+    // @@protoc_insertion_point(class_scope:one.realme.krot.net.NoticeData)
+    private static final one.realme.krot.net.Protocol.NoticeData DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new one.realme.krot.net.Protocol.NoticeData();
+    }
+
+    public static one.realme.krot.net.Protocol.NoticeData getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<NoticeData>
+        PARSER = new com.google.protobuf.AbstractParser<NoticeData>() {
+      @java.lang.Override
+      public NoticeData parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new NoticeData(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<NoticeData> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<NoticeData> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public one.realme.krot.net.Protocol.NoticeData getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -8383,6 +9185,11 @@ public final class Protocol {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_one_realme_krot_net_FetchData_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_one_realme_krot_net_NoticeData_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_one_realme_krot_net_NoticeData_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_one_realme_krot_net_Data_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -8430,17 +9237,18 @@ public final class Protocol {
       "\r\n\tDUPLICATE\020\002\022\021\n\rWRONG_VERSION\020\003\"U\n\tFet" +
       "chData\022+\n\004type\030\001 \001(\0162\035.one.realme.krot.n" +
       "et.DataType\022\014\n\004skip\030\002 \001(\003\022\r\n\005limit\030\003 \001(\003" +
-      "\"\205\001\n\004Data\022+\n\004type\030\001 \001(\0162\035.one.realme.kro" +
-      "t.net.DataType\022*\n\006blocks\030\002 \003(\0132\032.one.rea" +
-      "lme.krot.net.Block\022$\n\003txs\030\003 \003(\0132\027.one.re" +
-      "alme.krot.net.Tx\"g\n\005Block\022\016\n\006height\030\001 \001(" +
-      "\003\022\025\n\rprevBlockHash\030\002 \001(\014\022\021\n\ttimestamp\030\003 " +
-      "\001(\005\022\026\n\016merkleRootHash\030\004 \001(\014\022\014\n\004hash\030\005 \001(" +
-      "\014\"e\n\002Tx\022\014\n\004from\030\001 \001(\014\022\n\n\002to\030\002 \001(\014\022\016\n\006amo" +
-      "unt\030\003 \001(\003\022\021\n\tsignature\030\004 \001(\t\022\021\n\ttimestam" +
-      "p\030\005 \001(\005\022\017\n\007payload\030\006 \001(\014*\034\n\010DataType\022\007\n\003" +
-      "BLK\020\000\022\007\n\003TRX\020\001B\037\n\023one.realme.krot.netB\010P" +
-      "rotocolb\006proto3"
+      "\"5\n\nNoticeData\022\'\n\004data\030\001 \003(\0132\031.one.realm" +
+      "e.krot.net.Data\"\205\001\n\004Data\022+\n\004type\030\001 \001(\0162\035" +
+      ".one.realme.krot.net.DataType\022*\n\006blocks\030" +
+      "\002 \003(\0132\032.one.realme.krot.net.Block\022$\n\003txs" +
+      "\030\003 \003(\0132\027.one.realme.krot.net.Tx\"g\n\005Block" +
+      "\022\016\n\006height\030\001 \001(\003\022\025\n\rprevBlockHash\030\002 \001(\014\022" +
+      "\021\n\ttimestamp\030\003 \001(\005\022\026\n\016merkleRootHash\030\004 \001" +
+      "(\014\022\014\n\004hash\030\005 \001(\014\"e\n\002Tx\022\014\n\004from\030\001 \001(\014\022\n\n\002" +
+      "to\030\002 \001(\014\022\016\n\006amount\030\003 \001(\003\022\021\n\tsignature\030\004 " +
+      "\001(\t\022\021\n\ttimestamp\030\005 \001(\005\022\017\n\007payload\030\006 \001(\014*" +
+      "\034\n\010DataType\022\007\n\003BLK\020\000\022\007\n\003TRX\020\001B\037\n\023one.rea" +
+      "lme.krot.netB\010Protocolb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -8490,20 +9298,26 @@ public final class Protocol {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_one_realme_krot_net_FetchData_descriptor,
         new java.lang.String[] { "Type", "Skip", "Limit", });
-    internal_static_one_realme_krot_net_Data_descriptor =
+    internal_static_one_realme_krot_net_NoticeData_descriptor =
       getDescriptor().getMessageTypes().get(6);
+    internal_static_one_realme_krot_net_NoticeData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_one_realme_krot_net_NoticeData_descriptor,
+        new java.lang.String[] { "Data", });
+    internal_static_one_realme_krot_net_Data_descriptor =
+      getDescriptor().getMessageTypes().get(7);
     internal_static_one_realme_krot_net_Data_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_one_realme_krot_net_Data_descriptor,
         new java.lang.String[] { "Type", "Blocks", "Txs", });
     internal_static_one_realme_krot_net_Block_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_one_realme_krot_net_Block_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_one_realme_krot_net_Block_descriptor,
         new java.lang.String[] { "Height", "PrevBlockHash", "Timestamp", "MerkleRootHash", "Hash", });
     internal_static_one_realme_krot_net_Tx_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_one_realme_krot_net_Tx_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_one_realme_krot_net_Tx_descriptor,
