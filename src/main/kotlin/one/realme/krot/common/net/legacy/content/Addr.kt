@@ -1,4 +1,4 @@
-package one.realme.krot.common.net.romtp.content
+package one.realme.krot.common.net.legacy.content
 
 /**
  * response to getAddr message

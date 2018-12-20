@@ -1,8 +1,8 @@
 package one.realme.krot.common.net.romtp
 
 import one.realme.krot.common.lang.toByteArray
-import one.realme.krot.common.net.romtp.content.Ping
-import one.realme.krot.common.net.romtp.content.Pong
+import one.realme.krot.common.net.legacy.content.Ping
+import one.realme.krot.common.net.legacy.content.Pong
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import kotlin.random.Random

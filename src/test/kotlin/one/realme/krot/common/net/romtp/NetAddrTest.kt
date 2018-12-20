@@ -1,8 +1,7 @@
 package one.realme.krot.common.net.romtp
 
 import one.realme.krot.common.codec.Hex
-import one.realme.krot.common.codec.toHexString
-import one.realme.krot.common.net.romtp.content.NetAddr
+import one.realme.krot.common.net.legacy.content.NetAddr
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.net.InetAddress

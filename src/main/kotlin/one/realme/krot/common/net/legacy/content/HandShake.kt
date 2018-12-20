@@ -1,8 +1,6 @@
-package one.realme.krot.common.net.romtp.content
+package one.realme.krot.common.net.legacy.content
 
 import one.realme.krot.common.lang.toByteArray
-import one.realme.krot.common.lang.toInt
-import one.realme.krot.common.lang.toLong
 import one.realme.krot.common.primitive.Hash
 
 /**

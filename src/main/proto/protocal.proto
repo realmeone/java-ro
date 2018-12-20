@@ -12,7 +12,8 @@ message Message {
         PING = 2;
         PONG = 3;
         FETCH_DATA = 4;
-        DATA = 5;
+        NOTICE_DATA = 5;
+        DATA = 6;
     }
 
     enum Network {

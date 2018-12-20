@@ -1,10 +1,8 @@
-package one.realme.krot.common.net.romtp
+package one.realme.krot.common.net.legacy
 
 import one.realme.krot.common.lang.UnixTime
 import one.realme.krot.common.lang.toByteArray
 import one.realme.krot.common.lang.toInt
-import one.realme.krot.common.net.romtp.content.Ping
-import one.realme.krot.common.net.romtp.content.Pong
 import one.realme.krot.net.Protocol
 import kotlin.random.Random
 
