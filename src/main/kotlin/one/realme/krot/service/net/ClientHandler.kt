@@ -4,11 +4,11 @@ package one.realme.krot.service.net
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.handler.timeout.ReadTimeoutException
-import one.realme.krot.net.Protocol.*
+import one.realme.krot.net.Protocol.Message
 import one.realme.krot.net.Protocol.Message.Type.*
 import org.slf4j.LoggerFactory
 
-class ClientHandler : SimpleChannelInboundHandler<Message>() {
+internal class ClientHandler(val peerManager: PeerManager) : SimpleChannelInboundHandler<Message>() {
     private val log = LoggerFactory.getLogger(ClientHandler::class.java)
 
     override fun channelRead0(ctx: ChannelHandlerContext, msg: Message) {

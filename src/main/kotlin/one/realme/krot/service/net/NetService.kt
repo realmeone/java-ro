@@ -1,12 +1,12 @@
 package one.realme.krot.service.net
 
 import io.netty.bootstrap.ServerBootstrap
-import io.netty.buffer.PooledByteBufAllocator
-import io.netty.channel.*
+import io.netty.channel.Channel
+import io.netty.channel.ChannelInitializer
+import io.netty.channel.ChannelOption
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
-import io.netty.channel.socket.nio.NioSocketChannel
 import io.netty.handler.codec.protobuf.ProtobufDecoder
 import io.netty.handler.codec.protobuf.ProtobufEncoder
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder
@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit
  */
 class NetService : BaseService() {
 
-    internal class Configuration {
+    class Configuration {
         private val parallelism: Int = Runtime.getRuntime().availableProcessors()
         var connectionGroupSize = parallelism / 2 + 1
         var workerGroupSize = parallelism / 2 + 1
@@ -40,9 +40,9 @@ class NetService : BaseService() {
     }
 
     private val log: Logger = LoggerFactory.getLogger(NetService::class.java)
-    private val configuration = Configuration()
+    val configuration = Configuration()
+    val peerManager = PeerManager()
 
-    private lateinit var chainService: ChainService
     private lateinit var connectionGroup: NioEventLoopGroup
     private lateinit var workerGroup: NioEventLoopGroup
     private lateinit var serverBootstrap: ServerBootstrap
@@ -57,8 +57,7 @@ class NetService : BaseService() {
             }
         }
 
-        chainService = app.services[ChainService::class.java.simpleName] as ChainService
-
+        val chainService = app.services[ChainService::class.java.simpleName] as ChainService
         requireNotNull(chainService) {
             "must init chain service first"
         }
@@ -81,7 +80,7 @@ class NetService : BaseService() {
                         addLast(ProtobufDecoder(Protocol.Message.getDefaultInstance()))
                         addLast(ProtobufVarint32LengthFieldPrepender())
                         addLast(ProtobufEncoder())
-                        addLast(ServerHandler(chainService, configuration))
+                        addLast(ServerHandler(chainService, peerManager, configuration))
                     }
                 }
             })
@@ -106,5 +105,4 @@ class NetService : BaseService() {
 
         log.info("${name()} stopped.")
     }
-
 }

@@ -18,42 +18,65 @@ import kotlin.random.Random
  * 3. sync blx
  */
 internal class Peer(
-        val localNodeId: String,
-        var remoteNodeId: String = "",
         val channel: Channel,
-        val remoteIp: String = channel.remoteAddress().toString(),
+        val localNodeId: String,
+        val remoteIp: String,
         val cs: ChainService,
-        val os: String,
-        val agent: String,
+        var remoteNodeId: String = "",
+        var os: String = "unknown",
+        var agent: String = "unknown",
         var handshakeCount: Int = 0
 ) {
     private val log: Logger = LoggerFactory.getLogger(Peer::class.java)
+    private val protocolVersion = 0x01
 
     var connected: Boolean = false
         get() = channel.isActive
+    var handshaked: Boolean = false
+        get() = lastRecvHandshake != null && lastSendHandshake != null
+    @Volatile
+    var lastRecvHandshake: Protocol.Message? = null
+    @Volatile
+    var lastSendHandshake: Protocol.Message? = null
 
-    fun handleHandShake(msg: Protocol.Message) {
-        // get handshake from remote peer
-        // create peer if no this peer
+    // dispatch message
+    fun handleMessage(msg: Protocol.Message) {
+        // check if handshaked ? disconnect : continue
+        if (msg.type == Protocol.Message.Type.HANDSHAKE) handleHandShake(msg)
+        else if (!handshaked) {
+            sendDisconnect(Protocol.Disconnect.Reason.NO_HANDSHAKE)
+            close()
+        } else
+            when (msg.type) {
+                Protocol.Message.Type.PING -> handlePing(msg)
+                Protocol.Message.Type.PONG -> handlePong(msg)
+                Protocol.Message.Type.FETCH_DATA -> handleFetchData(msg)
+                else -> close()
+            }
+    }
+
+    private fun handleHandShake(msg: Protocol.Message) {
+        // validate handshake
+        lastRecvHandshake = msg
+        val handshake = msg.handShake
+        this.remoteNodeId = handshake.nodeId.toStringUtf8()
+
         // check if remote peer height is higher
         //     start sync
-        val remoteHandshake = msg.handShake
+
         sendHandshake()
     }
 
-    fun handlePing(msg: Protocol.Message) {
-        if (true) {
-//                if (!handshakeCount.containsKey(ctx.channel().id().asLongText())) {
-            sendDisconnect(Protocol.Disconnect.Reason.NO_HANDSHAKE)
-            close()
-        } else sendPong()
+    private fun handlePing(msg: Protocol.Message) {
+        // check nonce
+        sendPong()
     }
 
-    fun handlePong() {
-
+    private fun handlePong(msg: Protocol.Message) {
+        // check nonce
     }
 
-    fun handleFetchData(msg: Protocol.Message) {
+    private fun handleFetchData(msg: Protocol.Message) {
         val skip = msg.fetchData.skip
         val limit = if (msg.fetchData.limit > 500) 500 else msg.fetchData.limit
 
@@ -70,9 +93,9 @@ internal class Peer(
         }
     }
 
-    fun sendHandshake() {
+    private fun sendHandshake() {
         val handshake = Protocol.Message.newBuilder().apply {
-            version = 0x01
+            version = protocolVersion
             type = Protocol.Message.Type.HANDSHAKE
             handShake = Protocol.HandShake.newBuilder()
                     .setTimestamp(UnixTime.now().toInt())
@@ -84,15 +107,17 @@ internal class Peer(
         }.build()
         log.info("sending handshake message to $remoteIp ...")
         write(handshake)
+        lastSendHandshake = handshake
+        handshakeCount++
     }
 
-    fun sendTrxs(skip: Long, limit: Long) {
+    private fun sendTrxs(skip: Long, limit: Long) {
         val trxs = mutableListOf<Protocol.Tx>()
         cs.fetchTransactions(skip, limit).forEach {
         }
 
         val data = Protocol.Message.newBuilder().apply {
-            version = 0x01
+            version = protocolVersion
             type = Protocol.Message.Type.DATA
             data = Protocol.Data.newBuilder()
                     .setType(Protocol.DataType.TRX)
@@ -103,13 +128,13 @@ internal class Peer(
         write(data)
     }
 
-    fun sendBlocks(skip: Long, limit: Long) {
+    private fun sendBlocks(skip: Long, limit: Long) {
         val blocks = mutableListOf<Protocol.Block>()
         cs.fetchBlocks(skip, limit).forEach {
         }
 
         val data = Protocol.Message.newBuilder().apply {
-            version = 0x01
+            version = protocolVersion
             type = Protocol.Message.Type.DATA
             data = Protocol.Data.newBuilder()
                     .setType(Protocol.DataType.BLK)
@@ -120,9 +145,9 @@ internal class Peer(
         write(data)
     }
 
-    fun sendPing() {
+    private fun sendPing() {
         val ping = Protocol.Message.newBuilder().apply {
-            version = 0x01
+            version = protocolVersion
             type = Protocol.Message.Type.PING
             ping = Protocol.Ping.newBuilder().setNonce(Random.nextLong()).build()
         }.build()
@@ -130,9 +155,9 @@ internal class Peer(
         write(ping)
     }
 
-    fun sendPong() {
+    private fun sendPong() {
         val pong = Protocol.Message.newBuilder().apply {
-            version = 0x01
+            version = protocolVersion
             type = Protocol.Message.Type.PONG
             pong = Protocol.Pong.newBuilder().setNonce(Random.nextLong()).build()
         }.build()
@@ -140,9 +165,9 @@ internal class Peer(
         write(pong)
     }
 
-    fun sendDisconnect(rs: Protocol.Disconnect.Reason) {
+    private fun sendDisconnect(rs: Protocol.Disconnect.Reason) {
         val goAway = Protocol.Message.newBuilder().apply {
-            version = 0x01
+            version = protocolVersion
             type = Protocol.Message.Type.DISCONNECT
             disconnect = Protocol.Disconnect.newBuilder().apply {
                 reason = rs

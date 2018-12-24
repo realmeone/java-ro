@@ -36,12 +36,12 @@ protobuf {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation("io.netty:netty-all:4.1.31.Final")
-    implementation("com.google.guava:guava:27.0-jre")
+    implementation("io.netty:netty-all:4.1.32.Final")
+    implementation("com.google.guava:guava:27.0.1-jre")
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation("org.bouncycastle:bcprov-jdk15on:1.60")
     implementation("org.rocksdb:rocksdbjni:5.15.10")
-    implementation("com.github.ajalt:clikt:1.5.0")
+    implementation("com.github.ajalt:clikt:1.6.0")
     implementation("com.github.ajalt:mordant:1.2.0")
     implementation("com.typesafe:config:1.3.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1")

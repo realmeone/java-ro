@@ -19,9 +19,10 @@ import java.util.concurrent.TimeUnit
 /**
  * A Peer client
  */
-class PeerClient(
+internal class PeerClient(
         val host: String = "127.0.0.1",
-        val port: Int = 50505
+        val port: Int = 50505,
+        val peerManager: PeerManager
 ) {
     private val log = LoggerFactory.getLogger(PeerClient::class.java)
     private val workerGroup: EventLoopGroup = NioEventLoopGroup()
@@ -39,7 +40,7 @@ class PeerClient(
                             addLast(ProtobufDecoder(Protocol.Message.getDefaultInstance()))
                             addLast(ProtobufVarint32LengthFieldPrepender())
                             addLast(ProtobufEncoder())
-                            addLast(ClientHandler())
+                            addLast(ClientHandler(peerManager))
                         }
                     }
 

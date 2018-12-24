@@ -1,18 +1,21 @@
 package one.realme.krot.service.net
 
+import com.google.protobuf.ByteString
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import one.realme.krot.common.base.Application
+import one.realme.krot.common.lang.UnixTime
 import one.realme.krot.net.Protocol
 import one.realme.krot.service.chain.ChainService
 import kotlin.random.Random
 
 object ProtoServer {
+    val netService = NetService()
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val app = Application(servs = listOf(ChainService(), NetService()))
+        val app = Application(servs = listOf(ChainService(), netService))
         app.start()
     }
 }
@@ -31,8 +34,21 @@ object ProtoClient {
     class Worker {
 
         suspend fun run() {
-            val client = PeerClient()
+            val client = PeerClient(peerManager = ProtoServer.netService.peerManager)
             client.connect()
+            val handshake = Protocol.Message.newBuilder().apply {
+                version = 0x01
+                type = Protocol.Message.Type.HANDSHAKE
+                handShake = Protocol.HandShake.newBuilder()
+                        .setTimestamp(UnixTime.now().toInt())
+                        .setNodeId(ByteString.copyFrom(ProtoServer.netService.configuration.nodeId.toByteArray()))
+                        .setHeight(5)
+                        .setOs(ProtoServer.netService.configuration.os)
+                        .setAgent(ProtoServer.netService.configuration.agent)
+                        .build()
+            }.build()
+            client.write(handshake)
+
             val ping = Protocol.Message.newBuilder().apply {
                 version = 0x01
                 type = Protocol.Message.Type.PING

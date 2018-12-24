@@ -6,14 +6,14 @@ import one.realme.krot.common.primitive.Transaction
 import java.util.*
 
 /**
- * TODO Database should inject in?
+ *
  */
-class BlockChain(
+internal class BlockChain(
         val genesisBlock: Block,
-        var tailBlock: Block = genesisBlock
+        var tailBlock: Block = genesisBlock,
+        private val blockDb: BlockDb = BlockDb()
 ) {
     private val txPool = Vector<Transaction>()
-    private val blockDb = BlockDb()
 
     fun addTransaction(tx: Transaction) {
         if (tx.isValid() && !txPool.contains(tx)) txPool.add(tx)

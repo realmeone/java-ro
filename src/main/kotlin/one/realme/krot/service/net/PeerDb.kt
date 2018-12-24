@@ -1,5 +1,7 @@
 package one.realme.krot.service.net
 
-import one.realme.krot.common.db.Database
+import one.realme.krot.common.db.RocksDatabase
 
-class PeerDb(private val db: Database)
+internal class PeerDb : RocksDatabase("data/peers") {
+    
+}
