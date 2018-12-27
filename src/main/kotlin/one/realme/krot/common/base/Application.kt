@@ -56,59 +56,37 @@ class Application(
     }
 
     // lifecycle
-    fun start() {
-        synchronized(this.startupShutdownMonitor) {
-            val timeElapsed = measureTimeSeconds {
-                logEnvInfo()
-                // 1.prepare configuration
-                prepareConfiguration()
-                // 2. init all services with application instance
-                initServices()
-                // 3. start services
-                startServices()
-                // 3. add shutdown hook
-                registerShutdownHook()
-            }
-            logStartupInfo(timeElapsed)
+    fun start() = synchronized(this.startupShutdownMonitor) {
+        val timeElapsed = measureTimeSeconds {
+            logEnvInfo()
+            // 1.prepare configuration
+            prepareConfiguration()
+            // 2. init all services with application instance
+            initServices()
+            // 3. start services
+            startServices()
+            // 3. add shutdown hook
+            registerShutdownHook()
         }
+        logStartupInfo(timeElapsed)
     }
 
-    fun stop() {
-        synchronized(this.startupShutdownMonitor) {
-            doStop()
-            unregisterShutdownHook()
-        }
+    fun stop() = synchronized(this.startupShutdownMonitor) {
+        doStop()
+        unregisterShutdownHook()
     }
 
     // start flow
-    private fun logEnvInfo() {
-        logger.info("Starting $name on ${InetAddress.getLocalHost().hostName} with PID ${ManagementFactory.getRuntimeMXBean().name.split("@")[0]} by ${System.getProperty("user.name")}")
-    }
+    private fun logEnvInfo() = logger.info("Starting $name on ${InetAddress.getLocalHost().hostName} with PID ${ManagementFactory.getRuntimeMXBean().name.split("@")[0]} by ${System.getProperty("user.name")}")
 
-    private fun registerShutdownHook() {
-        Runtime.getRuntime().addShutdownHook(this.shutdownHook)
-    }
-
-    private fun logStartupInfo(elapsed: Long) {
-        logger.info("Started $name in $elapsed seconds")
-    }
-
-    private fun prepareConfiguration() {
-        config.load(confPath)
-    }
+    private fun registerShutdownHook() = Runtime.getRuntime().addShutdownHook(this.shutdownHook)
+    private fun logStartupInfo(elapsed: Long) = logger.info("Started $name in $elapsed seconds")
+    private fun prepareConfiguration() = config.load(confPath)
 
     // services
-    private fun initServices() {
-        services.forEach { _, it ->
-            it.doInitialize(this)
-        }
-    }
+    private fun initServices() = services.forEach { _, it -> it.doInitialize(this) }
 
-    private fun startServices() {
-        services.forEach { _, it ->
-            it.doStart()
-        }
-    }
+    private fun startServices() = services.forEach { _, it -> it.doStart() }
 
 
     // stop flow
@@ -117,21 +95,13 @@ class Application(
         logShutdownInfo()
     }
 
-    private fun logShutdownInfo() {
-        logger.info("ByeBye")
-    }
+    private fun logShutdownInfo() = logger.info("ByeBye")
+    private fun unregisterShutdownHook() =
+            try {
+                Runtime.getRuntime().removeShutdownHook(shutdownHook) // avoid shutdown twice
+            } catch (ignore: IllegalStateException) {
+                // VM is already shutdown
+            }
 
-    private fun unregisterShutdownHook() {
-        try {
-            Runtime.getRuntime().removeShutdownHook(shutdownHook) // avoid shutdown twice
-        } catch (ignore: IllegalStateException) {
-            // VM is already shutdown
-        }
-    }
-
-    private fun stopServices() {
-        services.forEach { _, it ->
-            it.doStop()
-        }
-    }
+    private fun stopServices() = services.forEach { _, it -> it.doStop() }
 }

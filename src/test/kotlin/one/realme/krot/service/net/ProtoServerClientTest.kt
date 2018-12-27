@@ -8,7 +8,6 @@ import one.realme.krot.common.base.Application
 import one.realme.krot.common.lang.UnixTime
 import one.realme.krot.net.Protocol
 import one.realme.krot.service.chain.ChainService
-import kotlin.random.Random
 
 object ProtoServer {
     val netService = NetService()
@@ -24,11 +23,11 @@ object ProtoClient {
 
     @JvmStatic
     fun main(argv: Array<String>) = runBlocking {
-        //        for (i in 1..100) {
-        async {
-            Worker().run()
-        }.join()
-//        }
+        for (i in 1..5) {
+            async {
+                Worker().run()
+            }.join()
+        }
     }
 
     class Worker {
@@ -48,25 +47,25 @@ object ProtoClient {
                         .build()
             }.build()
             client.write(handshake)
-
-            val ping = Protocol.Message.newBuilder().apply {
-                version = 0x01
-                type = Protocol.Message.Type.PING
-                ping = Protocol.Ping.newBuilder().apply {
-                    nonce = Random.nextLong()
-                }.build()
-            }.build()
-            client.write(ping)
-
-            val fetchData = Protocol.Message.newBuilder().apply {
-                version = 0x01
-                type = Protocol.Message.Type.FETCH_DATA
-                fetchData = Protocol.FetchData.newBuilder()
-                        .setSkip(0)
-                        .setLimit(10)
-                        .setType(Protocol.DataType.BLK).build()
-            }.build()
-            client.write(fetchData)
+//
+//            val ping = Protocol.Message.newBuilder().apply {
+//                version = 0x01
+//                type = Protocol.Message.Type.PING
+//                ping = Protocol.Ping.newBuilder().apply {
+//                    nonce = Random.nextLong()
+//                }.build()
+//            }.build()
+//            client.write(ping)
+//
+//            val fetchData = Protocol.Message.newBuilder().apply {
+//                version = 0x01
+//                type = Protocol.Message.Type.FETCH_DATA
+//                fetchData = Protocol.FetchData.newBuilder()
+//                        .setSkip(0)
+//                        .setLimit(10)
+//                        .setType(Protocol.DataType.BLK).build()
+//            }.build()
+//            client.write(fetchData)
 
             delay(2000)
             client.close()

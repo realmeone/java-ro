@@ -30,7 +30,8 @@ message Message {
     Ping ping = 6;
     Pong pong = 7;
     FetchData fetchData = 8;
-    Data data = 9;
+    NoticeData noticeData = 9;
+    Data data = 10;
 }
 
 message Ping {
@@ -52,9 +53,11 @@ message HandShake {
 message Disconnect {
     enum Reason {
         NO_REASON = 0;
-        NO_HANDSHAKE = 1;
-        DUPLICATE = 2;
+        UNKNOWN_ERROR = 1;
+        TIMEOUT = 2;
         WRONG_VERSION = 3;
+        NO_HANDSHAKE = 4;
+        BAD_DATA = 5;
     }
 
     bytes nodeId = 1;

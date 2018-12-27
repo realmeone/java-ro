@@ -2,6 +2,8 @@ package one.realme.krot.service.net
 
 import com.google.protobuf.ByteString
 import io.netty.channel.Channel
+import io.netty.channel.ChannelFuture
+import io.netty.channel.ChannelFutureListener
 import one.realme.krot.common.lang.UnixTime
 import one.realme.krot.net.Protocol
 import one.realme.krot.service.chain.ChainService
@@ -44,22 +46,39 @@ internal class Peer(
         // check if handshaked ? disconnect : continue
         if (msg.type == Protocol.Message.Type.HANDSHAKE) handleHandShake(msg)
         else if (!handshaked) {
-            sendDisconnect(Protocol.Disconnect.Reason.NO_HANDSHAKE)
+            discardWithNoHandShake()
             close()
         } else
             when (msg.type) {
                 Protocol.Message.Type.PING -> handlePing(msg)
                 Protocol.Message.Type.PONG -> handlePong(msg)
                 Protocol.Message.Type.FETCH_DATA -> handleFetchData(msg)
+                Protocol.Message.Type.NOTICE_DATA -> handleNoticeData(msg)
                 else -> close()
             }
     }
 
     private fun handleHandShake(msg: Protocol.Message) {
-        // validate handshake
         lastRecvHandshake = msg
         val handshake = msg.handShake
         this.remoteNodeId = handshake.nodeId.toStringUtf8()
+
+        // validate handshake
+        var valid = true
+        if (msg.handShake.nodeId.isEmpty) {
+            log.info("Handshake message validation: NodeId is null string")
+            valid = false
+        }
+        if (msg.handShake.os.isEmpty()) {
+            log.info("Handshake message validation: OS is null string")
+            valid = false
+        }
+
+        if (!valid) {
+            log.info("Handshake message invalid")
+            discardWithNoReason()
+            return
+        }
 
         // check if remote peer height is higher
         //     start sync
@@ -87,13 +106,26 @@ internal class Peer(
             Protocol.DataType.TRX -> {
                 sendTrxs(skip, limit)
             }
-            else -> {
-                // wrong type ,todo return error msg or just disconnect
+            else -> discardWithBadData()
+        }
+    }
+
+    private fun handleNoticeData(msg: Protocol.Message) {
+        val data = msg.noticeData
+        data.dataList.forEach {
+            when (it.type) {
+                Protocol.DataType.BLK -> {
+                    // Todo receive blk data
+                }
+                Protocol.DataType.TRX -> {
+                    // Todo receive transaction data
+                }
+                else -> discardWithBadData()
             }
         }
     }
 
-    private fun sendHandshake() {
+    fun sendHandshake() {
         val handshake = Protocol.Message.newBuilder().apply {
             version = protocolVersion
             type = Protocol.Message.Type.HANDSHAKE
@@ -111,7 +143,13 @@ internal class Peer(
         handshakeCount++
     }
 
-    private fun sendTrxs(skip: Long, limit: Long) {
+    /**
+     * send notice data from miner service
+     */
+    fun sendNoticeData() {
+    }
+
+    fun sendTrxs(skip: Long, limit: Long) {
         val trxs = mutableListOf<Protocol.Tx>()
         cs.fetchTransactions(skip, limit).forEach {
         }
@@ -128,7 +166,7 @@ internal class Peer(
         write(data)
     }
 
-    private fun sendBlocks(skip: Long, limit: Long) {
+    fun sendBlocks(skip: Long, limit: Long) {
         val blocks = mutableListOf<Protocol.Block>()
         cs.fetchBlocks(skip, limit).forEach {
         }
@@ -145,7 +183,7 @@ internal class Peer(
         write(data)
     }
 
-    private fun sendPing() {
+    fun sendPing() {
         val ping = Protocol.Message.newBuilder().apply {
             version = protocolVersion
             type = Protocol.Message.Type.PING
@@ -155,7 +193,7 @@ internal class Peer(
         write(ping)
     }
 
-    private fun sendPong() {
+    fun sendPong() {
         val pong = Protocol.Message.newBuilder().apply {
             version = protocolVersion
             type = Protocol.Message.Type.PONG
@@ -165,7 +203,7 @@ internal class Peer(
         write(pong)
     }
 
-    private fun sendDisconnect(rs: Protocol.Disconnect.Reason) {
+    fun sendDisconnect(rs: Protocol.Disconnect.Reason) {
         val goAway = Protocol.Message.newBuilder().apply {
             version = protocolVersion
             type = Protocol.Message.Type.DISCONNECT
@@ -174,15 +212,21 @@ internal class Peer(
                 nodeId = ByteString.copyFrom(nodeId.toByteArray())
             }.build()
         }.build()
-        write(goAway)
+        write(goAway).addListener(ChannelFutureListener.CLOSE)
         close()
     }
 
-    private fun write(msg: Protocol.Message) {
-        channel.writeAndFlush(msg)
-    }
+    fun discardWithTimeout() = sendDisconnect(Protocol.Disconnect.Reason.TIMEOUT)
+    fun discardWithUnknownError() = sendDisconnect(Protocol.Disconnect.Reason.UNKNOWN_ERROR)
+    fun discardWithNoReason() = sendDisconnect(Protocol.Disconnect.Reason.NO_REASON)
+    fun discardWithNoHandShake() = sendDisconnect(Protocol.Disconnect.Reason.NO_HANDSHAKE)
+    fun discardWithBadData() = sendDisconnect(Protocol.Disconnect.Reason.BAD_DATA)
+
+    private fun write(msg: Protocol.Message): ChannelFuture = channel.writeAndFlush(msg)
 
     private fun close() {
         if (channel.isOpen) channel.close()
     }
+
+
 }

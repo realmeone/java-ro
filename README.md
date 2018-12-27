@@ -77,7 +77,7 @@ COMMANDS:
 * [X] crypto libs
 * [ ] chain（60%）
 * [ ] stores （60%）
-* [ ] p2p network（20%）
+* [ ] p2p network（40%）
 * [ ] p2p node discover
 * [ ] consensus dpos-bft
 
