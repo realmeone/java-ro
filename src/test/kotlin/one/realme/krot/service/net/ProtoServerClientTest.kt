@@ -33,7 +33,7 @@ object ProtoClient {
     class Worker {
 
         suspend fun run() {
-            val client = PeerClient(peerManager = ProtoServer.netService.peerManager)
+            val client = PeerClient(syncManager = ProtoServer.netService.syncManager)
             client.connect()
             val handshake = Protocol.Message.newBuilder().apply {
                 version = 0x01

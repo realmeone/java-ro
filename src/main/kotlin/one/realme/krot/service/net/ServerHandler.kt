@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 
 internal class ServerHandler(
         private val chain: ChainService,
-        private val peerManager: PeerManager,
+        private val syncManager: SyncManager,
         private val conf: NetService.Configuration
 ) : SimpleChannelInboundHandler<Message>() {
     private val log = LoggerFactory.getLogger(ServerHandler::class.java)
@@ -17,14 +17,14 @@ internal class ServerHandler(
     override fun channelRead0(ctx: ChannelHandlerContext, msg: Message) {
         log.info("received from ${ctx.channel().remoteAddress()} : [$msg]")
         // messages from peer client
-        val peer = peerManager.getPeer(ctx.channel().id().asShortText())
+        val peer = syncManager.getPeer(ctx.channel().id().asLongText())
         if (null == peer) ctx.close()
         else peer.handleMessage(msg)
     }
 
     override fun channelActive(ctx: ChannelHandlerContext) {
         log.info("peer[${ctx.channel().id()}] ${ctx.channel().remoteAddress()} is connected.")
-        peerManager.addPeer(ctx.channel().id().asShortText(), Peer(
+        syncManager.addPeer(ctx.channel().id().asLongText(), Peer(
                 ctx.channel(),
                 conf.nodeId.toString(),
                 ctx.channel().remoteAddress().toString(),
@@ -37,7 +37,7 @@ internal class ServerHandler(
     }
 
     override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) {
-        val peer = peerManager.getPeer(ctx.channel().id().asShortText())
+        val peer = syncManager.getPeer(ctx.channel().id().asLongText())
         if (null == peer) ctx.close()
         else when (cause) {
             is ReadTimeoutException -> peer.discardWithTimeout()

@@ -41,7 +41,8 @@ class NetService : BaseService() {
 
     private val log: Logger = LoggerFactory.getLogger(NetService::class.java)
     val configuration = Configuration()
-    val peerManager = PeerManager()
+    internal lateinit var syncManager: SyncManager
+        private set
 
     private lateinit var connectionGroup: NioEventLoopGroup
     private lateinit var workerGroup: NioEventLoopGroup
@@ -62,6 +63,7 @@ class NetService : BaseService() {
             "must init chain service first"
         }
 
+        syncManager = SyncManager(chainService)
         connectionGroup = NioEventLoopGroup(configuration.connectionGroupSize)
         workerGroup = NioEventLoopGroup(configuration.workerGroupSize)
 
@@ -80,7 +82,7 @@ class NetService : BaseService() {
                         addLast(ProtobufDecoder(Protocol.Message.getDefaultInstance()))
                         addLast(ProtobufVarint32LengthFieldPrepender())
                         addLast(ProtobufEncoder())
-                        addLast(ServerHandler(chainService, peerManager, configuration))
+                        addLast(ServerHandler(chainService, syncManager, configuration))
                     }
                 }
             })

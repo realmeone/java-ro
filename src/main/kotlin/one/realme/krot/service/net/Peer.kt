@@ -14,10 +14,7 @@ import kotlin.random.Random
 /**
  * (Server) Peer - Peer (Client)
  *
- * features:
- * 1. broadcast tx & blx
- * 2. handle protocol message
- * 3. sync blx
+ * handle protocol message
  */
 internal class Peer(
         val channel: Channel,
@@ -80,10 +77,10 @@ internal class Peer(
             return
         }
 
-        // check if remote peer height is higher
-        //     start sync
-
         sendHandshake()
+
+        // todo check if remote peer height is higher
+        //     tell sync manager we need catch up to the head
     }
 
     private fun handlePing(msg: Protocol.Message) {

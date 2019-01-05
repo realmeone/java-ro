@@ -30,3 +30,7 @@ data/
 logs/
 caches/
 locales/
+src/test/proto/
+
+# Developer creates
+notes.md
