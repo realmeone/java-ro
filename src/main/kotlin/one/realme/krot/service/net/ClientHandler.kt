@@ -8,7 +8,7 @@ import one.realme.krot.net.Protocol.Message
 import one.realme.krot.net.Protocol.Message.Type.*
 import org.slf4j.LoggerFactory
 
-internal class ClientHandler(val syncManager: SyncManager) : SimpleChannelInboundHandler<Message>() {
+internal class ClientHandler() : SimpleChannelInboundHandler<Message>() {
     private val log = LoggerFactory.getLogger(ClientHandler::class.java)
 
     override fun channelRead0(ctx: ChannelHandlerContext, msg: Message) {

@@ -29,6 +29,7 @@ class NetService : BaseService() {
 
     class Configuration {
         private val parallelism: Int = Runtime.getRuntime().availableProcessors()
+        val seedPeers = mutableListOf<String>()
         var connectionGroupSize = parallelism / 2 + 1
         var workerGroupSize = parallelism / 2 + 1
         var port = 50505
@@ -55,6 +56,7 @@ class NetService : BaseService() {
             with(app.config) {
                 getIntOrNull("net.port")?.let { port = it }
                 getIntOrNull("net.maxPeer")?.let { maxPeer = it }
+                getStringListOrNull("net.seedPeers")?.let { seedPeers.addAll(it) }
             }
         }
 
@@ -63,7 +65,12 @@ class NetService : BaseService() {
             "must init chain service first"
         }
 
-        syncManager = SyncManager(chainService)
+        syncManager = SyncManager(
+                configuration.seedPeers,
+                configuration.nodeId.toString(),
+                configuration.os,
+                configuration.agent,
+                chainService)
         connectionGroup = NioEventLoopGroup(configuration.connectionGroupSize)
         workerGroup = NioEventLoopGroup(configuration.workerGroupSize)
 
@@ -82,7 +89,7 @@ class NetService : BaseService() {
                         addLast(ProtobufDecoder(Protocol.Message.getDefaultInstance()))
                         addLast(ProtobufVarint32LengthFieldPrepender())
                         addLast(ProtobufEncoder())
-                        addLast(ServerHandler(chainService, syncManager, configuration))
+                        addLast(ServerHandler(chainService, syncManager, configuration.nodeId.toString()))
                     }
                 }
             })
@@ -93,6 +100,8 @@ class NetService : BaseService() {
         channel = serverBootstrap.bind().sync().channel()
         log.info("NodeId: ${configuration.nodeId}")
         log.info("${name()} listen on port: ${configuration.port}")
+
+        syncManager.startSync()
     }
 
 
@@ -101,6 +110,8 @@ class NetService : BaseService() {
         try {
             workerGroup.shutdownGracefully().await()
             connectionGroup.shutdownGracefully().await()
+
+            syncManager.stopSync()
         } finally {
             closeFuture?.sync()
         }

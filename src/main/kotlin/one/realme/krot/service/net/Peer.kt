@@ -19,7 +19,7 @@ import kotlin.random.Random
 internal class Peer(
         val channel: Channel,
         val localNodeId: String,
-        val remoteIp: String,
+        val peerAddr: String, // ip:port
         val cs: ChainService,
         var remoteNodeId: String = "",
         var os: String = "unknown",
@@ -134,7 +134,7 @@ internal class Peer(
                     .setAgent(agent)
                     .build()
         }.build()
-        log.info("sending handshake message to $remoteIp ...")
+        log.info("sending handshake message to $peerAddr ...")
         write(handshake)
         lastSendHandshake = handshake
         handshakeCount++
@@ -159,7 +159,7 @@ internal class Peer(
                     .addAllTxs(trxs)
                     .build()
         }.build()
-        log.info("sending data message (trx from $skip to ${skip + limit}) to $remoteIp ...")
+        log.info("sending data message (trx from $skip to ${skip + limit}) to $peerAddr ...")
         write(data)
     }
 
@@ -176,7 +176,7 @@ internal class Peer(
                     .addAllBlocks(blocks)
                     .build()
         }.build()
-        log.info("sending data message (block from $skip to ${skip + limit}) to $remoteIp ...")
+        log.info("sending data message (block from $skip to ${skip + limit}) to $peerAddr ...")
         write(data)
     }
 
@@ -186,7 +186,7 @@ internal class Peer(
             type = Protocol.Message.Type.PING
             ping = Protocol.Ping.newBuilder().setNonce(Random.nextLong()).build()
         }.build()
-        log.info("sending ping message to $remoteIp ...")
+        log.info("sending ping message to $peerAddr ...")
         write(ping)
     }
 
@@ -196,7 +196,7 @@ internal class Peer(
             type = Protocol.Message.Type.PONG
             pong = Protocol.Pong.newBuilder().setNonce(Random.nextLong()).build()
         }.build()
-        log.info("sending pong message to $remoteIp ...")
+        log.info("sending pong message to $peerAddr ...")
         write(pong)
     }
 
